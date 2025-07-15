@@ -13,6 +13,7 @@ export default function Register() {
     confirmPassword: "",
     acceptedTerms: false,
   });
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -34,6 +35,7 @@ export default function Register() {
 
   async function handleNewUser(e) {
     e.preventDefault();
+    setLoading(true);
     console.log("New user data: ", userData);
     try {
       if (!userData.acceptedTerms) {
@@ -47,6 +49,7 @@ export default function Register() {
     } catch (error) {
       console.error("Error registering a new user: ", error);
     } finally {
+      setLoading(false);
       setUserdata({
         name: "",
         email: "",
@@ -54,6 +57,7 @@ export default function Register() {
         confirmPassword: "",
         acceptedTerms: false,
       });
+      setLoading(false);
     }
   }
 
@@ -72,7 +76,9 @@ export default function Register() {
           <img src={group} className="w-72 h-14" />
 
           <form onSubmit={handleNewUser} className="flex flex-col gap-6">
-            <h2 className="text-4xl">Crie sua conta</h2>
+            <h2 className="text-4xl text-[var(--color-dark)]">
+              Crie sua conta
+            </h2>
             <input
               type="text"
               id="name"
@@ -102,10 +108,12 @@ export default function Register() {
             />
             <input
               type="text"
-              id="confirm-password"
-              name="confirm-password"
+              id="confirmPassword"
+              name="confirmPassword"
               placeholder="Confirmar senha"
               className="border border-[var(--color-primary)] p-3 rounded-xl"
+              value={userData.confirmPassword}
+              onChange={handleChange}
             />
 
             <label
@@ -133,7 +141,11 @@ export default function Register() {
 
             <button
               type="submit"
-              className="w-full p-2 text-white font-medium bg-[var(--color-primary)] rounded-xl cursor-pointer transition-all duration-500 ease-in-out hover:bg-[var(--color-tertiary)]"
+              className={`w-full p-2 text-white font-medium ${
+                loading
+                  ? "bg-[var(--color-tertiary)]"
+                  : "bg-[var(--color-primary)]"
+              } rounded-xl cursor-pointer transition-all duration-500 ease-in-out hover:bg-[var(--color-tertiary)]`}
             >
               Criar conta
             </button>
