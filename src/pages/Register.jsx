@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { registerUser } from "../services/user-service";
+import { registerUser } from "../services/auth-service";
 import maskGroup from "../assets/images/mask-group.png";
 import star from "../assets/images/star3.png";
 import group from "../assets/images/group.png";
@@ -69,14 +69,17 @@ export default function Register() {
           alt="Mascara decorativa"
           className="w-full max-h-screen object-cover object-center"
         />
-        <img src={star} className="absolute top-36 -right-28" />
+        <img src={star} className="absolute scale-86 top-18 -right-30" />
       </div>
       <div className="flex justify-center items-center bg-white w-1/2">
-        <div className="flex flex-col gap-10 text-center items-center">
+        <div className="flex flex-col gap-10 text-center items-center w-full">
           <img src={group} className="w-72 h-14" />
 
-          <form onSubmit={handleNewUser} className="flex flex-col gap-6">
-            <h2 className="text-4xl text-[var(--color-dark)]">
+          <form
+            onSubmit={handleNewUser}
+            className="flex flex-col justify-center items-center gap-6 w-full"
+          >
+            <h2 className="text-4xl text-[var(--color-title)]">
               Crie sua conta
             </h2>
             <input
@@ -84,7 +87,7 @@ export default function Register() {
               id="name"
               name="name"
               placeholder="Nome completo"
-              className="border border-[var(--color-primary)] p-3 rounded-xl"
+              className="w-3/5 border border-[var(--color-primary)] p-3 rounded-xl"
               value={userData.name}
               onChange={handleChange}
             />
@@ -93,7 +96,7 @@ export default function Register() {
               id="email"
               name="email"
               placeholder="Email"
-              className="border border-[var(--color-primary)] p-3 rounded-xl"
+              className="w-3/5 border border-[var(--color-primary)] p-3 rounded-xl"
               value={userData.email}
               onChange={handleChange}
             />
@@ -102,7 +105,7 @@ export default function Register() {
               id="password"
               name="password"
               placeholder="Senha"
-              className="border border-[var(--color-primary)] p-3 rounded-xl"
+              className="w-3/5 border border-[var(--color-primary)] p-3 rounded-xl"
               value={userData.password}
               onChange={handleChange}
             />
@@ -111,7 +114,7 @@ export default function Register() {
               id="confirmPassword"
               name="confirmPassword"
               placeholder="Confirmar senha"
-              className="border border-[var(--color-primary)] p-3 rounded-xl"
+              className="w-3/5 border border-[var(--color-primary)] p-3 rounded-xl"
               value={userData.confirmPassword}
               onChange={handleChange}
             />
@@ -125,7 +128,7 @@ export default function Register() {
                 id="accept"
                 checked={userData.acceptedTerms}
                 onChange={handleCheckBoxChange}
-                className="w-4 h-4 border border-[var(--color-primary)] rounded flex items-center justify-center bg-white checked:bg-[var(--color-primary)]"
+                className="w-4 h-4 border border-[var(--color-primary)] rounded flex items-center justify-center bg-white checked:bg-[var(--color-primary)] cursor-pointer"
               />
               <span className="text-sm text-gray-500">
                 Concordo com os{" "}
@@ -141,7 +144,7 @@ export default function Register() {
 
             <button
               type="submit"
-              className={`w-full p-2 text-white font-medium ${
+              className={`w-3/5 p-2 text-white font-medium ${
                 loading
                   ? "bg-[var(--color-tertiary)]"
                   : "bg-[var(--color-primary)]"
