@@ -62,7 +62,7 @@ export default function Register() {
   }
 
   return (
-    <div className="flex flex-row bg-black min-h-screen w-full">
+    <div className="flex flex-row bg-[var(--color-background)] min-h-screen w-full">
       <div className="relative w-1/2">
         <img
           src={maskGroup}
@@ -71,15 +71,15 @@ export default function Register() {
         />
         <img src={star} className="absolute scale-86 top-18 -right-30" />
       </div>
-      <div className="flex justify-center items-center bg-white w-1/2">
+      <div className="flex justify-center items-center w-1/2">
         <div className="flex flex-col gap-10 text-center items-center w-full">
           <img src={group} className="w-72 h-14" />
 
           <form
             onSubmit={handleNewUser}
-            className="flex flex-col justify-center items-center gap-6 w-full"
+            className="flex flex-col justify-center items-center gap-6 w-full font-inter"
           >
-            <h2 className="text-4xl text-[var(--color-title)]">
+            <h2 className="text-4xl font-bricolage text-[var(--color-title)]">
               Crie sua conta
             </h2>
             <input
@@ -144,7 +144,7 @@ export default function Register() {
 
             <button
               type="submit"
-              className={`w-3/5 p-2 text-white font-medium ${
+              className={`w-3/5 p-2 text-white font-semibold ${
                 loading
                   ? "bg-[var(--color-tertiary)]"
                   : "bg-[var(--color-primary)]"
