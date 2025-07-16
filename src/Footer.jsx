@@ -91,7 +91,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2">
                 <img src="/assets/email.svg" className="w-6 h-6 text-gray-400 shrink-0" />
-                <a href="mailto:contato@feiratrocas.com" className=" hover:text-white" >
+                <a href="mailto:contato@desapegai.com" className=" hover:text-white" >
                   contato@feiratrocas.com
                 </a>
               </div>
