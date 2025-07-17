@@ -1,3 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;700&display=swap");
 @import "tailwindcss";
+
+:root {
+  --color-primary: #1b5fff;
+  --color-secondary: #fe7a1b;
+  --color-tertiary: #d1dfff;
+
+  --color-feedback-error: #f87171;
+  --color-feedback-success: #84cc16;
+  --color-feedback-warning: #facc15;
+
+  --color-title: #111827;
+  --color-text: #79767d;
+
+  --color-background: #fff;
+}
