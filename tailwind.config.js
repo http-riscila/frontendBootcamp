@@ -1,11 +1,8 @@
-module.exports = {
+/** @type {import('tailwindcss').Config} */
+const config = {
   theme: {
-    extend: {
-      fontFamily: {
-        inter: ['Inter', 'sans-serif'],
-        bricolage: ['Bricolage Grotesque', 'sans-serif'],
-      },
-    },
-  },
+    
   plugins: [],
 }
+
+export default config
