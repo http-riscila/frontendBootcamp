@@ -1,3 +1,5 @@
+import { Button } from "flowbite-react";
+
 export default function Header() {
   return (
     <div className="w-full bg-white border-b border-[#E5E7EB]">
@@ -10,7 +12,7 @@ export default function Header() {
 
         <div className="col-span-9 flex justify-end items-center gap-3">
             <nav className=" flex justify-end gap-7 pr-8">
-          <a href="#" className="flex items-center gap-2 text-primary font-medium">
+          <a href="#" className="flex items-center gap-2 text-[#1B5FFF] font-medium">
             <svg className="h-6 w-6 text-primary" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M13.3333 18.3333V15C13.3333 13.1591 11.8409 11.6667 10 11.6667C8.15905 11.6667 6.66667 13.1591 6.66667 15V18.3333M17.5 8.45861V14.9724C17.5 16.8286 16.0076 18.3333 14.1667 18.3333H5.83333C3.99238 18.3333 2.5 16.8286 2.5 14.9724V8.45861C2.5 7.44948 2.9497 6.49375 3.72488 5.85544L7.89155 2.42446C9.11859 1.41407 10.8814 1.41407 12.1084 2.42446L16.2751 5.85544C17.0503 6.49375 17.5 7.44948 17.5 8.45861Z" stroke="#1B5FFF" stroke-width="1.5"/>
             </svg>
@@ -32,12 +34,12 @@ export default function Header() {
             Como Funciona
           </a>
         </nav>
-          <button className="border border-[#1B5FFF] text-[#1B5FFF] hover:text-[#FFFFFF] hover:bg-[#1B5FFF] px-6 py-2 rounded-lg font-medium transition cursor-pointer">
+          <Button outline size="lg" outlineColor="#1B5FFF" className="text-[#1B5FFF] hover:bg-[#1B5FFF] hover:text-white cursor-pointer">
             Entrar
-          </button>
-          <button className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-2 rounded-lg font-medium transition shadow cursor-pointer">
+          </Button>
+          <Button size="lg" className="text-white hover:bg-blue-700 hover:text-white cursor-pointer">
             Quero Trocar
-          </button>
+          </Button>
         </div>
       </header>
     </div>
