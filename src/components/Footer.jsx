@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
 
-    <div className="flex flex-col min-h-screen mt-4 lg:mt-4 md:mt-4">
+    <div className="flex flex-col min-h-screen">
       
       <footer className="w-full py-12 md:py-16 lg:py-20 bg-[#1a202c] text-gray-300">
         <div className="max-w-[1240px] mx-auto px-10 sm:px-6 md:px-12 grid gap-20 lg:grid-cols-12 md:grid-cols-2 lg:px-[0]">
