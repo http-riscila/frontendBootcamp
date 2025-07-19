@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import HowWorks from "./pages/HowWorks";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import "../src/styles/App.css";
@@ -8,7 +9,9 @@ function App() {
     <>
       <Routes>
         <Route path="/cadastro" element={<Register />} />
+         <Route path="/como-funciona" element={<HowWorks />} />
         <Route path="/" element={<Login />} />
+        
       </Routes>
     </>
   );
