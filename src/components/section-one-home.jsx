@@ -1,4 +1,3 @@
-import { Button } from "flowbite-react";
 import { Underline } from "../components/underline";
 
 const SectionOneHome = () => {
@@ -12,24 +11,25 @@ const SectionOneHome = () => {
             <span className="relative text-blue-600"> que você precisa</span>
             <Underline />
           </h1>
-          <p className="max-w-[546px] mt-8 text-3xl leading-[44px] text-gray-600">
-            Encontre comunidades locais para trocar itens sem gastar nada.
+          <p className="max-w-[546px] mt-8 text-[32px] leading-[44px] text-[#79797d]">
+            Encontre comunidades locais para <br /> trocar itens sem gastar
+            nada.
           </p>
         </div>
         <div className="flex mt-4 space-x-4">
-          <Button
-            className="w-56 h-16 rounded-2xl text-xl ease duration-200"
+          <button
+            className="w-72 h-16 rounded-2xl text-xl text-white bg-[#1b5fff] hover:bg-[#1a4bcf] ease duration-200 cursor-pointer"
             href="#"
           >
             Quero trocar
-          </Button>
-          <Button
-            className="w-56 h-16 rounded-2xl text-xl text-[#FE7A1B] border hover:bg-[#FE7A1B] hover:text-white ease duration-200"
+          </button>
+          <button
+            className="w-72 h-16 rounded-2xl text-xl text-[#fe7a1b] border hover:bg-[#fe7a1b] hover:text-white ease duration-200 cursor-pointer"
             color="bg-white"
             href="#"
           >
-            Como funciona 
-          </Button>
+            Como funciona
+          </button>
         </div>
       </div>
       <div>
