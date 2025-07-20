@@ -1,7 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import "../src/styles/App.css";
+import Home from "./pages/Home";
+import "./styles/index.css";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/cadastro" element={<Register />} />
         <Route path="/" element={<Login />} />
+        <Route path="/home" element={<Home />} />
       </Routes>
     </>
   );
