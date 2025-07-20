@@ -1,5 +1,3 @@
-
-
 const IconProfiles = () => {
   return (
     <svg
