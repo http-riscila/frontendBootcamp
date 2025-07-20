@@ -1,23 +1,8 @@
 import HiUserIcon from "./hi-user-icon";
 
-type CommunityCardProps = {
-  imageUrl?: string;
-  categoryLabel?: string;
-  categoryColor?: "light" | "blue" | "green" | "red" | "yellow" | "purple";
-  title: string;
-  description: string;
-  membersLabel?: string;
-  membersCount?: number;
-  buttonLabel?: string;
-  onClick?: () => void;
-  className?: string;
-  isSelected?: boolean;
-};
-
 export default function CommunityCard({
   imageUrl,
   categoryLabel = "Categoria",
-  categoryColor = "light",
   title,
   description,
   membersLabel = "membros",
@@ -26,7 +11,7 @@ export default function CommunityCard({
   onClick,
   className = "",
   isSelected = false,
-}: CommunityCardProps) {
+}) {
   return (
     <div
       className={`max-w-medium bg-background flex h-[500px] flex-col overflow-hidden rounded-2xl shadow-sm ${className}`}
