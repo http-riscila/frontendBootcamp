@@ -3,6 +3,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import AddItem from "./components/AddItem";
+import CreateComunity from "./components/CreateComunity";
 
 function App() {
   return <>
@@ -10,6 +11,8 @@ function App() {
     <Hero />
 
     <AddItem />
+
+    <CreateComunity />
 
     <Footer />
   </>;
