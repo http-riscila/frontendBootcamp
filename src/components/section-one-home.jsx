@@ -2,29 +2,29 @@ import { Underline } from "../components/underline";
 
 const SectionOneHome = () => {
   return (
-    <section className="flex gap-20 bg-white">
+    <section className="container mx-auto flex gap-20 bg-white">
       <div>
-        <div className="flex flex-col items-start max-w-[636px]">
-          <h1 className="relative mt-10 text-[66px] font-bold leading-[76px] text-gray-900">
+        <div className="flex max-w-[636px] flex-col items-start">
+          <h1 className="relative mt-10 text-[66px] leading-[76px] font-bold text-gray-900">
             Troque o que você
             <br /> já não usa por o<br />
             <span className="relative text-blue-600"> que você precisa</span>
             <Underline />
           </h1>
-          <p className="max-w-[546px] mt-8 text-[32px] leading-[44px] text-[#79797d]">
+          <p className="mt-8 max-w-[546px] text-[32px] leading-[44px] text-[#79797d]">
             Encontre comunidades locais para <br /> trocar itens sem gastar
             nada.
           </p>
         </div>
-        <div className="flex mt-4 space-x-4">
+        <div className="mt-4 flex space-x-4">
           <button
-            className="w-72 h-16 rounded-2xl text-xl text-white bg-[#1b5fff] hover:bg-[#1a4bcf] ease duration-200 cursor-pointer"
+            className="ease h-16 w-72 cursor-pointer rounded-2xl bg-[#1b5fff] text-xl text-white duration-200 hover:bg-[#1a4bcf]"
             href="#"
           >
             Quero trocar
           </button>
           <button
-            className="w-72 h-16 rounded-2xl text-xl text-[#fe7a1b] border hover:bg-[#fe7a1b] hover:text-white ease duration-200 cursor-pointer"
+            className="ease h-16 w-72 cursor-pointer rounded-2xl border text-xl text-[#fe7a1b] duration-200 hover:bg-[#fe7a1b] hover:text-white"
             color="bg-white"
             href="#"
           >
@@ -36,7 +36,7 @@ const SectionOneHome = () => {
         <img
           src="src/assets/images/image-section-one-home.png"
           alt="image"
-          className="w-[450px] h-[446px] object-cover"
+          className="h-[446px] w-[450px] object-cover"
         />
       </div>
     </section>

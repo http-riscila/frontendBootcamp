@@ -41,20 +41,20 @@ const SectionThreeHome = () => {
   };
 
   return (
-    <section>
-      <h2 className="text-5xl text-[#111827] font-bold">
+    <section className="container mx-auto">
+      <h2 className="text-5xl font-bold text-[#111827]">
         Comunidades mais acessadas
       </h2>
-      <div className="flex justify-between items-center">
-        <p className="text-[#79767d] text-2xl mb-2">
+      <div className="flex items-center justify-between">
+        <p className="mb-2 text-2xl text-[#79767d]">
           Navegue pelas comunidades com mais membros
         </p>
 
-        <button className="flex items-center text-[#fe7a1b] text-2xl rounded-full px-4 py-2 cursor-pointer">
+        <button className="flex cursor-pointer items-center rounded-full px-4 py-2 text-2xl text-[#fe7a1b]">
           Ver todas <ArrowLeft />
         </button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full max-w-[1200px] mt-8 mb-20">
+      <div className="mt-8 grid w-full max-w-[1200px] grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
         {communities.map((community) => {
           const isSelected = selectedCommunityId === community.id;
           return (
