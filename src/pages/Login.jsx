@@ -47,24 +47,24 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-row bg-[var(--color-background)] min-h-screen w-full">
+    <div className="flex min-h-screen w-full flex-row bg-[var(--color-background)]">
       <div className="relative w-1/2">
         <img
           src={maskGroup}
           alt="Mascara decorativa"
-          className="w-full max-h-screen object-cover object-center"
+          className="max-h-screen w-full object-cover object-center"
         />
-        <img src={star} className="absolute scale-86 top-18 -right-30" />
+        <img src={star} className="absolute top-18 -right-30 h-96 w-96" />
       </div>
-      <div className="flex justify-center items-center w-1/2">
-        <div className="flex flex-col gap-10 text-center items-center w-full">
-          <img src={group} className="w-72 h-14" />
+      <div className="flex w-1/2 items-center justify-center">
+        <div className="flex w-full flex-col items-center gap-10 text-center">
+          <img src={group} className="h-14 w-72" />
 
           <form
             onSubmit={handleLogin}
-            className="flex flex-col justify-center items-center gap-6 w-full font-inter"
+            className="font-inter flex w-full max-w-[425px] flex-col items-center justify-center gap-6 text-lg"
           >
-            <h2 className="text-[36px] text-[var(--color-title)] font-bricolage">
+            <h2 className="font-bricolage text-4xl text-[var(--color-title)]">
               Entre na sua conta
             </h2>
 
@@ -73,7 +73,7 @@ export default function Login() {
               id="email"
               name="email"
               placeholder="Email"
-              className="w-[425px] h-[58px] text-[18px] border border-[var(--color-primary)] p-3 rounded-xl"
+              className="max-h-[58px] w-full rounded-xl border border-[var(--color-primary)] p-3"
               value={credentials.email}
               onChange={handleChange}
             />
@@ -82,28 +82,27 @@ export default function Login() {
               id="password"
               name="password"
               placeholder="Senha"
-              className="w-[425px] h-[58px] text-[18px] border border-[var(--color-primary)] p-3 rounded-xl"
+              className="max-h-[58px] w-full rounded-xl border border-[var(--color-primary)] p-3"
               value={credentials.password}
               onChange={handleChange}
             />
 
             <button
               type="submit"
-              className={`w-[425px] h-[54px] text-[18px] p-2 text-white font-semibold ${
+              className={`max-h-[54px] w-full p-2 font-semibold text-white ${
                 loading
                   ? "bg-[var(--color-tertiary)]"
                   : "bg-[var(--color-primary)]"
-              }
-               rounded-xl cursor-pointer transition-all duration-500 ease-in-out hover:bg-[var(--color-tertiary)]`}
+              } cursor-pointer rounded-xl transition-all duration-500 ease-in-out hover:bg-[var(--color-tertiary)]`}
             >
               Login
             </button>
 
-            <p className="text-[18px] text-gray-500">
+            <p className="text-gray-500">
               Não tem conta?{" "}
               <Link
                 to="/cadastro"
-                className="text-[var(--color-primary)] underline underline-offset-3 cursor-pointer"
+                className="cursor-pointer text-[var(--color-primary)] underline underline-offset-3"
               >
                 Cadastre-se
               </Link>
