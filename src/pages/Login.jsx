@@ -32,9 +32,9 @@ export default function Login() {
       if (response) {
         localStorage.setItem("user", JSON.stringify(response.user));
         localStorage.setItem("token", response.token);
+        navigate("/home");
       }
       console.log("User succesfully logged in", response);
-      navigate("/home");
     } catch (error) {
       console.error("Error authenticating an user", error);
     } finally {
@@ -64,7 +64,7 @@ export default function Login() {
             onSubmit={handleLogin}
             className="flex flex-col justify-center items-center gap-6 w-full font-inter"
           >
-            <h2 className="text-4xl text-[var(--color-title)] font-bricolage">
+            <h2 className="text-[36px] text-[var(--color-title)] font-bricolage">
               Entre na sua conta
             </h2>
 
@@ -73,7 +73,7 @@ export default function Login() {
               id="email"
               name="email"
               placeholder="Email"
-              className="w-3/5 border border-[var(--color-primary)] p-3 rounded-xl"
+              className="w-[425px] h-[58px] text-[18px] border border-[var(--color-primary)] p-3 rounded-xl"
               value={credentials.email}
               onChange={handleChange}
             />
@@ -82,14 +82,14 @@ export default function Login() {
               id="password"
               name="password"
               placeholder="Senha"
-              className="w-3/5 border border-[var(--color-primary)] p-3 rounded-xl"
+              className="w-[425px] h-[58px] text-[18px] border border-[var(--color-primary)] p-3 rounded-xl"
               value={credentials.password}
               onChange={handleChange}
             />
 
             <button
               type="submit"
-              className={`w-3/5 p-2 text-white font-semibold ${
+              className={`w-[425px] h-[54px] text-[18px] p-2 text-white font-semibold ${
                 loading
                   ? "bg-[var(--color-tertiary)]"
                   : "bg-[var(--color-primary)]"
@@ -99,7 +99,7 @@ export default function Login() {
               Login
             </button>
 
-            <p className="text-base text-gray-500">
+            <p className="text-[18px] text-gray-500">
               Não tem conta?{" "}
               <Link
                 to="/cadastro"
