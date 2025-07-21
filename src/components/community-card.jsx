@@ -1,4 +1,4 @@
-import HiUserIcon from "./hi-user-icon";
+
 
 export default function CommunityCard({
   imageUrl,
@@ -30,19 +30,19 @@ export default function CommunityCard({
       </div>
 
       <div className="mt-0 rounded-b-2xl border border-t-0 border-x-[#1b5fff] border-b-[#1b5fff] py-8 pb-10">
-        {/* Badge e membros */}
+       
         <div className="mb-2 flex items-start justify-between px-10">
           <span className="flex w-full max-w-[68px] items-center justify-center rounded-3xl border border-blue-100 bg-[#d1dfff] px-2 py-1 text-sm text-[#1b5fff]">
             {categoryLabel}
           </span>
           {membersCount !== undefined && (
             <div className="flex gap-1 text-sm text-[#79767d]">
-              <HiUserIcon />
+              <img src="src/assets/svgs/user-icon.svg" alt="user" />
               {membersCount.toLocaleString()} {membersLabel}
             </div>
           )}
         </div>
-        {/* Título e descrição */}
+      
         <div className="flex flex-col items-start px-10">
           <h5 className="text-title mt-2 text-3xl font-bold">{title}</h5>
           <p className="mt-1 mb-4 w-full max-w-[310px] flex-1 text-xl text-[#79767d]">
