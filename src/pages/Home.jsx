@@ -85,7 +85,6 @@ const Home = () => {
       setHomeData(data);
     } catch (error) {
       console.error("Erro ao carregar dados da home:", error);
-      // Fallback em caso de erro
       setHomeData({
         communities: [],
         items: [],
@@ -98,11 +97,12 @@ const Home = () => {
   // Handlers
   const handleQueroTrocar = () => {
     const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
 
-    if (!token) {
-      navigate("/login");
+    if (!token || !user) {
+      navigate("/");
     } else {
-      navigate("/add-item"); // ou a rota que vocês definirem
+      navigate("/add-item"); //Todo: verificar a rota correta depois
     }
   };
 
