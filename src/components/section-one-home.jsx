@@ -1,6 +1,19 @@
 import { Underline } from "../components/underline";
+import { useNavigate } from "react-router-dom";
 
 const SectionOneHome = () => {
+  const navigate = useNavigate();
+
+  const handleQueroTrocar = () => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+
+    if (!token || !userId) {
+      navigate("/");
+    } else {
+      // Todo: Implementar a lógica para navegar para a página de troca
+    }
+  };
   return (
     <section className="container mx-auto flex gap-20 bg-white">
       <div>
@@ -19,7 +32,7 @@ const SectionOneHome = () => {
         <div className="mt-4 flex space-x-4">
           <button
             className="ease h-16 w-72 cursor-pointer rounded-2xl bg-[#1b5fff] text-xl text-white duration-200 hover:bg-[#1a4bcf]"
-            href="#"
+            onClick={handleQueroTrocar}
           >
             Quero trocar
           </button>
