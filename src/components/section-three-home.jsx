@@ -2,11 +2,11 @@ import ArrowLeft from "./arrow-left";
 import CommunityCard from "./community-card";
 import { useState } from "react";
 
-const communities = [
+const fallbackCommunities = [
   {
     id: 1,
     imageUrl: "",
-    categoryLabel: "roupas",
+    category: "roupas",
     title: "Bazar de roupas BR",
     description:
       "Comunidade para troca de roupas, sapatos e acessórios em todo Brasil",
@@ -15,7 +15,7 @@ const communities = [
   {
     id: 2,
     imageUrl: "",
-    categoryLabel: "cultura",
+    category: "cultura",
     title: "Livros e Cultura",
     description:
       "Troque livros, CDs, DVDs e outros itens culturais novos ou usados",
@@ -24,7 +24,7 @@ const communities = [
   {
     id: 3,
     imageUrl: "",
-    categoryLabel: "casa",
+    category: "casa",
     title: "Casa e decoração",
     description:
       "Comunidade para troca de roupas, sapatos e acessórios em todo Brasil",
@@ -32,8 +32,11 @@ const communities = [
   },
 ];
 
-const SectionThreeHome = () => {
+const SectionThreeHome = ({ communities = [] }) => {
   const [selectedCommunityId, setSelectedCommunityId] = useState(null);
+
+  const displayCommunities =
+    communities.length > 0 ? communities.slice(0, 3) : fallbackCommunities;
 
   const handleCommunityClick = (communityId) => {
     setSelectedCommunityId(communityId);
@@ -55,16 +58,16 @@ const SectionThreeHome = () => {
         </button>
       </div>
       <div className="mt-8 grid w-full max-w-[1200px] grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {communities.map((community) => {
+        {displayCommunities.map((community) => {
           const isSelected = selectedCommunityId === community.id;
           return (
             <CommunityCard
               key={community.id}
               imageUrl={community.imageUrl}
-              categoryLabel={community.categoryLabel}
+              categoryLabel={community.category || "geral"}
               title={community.title}
               description={community.description}
-              membersCount={community.membersCount}
+              membersCount={community.membersCount || 0}
               isSelected={isSelected}
               onClick={() => handleCommunityClick(community.id)}
             />
