@@ -1,21 +1,18 @@
+import { Routes, Route } from "react-router-dom";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
 import "../src/styles/App.css";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import AddItem from "./components/AddItem";
-import CreateComunity from "./components/CreateComunity";
 
 function App() {
-  return <>
-    <Header />
-    <Hero />
+  return (
+    <>
+      <Routes>
+        <Route path="/cadastro" element={<Register />} />
+        <Route path="/" element={<Login />} />
+      </Routes>
+    </>
+  );
 
-    <AddItem />
-
-    <CreateComunity />
-
-    <Footer />
-  </>;
 }
 
 export default App;
