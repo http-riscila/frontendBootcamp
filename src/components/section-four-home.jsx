@@ -1,36 +1,54 @@
 import React from "react";
 import ImageGrid from "./image-grid";
 
-const SectionFourHome = () => {
-  const galeryImagesOne = [
-    {
-      src: "src/assets/images/image-01-section-4-home.jpg",
-      alt: "Tabuleiro de xadrez",
-    },
-    {
-      src: "src/assets/images/image-02-section-4-home.png",
-      alt: "Bicicleta infantil azul",
-    },
-    {
-      src: "src/assets/images/image-03-section-4-home.png",
-      alt: "Conjunto de panelas inox",
-    },
-  ];
+const fallbackImagesOne = [
+  {
+    src: "src/assets/images/image-01-section-4-home.jpg",
+    alt: "Tabuleiro de xadrez",
+  },
+  {
+    src: "src/assets/images/image-02-section-4-home.png",
+    alt: "Bicicleta infantil azul",
+  },
+  {
+    src: "src/assets/images/image-03-section-4-home.png",
+    alt: "Conjunto de panelas inox",
+  },
+];
 
-  const galeryImagesTwo = [
-    {
-      src: "src/assets/images/image-04-section-4-home.png",
-      alt: "Vestido adulto estampado",
-    },
-    {
-      src: "src/assets/images/image-05-section-4-home.jpg",
-      alt: "Furadeira e parafusadeira",
-    },
-    {
-      src: "src/assets/images/image-06-section-4-home.png",
-      alt: "Livro de receitas",
-    },
-  ];
+const fallbackImagesTwo = [
+  {
+    src: "src/assets/images/image-04-section-4-home.png",
+    alt: "Vestido adulto estampado",
+  },
+  {
+    src: "src/assets/images/image-05-section-4-home.jpg",
+    alt: "Furadeira e parafusadeira",
+  },
+  {
+    src: "src/assets/images/image-06-section-4-home.png",
+    alt: "Livro de receitas",
+  },
+];
+
+const SectionFourHome = ({ items = [] }) => {
+  const convertItemsToImages = (itemsArray) => {
+    return itemsArray.map((item) => ({
+      src: item.imageUrl || "src/assets/images/placeholder.jpg",
+      alt: item.name || "Item disponível para troca",
+    }));
+  };
+
+  const itemImages = items.length > 0 ? convertItemsToImages(items) : [];
+
+  const galeryImagesOne =
+    itemImages.slice(0, 3).length >= 3
+      ? itemImages.slice(0, 3)
+      : fallbackImagesOne;
+  const galeryImagesTwo =
+    itemImages.slice(3, 6).length >= 3
+      ? itemImages.slice(3, 6)
+      : fallbackImagesTwo;
 
   return (
     <section className="container mx-auto">
