@@ -62,32 +62,33 @@ export default function Register() {
   }
 
   return (
-    <div className="flex flex-row bg-[var(--color-background)] min-h-screen w-full">
+    <div className="flex min-h-screen w-full flex-row bg-[var(--color-background)]">
       <div className="relative w-1/2">
         <img
           src={maskGroup}
           alt="Mascara decorativa"
-          className="w-full max-h-screen object-cover object-center"
+          className="max-h-screen w-full object-cover object-center"
         />
-        <img src={star} className="absolute scale-86 top-18 -right-30" />
+        <img src={star} className="absolute top-18 -right-30 scale-86" />
       </div>
-      <div className="flex justify-center items-center w-1/2">
-        <div className="flex flex-col gap-10 text-center items-center w-full">
-          <img src={group} className="w-72 h-14" />
+      <div className="flex w-1/2 items-center justify-center">
+        <div className="flex w-full flex-col items-center gap-10 text-center">
+          <img src={group} className="h-14 w-72" />
 
           <form
             onSubmit={handleNewUser}
-            className="flex flex-col justify-center items-center gap-6 w-full font-inter"
+            className="font-inter flex w-full flex-col items-center justify-center gap-6"
           >
-            <h2 className="text-[36px] font-bricolage text-[var(--color-title)]">
+            <h2 className="font-bricolage text-[36px] text-[var(--color-title)]">
               Crie sua conta
             </h2>
             <input
               type="text"
               id="name"
               name="name"
-              placeholder="Nome completo"
-              className="w-[425px] h-[58px] text-[18px] border border-[var(--color-primary)] p-3 rounded-xl"
+              maxLength={16}
+              placeholder="Nome"
+              className="h-[58px] w-[425px] rounded-xl border border-[var(--color-primary)] p-3 text-[18px]"
               value={userData.name}
               onChange={handleChange}
             />
@@ -96,7 +97,7 @@ export default function Register() {
               id="email"
               name="email"
               placeholder="Email"
-              className="w-[425px] h-[58px] text-[18px] border border-[var(--color-primary)] p-3 rounded-xl"
+              className="h-[58px] w-[425px] rounded-xl border border-[var(--color-primary)] p-3 text-[18px]"
               value={userData.email}
               onChange={handleChange}
             />
@@ -105,7 +106,7 @@ export default function Register() {
               id="password"
               name="password"
               placeholder="Senha"
-              className="w-[425px] h-[58px] text-[18px] border border-[var(--color-primary)] p-3 rounded-xl"
+              className="h-[58px] w-[425px] rounded-xl border border-[var(--color-primary)] p-3 text-[18px]"
               value={userData.password}
               onChange={handleChange}
             />
@@ -114,29 +115,29 @@ export default function Register() {
               id="confirmPassword"
               name="confirmPassword"
               placeholder="Confirmar senha"
-              className="w-[425px] h-[58px] text-[18px] border border-[var(--color-primary)] p-3 rounded-xl"
+              className="h-[58px] w-[425px] rounded-xl border border-[var(--color-primary)] p-3 text-[18px]"
               value={userData.confirmPassword}
               onChange={handleChange}
             />
 
             <label
               htmlFor="accept"
-              className="flex items-center gap-2 cursor-pointer"
+              className="flex cursor-pointer items-center gap-2"
             >
               <input
                 type="checkbox"
                 id="accept"
                 checked={userData.acceptedTerms}
                 onChange={handleCheckBoxChange}
-                className="w-[22px] h-[22px] border border-[var(--color-primary)] rounded flex items-center justify-center bg-white checked:bg-[var(--color-primary)] cursor-pointer"
+                className="flex h-[22px] w-[22px] cursor-pointer items-center justify-center rounded border border-[var(--color-primary)] bg-white checked:bg-[var(--color-primary)]"
               />
               <span className="text-[14px] text-gray-500">
                 Concordo com os{" "}
-                <a className="text-[var(--color-primary)] hover:underline cursor-pointer">
+                <a className="cursor-pointer text-[var(--color-primary)] hover:underline">
                   Termos de Uso
                 </a>{" "}
                 e{" "}
-                <a className="text-[var(--color-primary)] hover:underline cursor-pointer">
+                <a className="cursor-pointer text-[var(--color-primary)] hover:underline">
                   Política de Privacidade
                 </a>
               </span>
@@ -144,11 +145,11 @@ export default function Register() {
 
             <button
               type="submit"
-              className={`w-[425px] h-[54px] text-[18px] p-2 text-white font-semibold ${
+              className={`h-[54px] w-[425px] p-2 text-[18px] font-semibold text-white ${
                 loading
                   ? "bg-[var(--color-tertiary)]"
                   : "bg-[var(--color-primary)]"
-              } rounded-xl cursor-pointer transition-all duration-500 ease-in-out hover:bg-[var(--color-tertiary)]`}
+              } cursor-pointer rounded-xl transition-all duration-500 ease-in-out hover:bg-[var(--color-tertiary)]`}
             >
               Criar conta
             </button>
@@ -157,7 +158,7 @@ export default function Register() {
               Já tem conta?{" "}
               <Link
                 to="/"
-                className="text-[var(--color-primary)] underline underline-offset-3 cursor-pointer"
+                className="cursor-pointer text-[var(--color-primary)] underline underline-offset-3"
               >
                 Faça Login
               </Link>
