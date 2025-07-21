@@ -69,7 +69,7 @@ export default function Register() {
           alt="Mascara decorativa"
           className="max-h-screen w-full object-cover object-center"
         />
-        <img src={star} className="absolute top-18 -right-30 scale-86" />
+        <img src={star} className="absolute top-18 -right-30 h-96 w-96" />
       </div>
       <div className="flex w-1/2 items-center justify-center">
         <div className="flex w-full flex-col items-center gap-10 text-center">
@@ -77,9 +77,9 @@ export default function Register() {
 
           <form
             onSubmit={handleNewUser}
-            className="font-inter flex w-full flex-col items-center justify-center gap-6"
+            className="font-inter flex w-full max-w-[425px] flex-col items-center justify-center gap-6 text-lg"
           >
-            <h2 className="font-bricolage text-[36px] text-[var(--color-title)]">
+            <h2 className="font-bricolage text-4xl text-[var(--color-title)]">
               Crie sua conta
             </h2>
             <input
@@ -88,7 +88,7 @@ export default function Register() {
               name="name"
               maxLength={16}
               placeholder="Nome"
-              className="h-[58px] w-[425px] rounded-xl border border-[var(--color-primary)] p-3 text-[18px]"
+              className="max-h-[58px] w-full rounded-xl border border-[var(--color-primary)] p-3"
               value={userData.name}
               onChange={handleChange}
             />
@@ -97,7 +97,7 @@ export default function Register() {
               id="email"
               name="email"
               placeholder="Email"
-              className="h-[58px] w-[425px] rounded-xl border border-[var(--color-primary)] p-3 text-[18px]"
+              className="max-h-[58px] w-full rounded-xl border border-[var(--color-primary)] p-3"
               value={userData.email}
               onChange={handleChange}
             />
@@ -106,7 +106,7 @@ export default function Register() {
               id="password"
               name="password"
               placeholder="Senha"
-              className="h-[58px] w-[425px] rounded-xl border border-[var(--color-primary)] p-3 text-[18px]"
+              className="max-h-[58px] w-full rounded-xl border border-[var(--color-primary)] p-3"
               value={userData.password}
               onChange={handleChange}
             />
@@ -115,7 +115,7 @@ export default function Register() {
               id="confirmPassword"
               name="confirmPassword"
               placeholder="Confirmar senha"
-              className="h-[58px] w-[425px] rounded-xl border border-[var(--color-primary)] p-3 text-[18px]"
+              className="max-h-[58px] w-full rounded-xl border border-[var(--color-primary)] p-3"
               value={userData.confirmPassword}
               onChange={handleChange}
             />
@@ -129,9 +129,9 @@ export default function Register() {
                 id="accept"
                 checked={userData.acceptedTerms}
                 onChange={handleCheckBoxChange}
-                className="flex h-[22px] w-[22px] cursor-pointer items-center justify-center rounded border border-[var(--color-primary)] bg-white checked:bg-[var(--color-primary)]"
+                className="flex min-h-[22px] min-w-[22px] cursor-pointer items-center justify-center rounded border border-[var(--color-primary)] bg-white checked:bg-[var(--color-primary)]"
               />
-              <span className="text-[14px] text-gray-500">
+              <span className="text-sm text-gray-500">
                 Concordo com os{" "}
                 <a className="cursor-pointer text-[var(--color-primary)] hover:underline">
                   Termos de Uso
@@ -145,7 +145,7 @@ export default function Register() {
 
             <button
               type="submit"
-              className={`h-[54px] w-[425px] p-2 text-[18px] font-semibold text-white ${
+              className={`max-h-[54px] w-full p-2 font-semibold text-white ${
                 loading
                   ? "bg-[var(--color-tertiary)]"
                   : "bg-[var(--color-primary)]"
@@ -154,7 +154,7 @@ export default function Register() {
               Criar conta
             </button>
 
-            <p className="text-[18px] text-gray-500">
+            <p className="text-gray-500">
               Já tem conta?{" "}
               <Link
                 to="/"
