@@ -3,6 +3,11 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        inter: ["Inter", "sans-serif"],
+        bricolage: ["Bricolage Grotesque", "sans-serif"],
+        sans: ["Inter", "sans-serif"], // Define Inter como fonte padrão
+      },
       maxWidth: {
         medium: "24rem", // 384px
       },

@@ -6,13 +6,10 @@ export default function CommunityCard({
   membersCount,
   buttonLabel = "Acessar",
   onClick,
-  className = "",
   isSelected = false,
 }) {
   return (
-    <div
-      className={`max-w-medium bg-background flex h-[500px] flex-col overflow-hidden rounded-2xl shadow-sm ${className}`}
-    >
+    <div className="max-w-medium bg-background flex h-auto flex-col overflow-hidden">
       <div className="flex h-[220px] w-full items-center justify-center rounded-t-2xl bg-gray-200">
         {imageUrl ? (
           <img
@@ -42,10 +39,10 @@ export default function CommunityCard({
           </p>
 
           <button
-            className={`mt-3 w-full cursor-pointer rounded-lg px-4 py-3 text-xl font-semibold transition-all duration-100 ${
+            className={`mt-3 w-full cursor-pointer rounded-lg border px-4 py-3 text-xl font-semibold transition-all duration-100 ${
               isSelected
-                ? "bg-[#1b5fff] text-white hover:opacity-90"
-                : "bg-background border border-[#7623d7] text-[#1b5fff] hover:bg-[#d1dfff]"
+                ? "border-white bg-[#1b5fff] text-white hover:opacity-90"
+                : "bg-background border-[#7623d7] text-[#1b5fff] hover:bg-[#d1dfff]"
             }`}
             onClick={onClick}
           >

@@ -166,11 +166,11 @@ const Home = () => {
   return (
     <div className="w-full">
       <Header />
-      <div className="px-12">
-        <section className="container mx-auto mt-5 flex gap-20 bg-white">
-          <div>
-            <div className="flex max-w-[636px] flex-col items-center justify-between">
-              <h1 className="relative mt-10 text-6xl leading-[76px] font-bold text-gray-900">
+      <div className="container mx-auto w-full max-w-[1240px] space-y-10 px-12">
+        <section className="container mx-auto mt-5 flex space-x-40 bg-white">
+          <div className="flex flex-col items-start space-y-10">
+            <div className="flex max-w-[636px] flex-col space-y-10">
+              <h1 className="relative mt-10 text-6xl font-bold text-gray-900">
                 Troque o que você
                 <br /> já não usa por o<br />
                 <span className="relative text-blue-600">
@@ -180,10 +180,10 @@ const Home = () => {
                 <img
                   src="src/assets/svgs/underline.svg"
                   alt="underline"
-                  className="absolute top-74 w-[520px]"
+                  className="absolute top-48 w-[520px]"
                 />
               </h1>
-              <p className="mt-8 max-w-[546px] text-2xl leading-[44px] text-[#79797d]">
+              <p className="mt-8 max-w-[546px] text-3xl text-[#79797d]">
                 Encontre comunidades locais para <br /> trocar itens sem gastar
                 nada.
               </p>
@@ -200,6 +200,7 @@ const Home = () => {
               </button>
             </div>
           </div>
+
           <div>
             <img
               src="src/assets/images/image-section-one-home.png"
@@ -211,9 +212,7 @@ const Home = () => {
         <section className="container mx-auto flex max-w-[1160px] flex-col gap-5 rounded-4xl border border-blue-600 px-12 pt-10 pb-12">
           <div className="flex items-center gap-2">
             <img src="src/assets/svgs/double-users-icon.svg" alt="usuários" />
-            <h2 className="text-2xl text-[#1b5fff]">
-              Encontre a sua comunidade
-            </h2>
+            <h2 className="text-3xl font-medium">Encontre a sua comunidade</h2>
             <p className="ml-10 text-xl text-[#79767d]">
               Digite o nome da comunidade que você procura
             </p>
@@ -240,7 +239,7 @@ const Home = () => {
             </form>
           </div>
         </section>
-        <section className="container">
+        <section className="">
           <h2 className="text-5xl font-medium text-[#111827]">
             Comunidades mais acessadas
           </h2>
@@ -337,7 +336,7 @@ const Home = () => {
           <h2 className="mb-3 text-6xl font-normal text-white">
             Baixe o nosso App
           </h2>
-          <p className="mb-8 w-[410px] text-3xl text-white">
+          <p className="mb-8 w-[410px] text-3xl text-white font-light">
             Tenha acesso completo à plataforma no seu celular. Receba
             notificações instantâneas e gerencie suas trocas.
           </p>
