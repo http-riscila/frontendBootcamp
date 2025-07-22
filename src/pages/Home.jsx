@@ -168,8 +168,8 @@ const Home = () => {
       <Header />
       <div className="container mx-auto w-full max-w-[1240px] space-y-10 px-12">
         <section className="container mx-auto mt-5 flex space-x-40 bg-white">
-          <div className="flex flex-col items-start space-y-10">
-            <div className="flex max-w-[636px] flex-col space-y-10">
+          <div className="flex flex-col items-start gap-4">
+            <div className="flex max-w-[636px] flex-col gap-4">
               <h1 className="relative mt-10 text-6xl font-bold text-gray-900">
                 Troque o que você
                 <br /> já não usa por o<br />
@@ -190,12 +190,12 @@ const Home = () => {
             </div>
             <div className="mt-4 flex space-x-4">
               <button
-                className="ease h-16 w-56 cursor-pointer rounded-2xl bg-[#1b5fff] text-xl text-white duration-200 hover:bg-[#1a4bcf]"
+                className="ease h-16 w-56 cursor-pointer rounded-2xl bg-[#1b5fff] text-xl text-white transition-all duration-700 hover:bg-[var(--color-tertiary)]"
                 onClick={handleQueroTrocar}
               >
                 Quero trocar
               </button>
-              <button className="ease h-16 w-56 cursor-pointer rounded-2xl border text-xl text-[#fe7a1b] duration-200 hover:bg-[#fe7a1b] hover:text-white">
+              <button className="ease h-16 w-56 cursor-pointer rounded-2xl border text-xl text-[#fe7a1b] transition-all duration-700 hover:bg-[#fe7a1b] hover:text-white">
                 Como funciona
               </button>
             </div>
@@ -336,7 +336,7 @@ const Home = () => {
           <h2 className="mb-3 text-6xl font-normal text-white">
             Baixe o nosso App
           </h2>
-          <p className="mb-8 w-[410px] text-3xl text-white font-light">
+          <p className="mb-8 w-[410px] text-3xl font-light text-white">
             Tenha acesso completo à plataforma no seu celular. Receba
             notificações instantâneas e gerencie suas trocas.
           </p>
