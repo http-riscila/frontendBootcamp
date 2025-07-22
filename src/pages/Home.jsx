@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { homeApi } from "../services/home-api";
 
-import CommunityCard from "../components/community-card";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import CommunityCard from "../components/CommunityCard";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -163,6 +165,7 @@ const Home = () => {
 
   return (
     <div className="w-full space-y-18">
+      <Header />
       <section className="container mx-auto flex gap-20 bg-white">
         <div>
           <div className="flex max-w-[636px] flex-col items-start">
@@ -201,7 +204,6 @@ const Home = () => {
           />
         </div>
       </section>
-
       <section className="container mx-auto flex max-w-[1160px] flex-col gap-5 rounded-[36px] border border-blue-600 px-12 pt-10 pb-12">
         <div className="flex items-center gap-2">
           <img src="src/assets/svgs/double-users-icon.svg" alt="usuários" />
@@ -234,7 +236,6 @@ const Home = () => {
           </form>
         </div>
       </section>
-
       <section className="container mx-auto">
         <h2 className="text-5xl font-bold text-[#111827]">
           Comunidades mais acessadas
@@ -265,7 +266,6 @@ const Home = () => {
           })}
         </div>
       </section>
-
       <section className="container mx-auto">
         <h2 className="mb-4 text-5xl font-bold">Itens recém adicionados</h2>
         <p className="mb-6 text-[#6B7280]">
@@ -327,7 +327,6 @@ const Home = () => {
           )}
         </div>
       </section>
-
       <section className="flex h-[460px] w-full justify-center gap-10 bg-[#1b5fff] py-20">
         <div className="flex h-auto w-auto max-w-[50%] flex-col items-start py-20">
           <h2 className="mb-3 text-6xl font-normal text-white">
@@ -355,6 +354,7 @@ const Home = () => {
           className="h-[400px] w-auto max-w-[50%]"
         />
       </section>
+      <Footer />
     </div>
   );
 };
