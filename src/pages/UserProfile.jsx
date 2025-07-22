@@ -7,6 +7,7 @@ import Breadcrumb from "../components/Breadcrumb";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserModal from "../components/UserModal";
+import ProposalLogs from "../components/ProposalLogs";
 import photoBg from "../assets/images/profile-img-bg.png";
 import profilePic from "../assets/icons/profile-pic.svg";
 
@@ -15,7 +16,7 @@ export default function UserDetails() {
   const [activeAdCount, setActiveAdCount] = useState(0);
   const [communityCount, setCommunityCount] = useState(0);
 
-  const [activeTab, setActiveTab] = useState("");
+  const [activeTab, setActiveTab] = useState("my-communities");
 
   const { user } = useUser();
 
@@ -43,10 +44,10 @@ export default function UserDetails() {
   console.log(user);
 
   return (
-    <div className="font-inter flex w-full flex-col bg-[var(--color-background)]">
+    <div className="font-inter flex w-full flex-col gap-6 bg-[var(--color-background)]">
       <Header />
       <div className="flex flex-col gap-8 px-12">
-        <div className="mt-5 flex flex-col gap-4">
+        <section className="flex flex-col gap-4">
           <Breadcrumb />
           <div className="flex flex-row gap-8">
             <div className="flex flex-row items-center gap-4">
@@ -107,9 +108,9 @@ export default function UserDetails() {
               </ul>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div>
+        <section className="flex flex-col gap-6">
           <nav>
             <ul className="font-bricolage flex flex-row justify-between text-2xl font-medium text-[var(--color-title)]">
               <li
@@ -174,7 +175,10 @@ export default function UserDetails() {
               </li>
             </ul>
           </nav>
-        </div>
+          <div>
+            <ProposalLogs />
+          </div>
+        </section>
       </div>
       <Footer />
     </div>

@@ -138,7 +138,7 @@ export default function UserModal() {
               <FileInput
                 id="profile-image"
                 name="profile-image"
-                className="rounded-xl border border-[var(--color-primary)] file:bg-[var(--color-primary)] file:hover:bg-[var(--color-tertiary)]"
+                className="rounded-xl border border-[var(--color-primary)]"
                 accept="image/*"
                 onChange={handleFileChange}
               />
