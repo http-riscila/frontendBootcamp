@@ -54,7 +54,7 @@ export default function Login() {
           alt="Mascara decorativa"
           className="max-h-screen w-full object-cover object-center"
         />
-        <img src={star} className="absolute top-18 -right-30 h-96 w-96" />
+        <img src={star} className="absolute top-12 -right-30 scale-86" />
       </div>
       <div className="flex w-1/2 items-center justify-center">
         <div className="flex w-full flex-col items-center gap-10 text-center">

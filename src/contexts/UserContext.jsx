@@ -18,8 +18,14 @@ export function UserProvider({ children }) {
     fetchUser();
   }, []);
 
+  async function refreshUser() {
+    if (!user?.id) return;
+    const response = await getUserById(user.id);
+    setUser(response);
+  }
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, refreshUser }}>
       {children}
     </UserContext.Provider>
   );

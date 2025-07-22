@@ -49,7 +49,6 @@ export default function Register() {
     } catch (error) {
       console.error("Error registering a new user: ", error);
     } finally {
-      setLoading(false);
       setUserdata({
         name: "",
         email: "",

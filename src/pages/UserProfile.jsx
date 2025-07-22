@@ -6,9 +6,9 @@ import { countCreatedCommunities } from "../services/community-service";
 import Breadcrumb from "../components/Breadcrumb";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import UserModal from "../components/UserModal";
 import photoBg from "../assets/images/profile-img-bg.png";
 import profilePic from "../assets/icons/profile-pic.svg";
-import editIcon from "../assets/icons/edit-icon.png";
 
 export default function UserDetails() {
   const [tradeCount, setTradeCount] = useState(0);
@@ -43,14 +43,14 @@ export default function UserDetails() {
   console.log(user);
 
   return (
-    <div>
+    <div className="font-inter flex w-full flex-col bg-[var(--color-background)]">
       <Header />
-      <div className="font-inter mx-auto flex w-full max-w-[1240px] flex-col bg-[var(--color-background)]">
-        <div className="mt-5 flex flex-col gap-6">
+      <div className="flex flex-col gap-8 px-12">
+        <div className="mt-5 flex flex-col gap-4">
           <Breadcrumb />
           <div className="flex flex-row gap-8">
             <div className="flex flex-row items-center gap-4">
-              <span className="relative h-[133px] w-[133px]">
+              <span className="relative h-32 w-32">
                 {user?.profilePic && (
                   <img
                     src={photoBg}
@@ -64,14 +64,14 @@ export default function UserDetails() {
               </span>
               <div className="flex flex-col gap-2">
                 <div className="flex flex-row items-end gap-4">
-                  <span className="font-bricolage text-[36px] leading-none font-medium text-[var(--color-title)]">
+                  <span className="font-bricolage text-4xl leading-none font-medium text-[var(--color-title)]">
                     {user?.name}
                   </span>
                   <button className="cursor-pointer">
-                    <img src={editIcon} className="h-[20px] w-[20px]" />
+                    <UserModal />
                   </button>
                 </div>
-                <span className="text-[18px] text-[var(--color-text)]">
+                <span className="text-lg text-[var(--color-text)]">
                   Membro desde{" "}
                   {new Date(user?.createdAt).toLocaleDateString("pt-BR", {
                     year: "numeric",
@@ -83,25 +83,23 @@ export default function UserDetails() {
             <div className="mx-8 h-[142px] w-px bg-[#E5E7EB]"></div>
             <div className="flex flex-1 flex-col justify-center gap-4">
               {user?.bio && (
-                <p className="text-[16px] text-[var(--color-text)]">
-                  {user.bio}
-                </p>
+                <p className="text-base text-[var(--color-text)]">{user.bio}</p>
               )}
-              <ul className="font-bricolage flex flex-row justify-between text-[18px] font-medium text-[var(--color-title)]">
+              <ul className="font-bricolage flex flex-row justify-between text-lg font-medium text-[var(--color-title)]">
                 <li className="flex flex-row items-center gap-1">
-                  <span className="text-[36px] text-[var(--color-primary)]">
+                  <span className="text-base text-[var(--color-primary)]">
                     {tradeCount ?? 0}
                   </span>{" "}
                   Trocas realizadas
                 </li>
                 <li className="flex flex-row items-center gap-1">
-                  <span className="text-[36px] text-[var(--color-primary)]">
+                  <span className="text-base text-[var(--color-primary)]">
                     {activeAdCount ?? 0}
                   </span>{" "}
                   Anúncios ativos
                 </li>
                 <li className="flex flex-row items-center gap-1">
-                  <span className="text-[36px] text-[var(--color-primary)]">
+                  <span className="text-base text-[var(--color-primary)]">
                     {communityCount ?? 0}
                   </span>{" "}
                   Comunidades criadas
@@ -113,7 +111,7 @@ export default function UserDetails() {
 
         <div>
           <nav>
-            <ul className="font-bricolage flex flex-row justify-between text-[22px] font-medium text-[var(--color-title)]">
+            <ul className="font-bricolage flex flex-row justify-between text-2xl font-medium text-[var(--color-title)]">
               <li
                 className={`rounded-xl px-4 py-1 transition-all duration-500 ease-in-out ${
                   activeTab === "my-communities"
