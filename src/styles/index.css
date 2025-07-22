@@ -18,5 +18,20 @@
   --color-text: #79767d;
 
   --color-background: #fff;
+}
 
+body {
+  font-family: Inter, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family:
+    Bricolage Grotesque,
+    sans-serif;
+  color: var(--color-title);
 }
