@@ -164,169 +164,174 @@ const Home = () => {
   }
 
   return (
-    <div className="w-full space-y-18">
+    <div className="w-full">
       <Header />
-      <section className="container mx-auto flex gap-20 bg-white">
-        <div>
-          <div className="flex max-w-[636px] flex-col items-start">
-            <h1 className="relative mt-10 text-[66px] leading-[76px] font-bold text-gray-900">
-              Troque o que você
-              <br /> já não usa por o<br />
-              <span className="relative text-blue-600"> que você precisa</span>
-              <img
-                src="src/assets/svgs/underline.svg"
-                alt="underline"
-                className="absolute top-74 w-[520px]"
-              />
-            </h1>
-            <p className="mt-8 max-w-[546px] text-[32px] leading-[44px] text-[#79797d]">
-              Encontre comunidades locais para <br /> trocar itens sem gastar
-              nada.
+      <div className="px-12">
+        <section className="container mx-auto mt-5 flex gap-20 bg-white">
+          <div>
+            <div className="flex max-w-[636px] flex-col items-center justify-between">
+              <h1 className="relative mt-10 text-6xl leading-[76px] font-bold text-gray-900">
+                Troque o que você
+                <br /> já não usa por o<br />
+                <span className="relative text-blue-600">
+                  {" "}
+                  que você precisa
+                </span>
+                <img
+                  src="src/assets/svgs/underline.svg"
+                  alt="underline"
+                  className="absolute top-74 w-[520px]"
+                />
+              </h1>
+              <p className="mt-8 max-w-[546px] text-2xl leading-[44px] text-[#79797d]">
+                Encontre comunidades locais para <br /> trocar itens sem gastar
+                nada.
+              </p>
+            </div>
+            <div className="mt-4 flex space-x-4">
+              <button
+                className="ease h-16 w-56 cursor-pointer rounded-2xl bg-[#1b5fff] text-xl text-white duration-200 hover:bg-[#1a4bcf]"
+                onClick={handleQueroTrocar}
+              >
+                Quero trocar
+              </button>
+              <button className="ease h-16 w-56 cursor-pointer rounded-2xl border text-xl text-[#fe7a1b] duration-200 hover:bg-[#fe7a1b] hover:text-white">
+                Como funciona
+              </button>
+            </div>
+          </div>
+          <div>
+            <img
+              src="src/assets/images/image-section-one-home.png"
+              alt="image"
+              className="h-[446px] w-[450px] object-cover"
+            />
+          </div>
+        </section>
+        <section className="container mx-auto flex max-w-[1160px] flex-col gap-5 rounded-4xl border border-blue-600 px-12 pt-10 pb-12">
+          <div className="flex items-center gap-2">
+            <img src="src/assets/svgs/double-users-icon.svg" alt="usuários" />
+            <h2 className="text-2xl text-[#1b5fff]">
+              Encontre a sua comunidade
+            </h2>
+            <p className="ml-10 text-xl text-[#79767d]">
+              Digite o nome da comunidade que você procura
             </p>
           </div>
-          <div className="mt-4 flex space-x-4">
-            <button
-              className="ease h-16 w-72 cursor-pointer rounded-2xl bg-[#1b5fff] text-xl text-white duration-200 hover:bg-[#1a4bcf]"
-              onClick={handleQueroTrocar}
+
+          <div className="flex items-center">
+            <form
+              onSubmit={handleSearch}
+              className="flex w-full items-center gap-5"
             >
-              Quero trocar
-            </button>
-            <button className="ease h-16 w-72 cursor-pointer rounded-2xl border text-xl text-[#fe7a1b] duration-200 hover:bg-[#fe7a1b] hover:text-white">
-              Como funciona
+              <input
+                type="text"
+                placeholder="Digite o nome da comunidade"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="h-[68px] w-full rounded-2xl border border-[#1b5fff] bg-[#F7F2FA] px-10 py-5 text-lg text-[#938F96] outline-none"
+              />
+              <button
+                type="submit"
+                className="flex h-[68px] w-[68px] cursor-pointer items-center justify-center rounded-2xl bg-blue-600 text-white transition-colors hover:bg-blue-700"
+              >
+                <img src="src/assets/svgs/lupa-icon.svg" alt="lupa" />
+              </button>
+            </form>
+          </div>
+        </section>
+        <section className="container">
+          <h2 className="text-5xl font-medium text-[#111827]">
+            Comunidades mais acessadas
+          </h2>
+          <div className="flex items-center justify-between">
+            <p className="mb-2 text-2xl text-[#79767d]">
+              Navegue pelas comunidades com mais membros
+            </p>
+            <button className="flex cursor-pointer items-center rounded-full px-4 py-2 text-2xl text-[#fe7a1b]">
+              Ver todas <img src="src/assets/svgs/arrow-left-icon.svg" alt="" />
             </button>
           </div>
-        </div>
-        <div>
-          <img
-            src="src/assets/images/image-section-one-home.png"
-            alt="image"
-            className="h-[446px] w-[450px] object-cover"
-          />
-        </div>
-      </section>
-      <section className="container mx-auto flex max-w-[1160px] flex-col gap-5 rounded-[36px] border border-blue-600 px-12 pt-10 pb-12">
-        <div className="flex items-center gap-2">
-          <img src="src/assets/svgs/double-users-icon.svg" alt="usuários" />
-          <h2 className="text-[32px] text-[#1b5fff]">
-            Encontre a sua comunidade
-          </h2>
-          <p className="ml-10 text-xl text-[#79767d]">
-            Digite o nome da comunidade que você procura
+          <div className="mt-8 grid w-full max-w-[1200px] grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {displayCommunities.map((community) => {
+              const isSelected = selectedCommunityId === community.id;
+              return (
+                <CommunityCard
+                  key={community.id}
+                  imageUrl={community.imageUrl}
+                  categoryLabel="comunidade"
+                  title={community.name || community.title}
+                  description={community.description}
+                  membersCount={community.membersCount || 0}
+                  isSelected={isSelected}
+                  onClick={() => handleCommunityClick(community.id)}
+                />
+              );
+            })}
+          </div>
+        </section>
+        <section className="container mx-auto">
+          <h2 className="mb-4 text-5xl font-medium">Itens recém adicionados</h2>
+          <p className="mb-6 text-2xl text-[#6B7280]">
+            Veja o que você pode encontrar em nossas comunidades
           </p>
-        </div>
+          <div className="flex gap-6">
+            {galeryImagesOne && galeryImagesOne.length >= 3 && (
+              <div className="max-w-lx mx-auto mb-40 grid grid-cols-3 gap-6">
+                <div className="col-span-2 row-span-2">
+                  <img
+                    src={galeryImagesOne[0].src}
+                    alt={galeryImagesOne[0].alt}
+                    className="aspect-square h-full max-h-[420px] w-full max-w-[410px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
+                  />
+                </div>
 
-        <div className="flex items-center">
-          <form
-            onSubmit={handleSearch}
-            className="flex w-full max-w-[800px] items-center gap-5"
-          >
-            <input
-              type="text"
-              placeholder="Digite o nome da comunidade"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="h-[68px] w-full rounded-2xl border border-[#1b5fff] bg-[#F7F2FA] px-10 py-5 text-lg text-[#938F96] outline-none"
-            />
-            <button
-              type="submit"
-              className="flex h-[68px] w-[68px] cursor-pointer items-center justify-center rounded-2xl bg-blue-600 text-white transition-colors hover:bg-blue-700"
-            >
-              <img src="src/assets/svgs/lupa-icon.svg" alt="lupa" />
-            </button>
-          </form>
-        </div>
-      </section>
-      <section className="container mx-auto">
-        <h2 className="text-5xl font-bold text-[#111827]">
-          Comunidades mais acessadas
-        </h2>
-        <div className="flex items-center justify-between">
-          <p className="mb-2 text-2xl text-[#79767d]">
-            Navegue pelas comunidades com mais membros
-          </p>
-          <button className="flex cursor-pointer items-center rounded-full px-4 py-2 text-2xl text-[#fe7a1b]">
-            Ver todas <img src="src/assets/svgs/arrow-left-icon.svg" alt="" />
-          </button>
-        </div>
-        <div className="mt-8 grid w-full max-w-[1200px] grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {displayCommunities.map((community) => {
-            const isSelected = selectedCommunityId === community.id;
-            return (
-              <CommunityCard
-                key={community.id}
-                imageUrl={community.imageUrl}
-                categoryLabel="comunidade"
-                title={community.name || community.title}
-                description={community.description}
-                membersCount={community.membersCount || 0}
-                isSelected={isSelected}
-                onClick={() => handleCommunityClick(community.id)}
-              />
-            );
-          })}
-        </div>
-      </section>
-      <section className="container mx-auto">
-        <h2 className="mb-4 text-5xl font-bold">Itens recém adicionados</h2>
-        <p className="mb-6 text-[#6B7280]">
-          Veja o que você pode encontrar em nossas comunidades
-        </p>
-        <div className="flex gap-6">
-          {galeryImagesOne && galeryImagesOne.length >= 3 && (
-            <div className="max-w-lx mx-auto mb-40 grid grid-cols-3 gap-6">
-              <div className="col-span-2 row-span-2">
-                <img
-                  src={galeryImagesOne[0].src}
-                  alt={galeryImagesOne[0].alt}
-                  className="aspect-square h-full max-h-[420px] w-full max-w-[410px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
-                />
+                <div>
+                  <img
+                    src={galeryImagesOne[1].src}
+                    alt={galeryImagesOne[1].alt}
+                    className="aspect-square h-full max-h-[220px] w-full max-w-[210px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
+                  />
+                </div>
+                <div>
+                  <img
+                    src={galeryImagesOne[2].src}
+                    alt={galeryImagesOne[2].alt}
+                    className="aspect-square h-full max-h-[220px] w-full max-w-[210px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
+                  />
+                </div>
               </div>
+            )}
 
-              <div>
-                <img
-                  src={galeryImagesOne[1].src}
-                  alt={galeryImagesOne[1].alt}
-                  className="aspect-square h-full max-h-[220px] w-full max-w-[210px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
-                />
-              </div>
-              <div>
-                <img
-                  src={galeryImagesOne[2].src}
-                  alt={galeryImagesOne[2].alt}
-                  className="aspect-square h-full max-h-[220px] w-full max-w-[210px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
-                />
-              </div>
-            </div>
-          )}
+            {galeryImagesTwo && galeryImagesTwo.length >= 3 && (
+              <div className="max-w-lx mx-auto mb-40 grid grid-cols-3 gap-6">
+                <div className="col-span-2 row-span-2">
+                  <img
+                    src={galeryImagesTwo[0].src}
+                    alt={galeryImagesTwo[0].alt}
+                    className="aspect-square h-full max-h-[420px] w-full max-w-[410px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
+                  />
+                </div>
 
-          {galeryImagesTwo && galeryImagesTwo.length >= 3 && (
-            <div className="max-w-lx mx-auto mb-40 grid grid-cols-3 gap-6">
-              <div className="col-span-2 row-span-2">
-                <img
-                  src={galeryImagesTwo[0].src}
-                  alt={galeryImagesTwo[0].alt}
-                  className="aspect-square h-full max-h-[420px] w-full max-w-[410px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
-                />
+                <div>
+                  <img
+                    src={galeryImagesTwo[1].src}
+                    alt={galeryImagesTwo[1].alt}
+                    className="aspect-square h-full max-h-[220px] w-full max-w-[210px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
+                  />
+                </div>
+                <div>
+                  <img
+                    src={galeryImagesTwo[2].src}
+                    alt={galeryImagesTwo[2].alt}
+                    className="aspect-square h-full max-h-[220px] w-full max-w-[210px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
+                  />
+                </div>
               </div>
-
-              <div>
-                <img
-                  src={galeryImagesTwo[1].src}
-                  alt={galeryImagesTwo[1].alt}
-                  className="aspect-square h-full max-h-[220px] w-full max-w-[210px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
-                />
-              </div>
-              <div>
-                <img
-                  src={galeryImagesTwo[2].src}
-                  alt={galeryImagesTwo[2].alt}
-                  className="aspect-square h-full max-h-[220px] w-full max-w-[210px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
-                />
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
+            )}
+          </div>
+        </section>
+      </div>
       <section className="flex h-[460px] w-full justify-center gap-10 bg-[#1b5fff] py-20">
         <div className="flex h-auto w-auto max-w-[50%] flex-col items-start py-20">
           <h2 className="mb-3 text-6xl font-normal text-white">
