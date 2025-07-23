@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Breadcrumb from "../components/Breadcrumb";
 import CommunityCard from "../components/CommunityCard";
 import CreateComunity from "../components/CreateComunity";
 
@@ -99,29 +100,25 @@ const Communities = () => {
     <div className="min-h-screen w-full bg-gray-50">
       <Header />
       <div className="container mx-auto w-full max-w-[1240px] px-12 py-8">
-        {/* Breadcrumbs */}
-        <nav className="mb-4 text-sm text-gray-500">
-          <span className="cursor-pointer hover:underline">Home</span> {">"}{" "}
-          <span className="font-medium text-[var(--color-primary)]">
-            Comunidades
-          </span>
-        </nav>
-        {/* Título e botão */}
-        <div className="mb-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h1 className="mb-1 text-4xl font-bold text-gray-900">
-              Explore nossas comunidades
-            </h1>
-            <p className="text-lg text-gray-500">
-              Encontre comunidades baseadas nos seus interesses
-            </p>
+        <div className="flex flex-col gap-4">
+          <Breadcrumb />
+          {/* Título e botão */}
+          <div className="mb-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col gap-2">
+              <h1 className="text-4xl font-bold text-gray-900">
+                Explore nossas comunidades
+              </h1>
+              <p className="text-lg text-gray-500">
+                Encontre comunidades baseadas nos seus interesses
+              </p>
+            </div>
+            <button
+              className="mt-2 h-12 cursor-pointer rounded-xl bg-[var(--color-primary)] px-6 py-3 font-medium text-white transition-colors duration-700 hover:bg-[var(--color-tertiary)] md:mt-0"
+              onClick={() => setShowCreateModal(true)}
+            >
+              + Criar Comunidade
+            </button>
           </div>
-          <button
-            className="mt-2 h-12 cursor-pointer rounded-xl bg-[var(--color-primary)] px-6 py-3 font-medium text-white transition-colors duration-700 hover:bg-[var(--color-tertiary)] md:mt-0"
-            onClick={() => setShowCreateModal(true)}
-          >
-            + Criar Comunidade
-          </button>
         </div>
         {/* Campo de busca */}
         <div className="mb-6">

@@ -1,8 +1,18 @@
-import { Link, useLocation } from "react-router-dom";
-import { Button } from "flowbite-react";
-
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useUser } from "../contexts/UserContext";
+import UserPopover from "./Popover";
 export default function Header() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const { user } = useUser();
+
+  function handleLogout() {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    navigate("/");
+  }
+
   return (
     <div className="w-full border-b border-[#E5E7EB] bg-white">
       <header className="mx-auto grid min-h-[100px] max-w-[1240px] grid-cols-12 items-center">
@@ -39,7 +49,6 @@ export default function Header() {
                 />
               </svg>
               Home
-
             </Link>
             <Link
               to="/comunidades"
@@ -98,22 +107,7 @@ export default function Header() {
               Como Funciona
             </Link>
           </nav>
-          <Button
-            outline
-            size="lg"
-            outlineColor="#1B5FFF"
-            className="cursor-pointer text-[var(--color-primary)] transition-all duration-700 hover:bg-[var(--color-primary)] hover:text-white"
-          >
-            Entrar
-          </Button>
-          <Link to="/comunidades">
-            <Button
-              size="lg"
-              className="cursor-pointer text-white transition-all duration-700 hover:bg-[var(--color-tertiary)]"
-            >
-              Quero Trocar
-            </Button>
-          </Link>
+          <UserPopover user={user} onLogout={handleLogout} />
         </div>
       </header>
     </div>

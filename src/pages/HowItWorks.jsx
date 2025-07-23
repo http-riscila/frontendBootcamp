@@ -1,6 +1,6 @@
-import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Breadcrumb from "../components/Breadcrumb";
 
 const steps = [
   {
@@ -45,18 +45,18 @@ const HowItWorks = () => {
     <div className="min-h-screen w-full bg-white">
       <Header />
       <div className="container mx-auto w-full max-w-[1240px] px-12 py-8">
-        {/* Breadcrumbs */}
-        <nav className="mb-4 text-sm text-gray-500">
-          <span className="cursor-pointer hover:underline">Home</span> {">"}{" "}
-          <span className="font-medium text-blue-600">Como Funciona</span>
-        </nav>
-        {/* Título e subtítulo */}
-        <h1 className="mb-2 text-4xl font-bold text-gray-900">
-          Veja como é fácil trocar itens
-        </h1>
-        <p className="mb-8 text-lg text-gray-500">
-          Siga o passo a passo e tenha sucesso na sua troca
-        </p>
+        <div className="flex flex-col gap-4">
+          <Breadcrumb />
+          {/* Título e subtítulo */}
+          <div className="flex flex-col gap-2">
+            <h1 className="text-4xl font-bold text-gray-900">
+              Veja como é fácil trocar itens
+            </h1>
+            <p className="mb-8 text-lg text-gray-500">
+              Siga o passo a passo e tenha sucesso na sua troca
+            </p>
+          </div>
+        </div>
         {/* Grid de passos */}
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {steps.map((step, idx) => (
