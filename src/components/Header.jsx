@@ -39,6 +39,7 @@ export default function Header() {
                 />
               </svg>
               Home
+
             </Link>
             <Link
               to="/comunidades"

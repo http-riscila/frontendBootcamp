@@ -60,6 +60,7 @@ const CreateListingModal = ({ isOpen, onClose }) => {
           </div>
           <Button
             onClick={onClose}
+
             className="cursor-pointer rounded-xl border !bg-white px-1 py-1 hover:!bg-gray-100"
           >
             <svg
@@ -209,6 +210,7 @@ const CreateListingModal = ({ isOpen, onClose }) => {
           <div className="flex gap-3">
             <button
               onClick={onClose}
+
               className="flex-1 cursor-pointer rounded-xl border border-[#FE7A1B] px-6 py-3 font-medium text-[#FE7A1B] transition-colors"
             >
               Cancelar
@@ -216,6 +218,7 @@ const CreateListingModal = ({ isOpen, onClose }) => {
             <button
               onClick={handleSubmit}
               className="flex-1 cursor-pointer rounded-xl bg-[var(--color-primary)] px-6 py-3 font-medium text-white transition-colors hover:bg-[var(--color-tertiary)]"
+
             >
               Criar Comunidade
             </button>
