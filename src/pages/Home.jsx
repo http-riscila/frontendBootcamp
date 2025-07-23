@@ -104,7 +104,7 @@ const Home = () => {
     if (!token || !user) {
       navigate("/");
     } else {
-      navigate("/add-item"); //Todo: verificar a rota correta depois
+      navigate("/comunidades"); //Todo: verificar a rota correta depois
     }
   };
 
@@ -155,8 +155,8 @@ const Home = () => {
       ? itemImages.slice(3, 6)
       : fallbackImagesTwo;
 
-  if (loading) {
-    return (
+  {
+    loading && (
       <div className="flex min-h-screen items-center justify-center">
         <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-blue-500"></div>
       </div>
@@ -232,7 +232,7 @@ const Home = () => {
               />
               <button
                 type="submit"
-                className="flex h-[68px] w-[68px] cursor-pointer items-center justify-center rounded-2xl bg-blue-600 text-white transition-colors hover:bg-blue-700"
+                className="flex h-[68px] w-[68px] cursor-pointer items-center justify-center rounded-2xl bg-blue-600 text-white transition-colors duration-700 hover:bg-[var(--color-tertiary)]"
               >
                 <img src="src/assets/svgs/lupa-icon.svg" alt="lupa" />
               </button>

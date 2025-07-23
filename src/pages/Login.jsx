@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { login } from "../services/auth-service";
 import maskGroup from "../assets/images/mask-group.png";
 import star from "../assets/images/star3.png";
-import group from "../assets/images/group.png";
+import fullLogo from "../assets/images/full-logo.png";
 
 export default function Login() {
   const [credentials, setCredentials] = useState({
@@ -53,6 +53,7 @@ export default function Login() {
           src={maskGroup}
           alt="Mascara decorativa"
           className="max-h-screen w-full object-cover object-center"
+
         />
         <img
           src={star}
@@ -62,7 +63,7 @@ export default function Login() {
       <div className="flex w-full transform items-center justify-center transition-transform duration-700 md:w-1/2 md:translate-x-0">
         <div className="flex w-full flex-col items-center gap-10 text-center">
           <img
-            src={group}
+            src={fullLogo}
             className="h-14 w-72 md:h-10 md:w-56 lg:h-14 lg:w-72"
           />
 
