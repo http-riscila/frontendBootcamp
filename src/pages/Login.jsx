@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { login } from "../services/auth-service";
 import maskGroup from "../assets/images/mask-group.png";
 import star from "../assets/images/star3.png";
-import group from "../assets/images/group.png";
+import fullLogo from "../assets/images/full-logo.png";
 
 export default function Login() {
   const [credentials, setCredentials] = useState({
@@ -46,22 +46,22 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-row bg-black min-h-screen w-full">
+    <div className="flex min-h-screen w-full flex-row bg-black">
       <div className="relative w-1/2">
         <img
           src={maskGroup}
           alt="Mascara decorativa"
-          className="w-full max-h-screen object-cover object-center"
+          className="max-h-screen w-full object-cover object-center"
         />
-        <img src={star} className="absolute scale-86 top-18 -right-30" />
+        <img src={star} className="absolute top-18 -right-30 scale-86" />
       </div>
-      <div className="flex justify-center items-center bg-white w-1/2">
-        <div className="flex flex-col gap-10 text-center items-center w-full">
-          <img src={group} className="w-72 h-14" />
+      <div className="flex w-1/2 items-center justify-center bg-white">
+        <div className="flex w-full flex-col items-center gap-10 text-center">
+          <img src={fullLogo} className="h-14 w-72" />
 
           <form
             onSubmit={handleLogin}
-            className="flex flex-col justify-center items-center gap-6 w-full"
+            className="flex w-full flex-col items-center justify-center gap-6"
           >
             <h2 className="text-4xl text-[var(--color-title)]">
               Entre na sua conta
@@ -72,7 +72,7 @@ export default function Login() {
               id="email"
               name="email"
               placeholder="Email"
-              className="w-3/5 border border-[var(--color-primary)] p-3 rounded-xl"
+              className="w-3/5 rounded-xl border border-[var(--color-primary)] p-3"
               value={credentials.email}
               onChange={handleChange}
             />
@@ -81,19 +81,18 @@ export default function Login() {
               id="password"
               name="password"
               placeholder="Senha"
-              className="w-3/5 border border-[var(--color-primary)] p-3 rounded-xl"
+              className="w-3/5 rounded-xl border border-[var(--color-primary)] p-3"
               value={credentials.password}
               onChange={handleChange}
             />
 
             <button
               type="submit"
-              className={`w-3/5 p-2 text-white font-medium ${
+              className={`w-3/5 p-2 font-medium text-white ${
                 loading
                   ? "bg-[var(--color-tertiary)]"
                   : "bg-[var(--color-primary)]"
-              }
-               rounded-xl cursor-pointer transition-all duration-500 ease-in-out hover:bg-[var(--color-tertiary)]`}
+              } cursor-pointer rounded-xl transition-all duration-500 ease-in-out hover:bg-[var(--color-tertiary)]`}
             >
               Login
             </button>
@@ -102,7 +101,7 @@ export default function Login() {
               Não tem conta?{" "}
               <Link
                 to="/cadastro"
-                className="text-[var(--color-primary)] underline underline-offset-3 cursor-pointer"
+                className="cursor-pointer text-[var(--color-primary)] underline underline-offset-3"
               >
                 Cadastre-se
               </Link>
