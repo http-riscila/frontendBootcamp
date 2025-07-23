@@ -54,7 +54,7 @@ export default function CommunityCard({
           <h5 className="mb-1 text-xl font-bold text-gray-900">{title}</h5>
           <p className="mb-6 flex-1 text-base text-gray-600">{description}</p>
           <button
-            className={`w-full rounded-2xl border-0 bg-[#1B5FFF] py-3 text-xl font-semibold text-white transition-colors hover:bg-blue-700`}
+            className={`w-full rounded-2xl border-0 bg-[#1B5FFF] py-3 text-xl font-medium text-white transition-colors hover:bg-blue-700`}
             onClick={onClick}
           >
             Acessar

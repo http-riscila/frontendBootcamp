@@ -44,22 +44,22 @@ export default function UserDetails() {
   console.log(user);
 
   return (
-    <div className="font-inter flex w-full flex-col gap-6 bg-[var(--color-background)]">
+    <div className="font-inter flex w-full flex-col bg-[var(--color-background)]">
       <Header />
-      <div className="flex flex-col gap-8 px-12">
+      <div className="mx-auto flex w-full max-w-[1240px] flex-col gap-8 px-12 py-8">
         <section className="flex flex-col gap-4">
           <Breadcrumb />
           <div className="flex flex-row gap-8">
             <div className="flex flex-row items-center gap-4">
               <span className="relative h-32 w-32">
-                {user?.profilePic && (
+                {user?.profileImageUrl && (
                   <img
                     src={photoBg}
                     className="absolute top-0 left-0 h-full w-full"
                   />
                 )}
                 <img
-                  src={profilePic}
+                  src={user?.profileImageUrl || profilePic}
                   className="absolute top-0 left-0 h-full w-full"
                 />
               </span>

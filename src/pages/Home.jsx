@@ -172,7 +172,8 @@ const Home = () => {
             <div className="flex max-w-[636px] flex-col gap-4">
               <h1 className="relative mt-10 text-6xl font-bold text-gray-900">
                 Troque o que você
-                <br /> já não usa por o<br />
+                <br /> já não usa pelo
+                <br />
                 <span className="relative text-blue-600">
                   {" "}
                   que você precisa
