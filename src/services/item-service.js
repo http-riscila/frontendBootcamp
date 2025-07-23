@@ -1,5 +1,15 @@
 import api from "./api";
 
+export async function getItems() {
+  try {
+    const response = await api.get("/items");
+    return response.data;
+  } catch (error) {
+    console.error("Error getting items", error);
+    throw error;
+  }
+}
+
 export async function countAvailableItems(userId) {
   try {
     const response = await api.get(`/api/items/count/available/${userId}`);

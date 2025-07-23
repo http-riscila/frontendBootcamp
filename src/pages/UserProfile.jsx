@@ -51,7 +51,7 @@ export default function UserDetails() {
           <Breadcrumb />
           <div className="flex flex-row gap-8">
             <div className="flex flex-row items-center gap-4">
-              <span className="relative h-32 w-32">
+              <span className="relative h-32 w-32 rounded-full">
                 {user?.profileImageUrl && (
                   <img
                     src={photoBg}
@@ -60,7 +60,7 @@ export default function UserDetails() {
                 )}
                 <img
                   src={user?.profileImageUrl || profilePic}
-                  className="absolute top-0 left-0 h-full w-full"
+                  className="absolute top-0 left-0 h-full w-full rounded-full"
                 />
               </span>
               <div className="flex flex-col gap-2">

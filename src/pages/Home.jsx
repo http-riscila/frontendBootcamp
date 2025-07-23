@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { homeApi } from "../services/home-api";
+import {
+  getCommunities,
+  searchCommunities,
+} from "../services/community-service";
+import { getItems } from "../services/item-service";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -17,6 +21,23 @@ const Home = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCommunityId, setSelectedCommunityId] = useState(null);
+
+  async function getHomeData() {
+    try {
+      const [communities, items] = await Promise.all([
+        getCommunities(),
+        getItems(),
+      ]);
+
+      return {
+        communities,
+        items,
+      };
+    } catch (error) {
+      console.error("Error fetching home data", error);
+      throw error;
+    }
+  }
 
   // Dados de fallback
   const fallbackCommunities = [
@@ -83,7 +104,7 @@ const Home = () => {
   async function loadHomeData() {
     try {
       setLoading(true);
-      const data = await homeApi.getHomeData();
+      const data = await getHomeData();
       setHomeData(data);
     } catch (error) {
       console.error("Erro ao carregar dados da home:", error);
@@ -117,7 +138,7 @@ const Home = () => {
     }
 
     try {
-      const results = await homeApi.searchCommunities(searchTerm);
+      const results = await searchCommunities(searchTerm);
       console.log("Resultados da busca:", results);
       // TODO: Implementar navegação para página de resultados
     } catch (error) {
