@@ -1,8 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Button } from "flowbite-react";
 
-const CreateListingModal = () => {
-  const [isOpen, setIsOpen] = useState(true);
+const CreateListingModal = ({ isOpen, onClose }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
@@ -12,8 +11,7 @@ const CreateListingModal = () => {
     location: ''
   });
 
-  const closeModal = () => setIsOpen(false);
-  const openModal = () => setIsOpen(true);
+  if (!isOpen) return null;
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
@@ -37,24 +35,14 @@ const CreateListingModal = () => {
   const handleSubmit = () => {
     console.log('Form submitted:', formData);
     // Handle form submission here
+    onClose(); // Fechar modal após submissão
   };
 
-  if (!isOpen) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <Button 
-          onClick={openModal}
-          className="px-6 py-3 bg-[#1B5FFF] text-white rounded-lg hover:bg-blue-600 transition-colors"
-        >
-          Criar Comunidade
-        </Button>
-      </div>
-    );
-  }
-
   return (
-    <div className="fixed inset-0 bg-[#111827] bg-opacity-25 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-[#111827] bg-opacity-25 flex items-center justify-center p-4 z-50"
+      onClick={onClose}
+    >
+      <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-100">
           <div className="flex items-center gap-3">
@@ -62,8 +50,8 @@ const CreateListingModal = () => {
             <h2 className="text-xl font-semibold text-gray-900">Criar comunidade</h2>
           </div>
           <Button 
-                      onClick={closeModal}
-                      className="!bg-white hover:!bg-gray-100 px-1 py-1 cursor-pointer rounded-xl border-0 border"
+                      onClick={onClose}
+                      className="!bg-white hover:!bg-gray-100 px-1 py-1 cursor-pointer rounded-xl border"
                     >
                       <svg width="42" height="42" viewBox="0 0 46 46" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                       <path d="M28.6569 17.3431L17.3431 28.6569M28.6569 28.6569L17.3431 17.3431" stroke="#111827" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -186,7 +174,7 @@ const CreateListingModal = () => {
         <div className="p-6 border-t border-gray-100">
           <div className="flex gap-3">
             <button 
-              onClick={closeModal}
+              onClick={onClose}
               className="flex-1 px-6 py-3 border border-[#FE7A1B] text-[#FE7A1B] font-medium rounded-xl transition-colors cursor-pointer"
             >
               Cancelar

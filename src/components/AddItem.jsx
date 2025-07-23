@@ -4,7 +4,7 @@ import { useRef } from 'react';
 
 
 const CreateListingModal = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
     itemName: '',
     category: '',
