@@ -331,8 +331,8 @@ const Home = () => {
           </div>
         </section>
       </div>
-      <section className="flex h-[460px] w-full justify-center gap-10 bg-[#1b5fff] py-20">
-        <div className="flex h-auto w-auto max-w-[50%] flex-col items-start py-20">
+      <section className="flex h-[460px] w-full justify-center gap-10 bg-[#1b5fff]">
+        <div className="flex h-auto w-auto flex-col items-start justify-center">
           <h2 className="mb-3 text-6xl font-normal text-white">
             Baixe o nosso App
           </h2>
@@ -355,7 +355,7 @@ const Home = () => {
         <img
           src="src/assets/images/img-section-5-home.png"
           alt="ilustração de dois celulares"
-          className="h-[400px] w-auto max-w-[50%]"
+          className="flex h-[400px] w-auto max-w-[50%] mt-20 justify-end"
         />
       </section>
       <Footer />
