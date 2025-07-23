@@ -27,13 +27,14 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     try {
-      const user = await login(credentials);
-      if (user) {
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("token", user.token);
+      const response = await login(credentials);
+      console.log("Resposta do login:", response);
+      if (response) {
+        localStorage.setItem("user", JSON.stringify(response.user));
+        localStorage.setItem("token", response.token);
+        navigate("/home");
       }
-      console.log("User succesfully logged in", user);
-      navigate("/home");
+      console.log("User succesfully logged in", response);
     } catch (error) {
       console.error("Error authenticating an user", error);
     } finally {
@@ -46,24 +47,30 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-row bg-black min-h-screen w-full">
-      <div className="relative w-1/2">
+    <div className="flex min-h-screen w-full flex-row bg-[var(--color-background)]">
+      <div className="relative hidden w-1/2 transform transition-transform duration-700 md:visible md:block md:translate-x-0 md:opacity-100">
         <img
           src={maskGroup}
           alt="Mascara decorativa"
-          className="w-full max-h-screen object-cover object-center"
+          className="max-h-screen w-full object-cover object-center"
         />
-        <img src={star} className="absolute scale-86 top-18 -right-30" />
+        <img
+          src={star}
+          className="absolute md:top-20 md:-right-16 md:h-50 md:w-50 lg:top-12 lg:-right-22 lg:h-62 lg:w-62"
+        />
       </div>
-      <div className="flex justify-center items-center bg-white w-1/2">
-        <div className="flex flex-col gap-10 text-center items-center w-full">
-          <img src={group} className="w-72 h-14" />
+      <div className="flex w-full transform items-center justify-center transition-transform duration-700 md:w-1/2 md:translate-x-0">
+        <div className="flex w-full flex-col items-center gap-10 text-center">
+          <img
+            src={group}
+            className="h-14 w-72 md:h-10 md:w-56 lg:h-14 lg:w-72"
+          />
 
           <form
             onSubmit={handleLogin}
-            className="flex flex-col justify-center items-center gap-6 w-full"
+            className="font-inter flex w-full max-w-[425px] flex-col items-center justify-center gap-6 md:max-w-[275px] md:text-base lg:max-w-[425px] lg:text-lg"
           >
-            <h2 className="text-4xl text-[var(--color-title)]">
+            <h2 className="font-bricolage text-4xl text-[var(--color-title)] md:text-2xl lg:text-4xl">
               Entre na sua conta
             </h2>
 
@@ -72,7 +79,7 @@ export default function Login() {
               id="email"
               name="email"
               placeholder="Email"
-              className="w-3/5 border border-[var(--color-primary)] p-3 rounded-xl"
+              className="max-h-[58px] w-full rounded-xl border border-[var(--color-primary)] p-3 md:max-h-[46px] lg:max-h-[58px]"
               value={credentials.email}
               onChange={handleChange}
             />
@@ -81,28 +88,27 @@ export default function Login() {
               id="password"
               name="password"
               placeholder="Senha"
-              className="w-3/5 border border-[var(--color-primary)] p-3 rounded-xl"
+              className="max-h-[58px] w-full rounded-xl border border-[var(--color-primary)] p-3 md:max-h-[46px] lg:max-h-[58px]"
               value={credentials.password}
               onChange={handleChange}
             />
 
             <button
               type="submit"
-              className={`w-3/5 p-2 text-white font-medium ${
+              className={`max-h-[54px] w-full p-2 font-semibold text-white md:max-h-[42px] lg:max-h-[54px] ${
                 loading
                   ? "bg-[var(--color-tertiary)]"
                   : "bg-[var(--color-primary)]"
-              }
-               rounded-xl cursor-pointer transition-all duration-500 ease-in-out hover:bg-[var(--color-tertiary)]`}
+              } cursor-pointer rounded-xl transition-all duration-500 ease-in-out hover:bg-[var(--color-tertiary)]`}
             >
               Login
             </button>
 
-            <p className="text-base text-gray-500">
+            <p className="text-gray-500">
               Não tem conta?{" "}
               <Link
                 to="/cadastro"
-                className="text-[var(--color-primary)] underline underline-offset-3 cursor-pointer"
+                className="cursor-pointer text-[var(--color-primary)] underline underline-offset-3"
               >
                 Cadastre-se
               </Link>
