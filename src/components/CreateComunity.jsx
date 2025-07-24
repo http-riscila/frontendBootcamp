@@ -40,7 +40,7 @@ const CreateListingModal = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className="bg-opacity-25 fixed inset-0 z-50 flex items-center justify-center bg-[#111827] p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
       onClick={onClose}
     >
       <div
@@ -60,7 +60,6 @@ const CreateListingModal = ({ isOpen, onClose }) => {
           </div>
           <Button
             onClick={onClose}
-
             className="cursor-pointer rounded-xl border !bg-white px-1 py-1 hover:!bg-gray-100"
           >
             <svg
@@ -158,7 +157,7 @@ const CreateListingModal = ({ isOpen, onClose }) => {
               <select
                 value={formData.category}
                 onChange={(e) => handleInputChange("category", e.target.value)}
-                className="w-full appearance-none rounded-xl border-2 border-blue-200 bg-white px-4 py-3 text-sm text-[#111827] transition-colors focus:border-blue-500 focus:outline-none"
+                className="w-full cursor-pointer appearance-none rounded-xl border-2 border-blue-200 bg-white px-4 py-3 text-sm text-[#111827] transition-colors focus:border-blue-500 focus:outline-none"
               >
                 <option value="">Selecione o tipo</option>
                 <option value="roupas">Roupas e Acessórios</option>
@@ -210,15 +209,13 @@ const CreateListingModal = ({ isOpen, onClose }) => {
           <div className="flex gap-3">
             <button
               onClick={onClose}
-
-              className="flex-1 cursor-pointer rounded-xl border border-[#FE7A1B] px-6 py-3 font-medium text-[#FE7A1B] transition-colors"
+              className="flex-1 cursor-pointer rounded-xl border border-[var(--color-secondary)] px-6 py-3 font-medium text-[var(--color-secondary)] transition-colors duration-700 hover:bg-[var(--color-secondary)] hover:text-white"
             >
               Cancelar
             </button>
             <button
               onClick={handleSubmit}
-              className="flex-1 cursor-pointer rounded-xl bg-[var(--color-primary)] px-6 py-3 font-medium text-white transition-colors hover:bg-[var(--color-tertiary)]"
-
+              className="flex-1 cursor-pointer rounded-xl bg-[var(--color-primary)] px-6 py-3 font-medium text-white transition-colors duration-700 hover:bg-[var(--color-tertiary)]"
             >
               Criar Comunidade
             </button>
