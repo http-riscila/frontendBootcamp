@@ -14,6 +14,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserModal from "../components/UserModal";
 import CommunityCard from "../components/CommunityCard";
+import AdCard from "../components/AdCard";
 import ProposalCard from "../components/ProposalCard";
 import photoBg from "../assets/images/profile-img-bg.png";
 import profilePic from "../assets/icons/profile-pic.svg";
@@ -234,6 +235,7 @@ export default function UserDetails() {
             </ul>
           </nav>
           <div>
+            <AdCard />
             {activeTab === "my-communities" &&
               communities.map((community) => (
                 <CommunityCard key={community.id} community={community} />
