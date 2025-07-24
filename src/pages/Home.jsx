@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   getCommunities,
   searchCommunities,
@@ -191,33 +191,31 @@ const Home = () => {
         <section className="container mx-auto mt-5 flex space-x-40 bg-white">
           <div className="flex flex-col items-start gap-4">
             <div className="flex max-w-[636px] flex-col gap-4">
-              <h1 className="relative mt-10 text-6xl font-bold text-gray-900">
-                Troque o que você
-                <br /> já não usa pelo
-                <br />
-                <span className="relative text-blue-600">
-                  {" "}
+              <h1 className="relative mt-10 text-6xl leading-tight font-bold text-gray-900">
+                <span className="block">Troque o que você</span>
+                <span className="block">já não usa pelo</span>
+                <span className="relative block text-blue-600">
                   que você precisa
+                  <img
+                    src="src/assets/svgs/underline.svg"
+                    alt="underline"
+                    className="absolute top-16 max-w-[505px]"
+                  />
                 </span>
-                <img
-                  src="src/assets/svgs/underline.svg"
-                  alt="underline"
-                  className="absolute top-48 w-[520px]"
-                />
               </h1>
               <p className="mt-8 max-w-[546px] text-3xl text-[#79797d]">
-                Encontre comunidades locais para <br /> trocar itens sem gastar
-                nada.
+                <span className="block">Encontre comunidades locais para</span>
+                <span className="block">trocar itens sem gastar nada.</span>
               </p>
             </div>
             <div className="mt-4 flex space-x-4">
               <button
-                className="ease h-16 w-56 cursor-pointer rounded-2xl bg-[#1b5fff] text-xl text-white transition-all duration-700 hover:bg-[var(--color-tertiary)]"
+                className="ease h-16 w-56 cursor-pointer rounded-2xl bg-[var(--color-primary)] text-xl text-white transition-all duration-700 hover:bg-[var(--color-tertiary)] hover:text-white"
                 onClick={handleQueroTrocar}
               >
                 Quero trocar
               </button>
-              <button className="ease h-16 w-56 cursor-pointer rounded-2xl border text-xl text-[#fe7a1b] transition-all duration-700 hover:bg-[#fe7a1b] hover:text-white">
+              <button className="ease h-16 w-56 cursor-pointer rounded-2xl border text-xl text-[var(--color-secondary)] transition-all duration-700 hover:bg-[var(--color-secondary)] hover:text-white">
                 Como funciona
               </button>
             </div>
@@ -227,7 +225,7 @@ const Home = () => {
             <img
               src="src/assets/images/image-section-one-home.png"
               alt="image"
-              className="h-[446px] w-[450px] object-cover"
+              className="hidden max-h-[446px] max-w-[450px] object-cover lg:block"
             />
           </div>
         </section>
@@ -269,7 +267,10 @@ const Home = () => {
             <p className="mb-2 text-2xl text-[#79767d]">
               Navegue pelas comunidades com mais membros
             </p>
-            <button className="flex cursor-pointer items-center rounded-full px-4 py-2 text-2xl text-[#fe7a1b]">
+            <button
+              onClick={() => (window.location.href = "/comunidades")}
+              className="flex cursor-pointer items-center rounded-full px-4 py-2 text-2xl text-[var(--color-secondary)] hover:underline hover:underline-offset-4"
+            >
               Ver todas <img src="src/assets/svgs/arrow-left-icon.svg" alt="" />
             </button>
           </div>
@@ -353,20 +354,19 @@ const Home = () => {
           </div>
         </section>
       </div>
-      <section className="flex h-[460px] w-full justify-center gap-10 bg-[#1b5fff] py-20">
-        <div className="flex h-auto w-auto max-w-[50%] flex-col items-start py-20">
-          <h2 className="mb-3 text-6xl font-normal text-white">
-            Baixe o nosso App
-          </h2>
-          <p className="mb-8 w-[410px] text-3xl font-light text-white">
-            Tenha acesso completo à plataforma no seu celular. Receba
-            notificações instantâneas e gerencie suas trocas.
+      <section className="flex h-[460px] w-full items-center justify-center gap-10 bg-[#1b5fff]">
+        <div className="flex h-auto w-auto flex-col items-start justify-center">
+          <h2 className="mb-3 text-6xl text-white">Baixe o nosso App</h2>
+          <p className="mb-8 w-[410px] text-2xl font-light text-white">
+            Tenha acesso completo à plataforma no
+            <br /> seu celular. Receba notificações
+            <br /> instantâneas e gerencie suas trocas.
           </p>
           <div className="flex gap-5">
-            <button className="cursor-pointer rounded-xl border border-white px-10 py-4">
+            <button className="w-[200px] cursor-pointer rounded-xl border border-white px-10 py-3">
               <img src="src/assets/svgs/app-store-icon.svg" alt="App Store" />
             </button>
-            <button className="cursor-pointer rounded-xl border border-white px-10 py-4">
+            <button className="w-[200px] cursor-pointer rounded-xl border border-white px-10 py-3">
               <img
                 src="src/assets/svgs/googlePlay-icon.svg"
                 alt="Google Play"
@@ -377,7 +377,7 @@ const Home = () => {
         <img
           src="src/assets/images/img-section-5-home.png"
           alt="ilustração de dois celulares"
-          className="h-[400px] w-auto max-w-[50%]"
+          className="flex h-[400px] w-auto max-w-[50%] justify-end"
         />
       </section>
       <Footer />
