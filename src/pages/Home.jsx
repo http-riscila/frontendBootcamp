@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { homeApi } from "../services/home-api";
+import {
+  getCommunities,
+  searchCommunities,
+} from "../services/community-service";
+import { getItems } from "../services/item-service";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -17,6 +21,23 @@ const Home = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCommunityId, setSelectedCommunityId] = useState(null);
+
+  async function getHomeData() {
+    try {
+      const [communities, items] = await Promise.all([
+        getCommunities(),
+        getItems(),
+      ]);
+
+      return {
+        communities,
+        items,
+      };
+    } catch (error) {
+      console.error("Error fetching home data", error);
+      throw error;
+    }
+  }
 
   // Dados de fallback
   const fallbackCommunities = [
@@ -83,7 +104,7 @@ const Home = () => {
   async function loadHomeData() {
     try {
       setLoading(true);
-      const data = await homeApi.getHomeData();
+      const data = await getHomeData();
       setHomeData(data);
     } catch (error) {
       console.error("Erro ao carregar dados da home:", error);
@@ -104,7 +125,7 @@ const Home = () => {
     if (!token || !user) {
       navigate("/");
     } else {
-      navigate("/add-item"); //Todo: verificar a rota correta depois
+      navigate("/comunidades"); //Todo: verificar a rota correta depois
     }
   };
 
@@ -117,7 +138,7 @@ const Home = () => {
     }
 
     try {
-      const results = await homeApi.searchCommunities(searchTerm);
+      const results = await searchCommunities(searchTerm);
       console.log("Resultados da busca:", results);
       // TODO: Implementar navegação para página de resultados
     } catch (error) {
@@ -155,8 +176,8 @@ const Home = () => {
       ? itemImages.slice(3, 6)
       : fallbackImagesTwo;
 
-  if (loading) {
-    return (
+  {
+    loading && (
       <div className="flex min-h-screen items-center justify-center">
         <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-blue-500"></div>
       </div>
@@ -172,7 +193,8 @@ const Home = () => {
             <div className="flex max-w-[636px] flex-col gap-4">
               <h1 className="relative mt-10 text-6xl font-bold text-gray-900">
                 Troque o que você
-                <br /> já não usa por o<br />
+                <br /> já não usa pelo
+                <br />
                 <span className="relative text-blue-600">
                   {" "}
                   que você precisa
@@ -232,7 +254,7 @@ const Home = () => {
               />
               <button
                 type="submit"
-                className="flex h-[68px] w-[68px] cursor-pointer items-center justify-center rounded-2xl bg-blue-600 text-white transition-colors hover:bg-blue-700"
+                className="flex h-[68px] w-[68px] cursor-pointer items-center justify-center rounded-2xl bg-blue-600 text-white transition-colors duration-700 hover:bg-[var(--color-tertiary)]"
               >
                 <img src="src/assets/svgs/lupa-icon.svg" alt="lupa" />
               </button>
