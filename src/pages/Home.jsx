@@ -180,7 +180,7 @@ const Home = () => {
                 <img
                   src="src/assets/svgs/underline.svg"
                   alt="underline"
-                  className="absolute top-48 w-[520px]"
+                  className="absolute top-[135px] max-w-[380px]"
                 />
               </h1>
               <p className="mt-8 max-w-[546px] text-3xl text-[#79797d]">
@@ -190,12 +190,12 @@ const Home = () => {
             </div>
             <div className="mt-4 flex space-x-4">
               <button
-                className="ease h-16 w-56 cursor-pointer rounded-2xl bg-[#1b5fff] text-xl text-white transition-all duration-700 hover:bg-[var(--color-tertiary)]"
+                className="ease h-16 w-56 cursor-pointer rounded-2xl border bg-[#1b5fff] text-xl text-white transition-all duration-200 hover:bg-white hover:text-[#1b5fff]"
                 onClick={handleQueroTrocar}
               >
                 Quero trocar
               </button>
-              <button className="ease h-16 w-56 cursor-pointer rounded-2xl border text-xl text-[#fe7a1b] transition-all duration-700 hover:bg-[#fe7a1b] hover:text-white">
+              <button className="ease h-16 w-56 cursor-pointer rounded-2xl border text-xl text-[#fe7a1b] transition-all duration-200 hover:bg-[#fe7a1b] hover:text-white">
                 Como funciona
               </button>
             </div>
@@ -333,18 +333,17 @@ const Home = () => {
       </div>
       <section className="flex h-[460px] w-full justify-center gap-10 bg-[#1b5fff]">
         <div className="flex h-auto w-auto flex-col items-start justify-center">
-          <h2 className="mb-3 text-6xl font-normal text-white">
-            Baixe o nosso App
-          </h2>
-          <p className="mb-8 w-[410px] text-3xl font-light text-white">
-            Tenha acesso completo à plataforma no seu celular. Receba
-            notificações instantâneas e gerencie suas trocas.
+          <h2 className="mb-3 text-6xl text-white">Baixe o nosso App</h2>
+          <p className="mb-8 w-[410px] text-2xl font-light text-white">
+            Tenha acesso completo à plataforma no
+            <br /> seu celular. Receba notificações
+            <br /> instantâneas e gerencie suas trocas.
           </p>
           <div className="flex gap-5">
-            <button className="cursor-pointer rounded-xl border border-white px-10 py-4">
+            <button className="h-auto w-[200px] cursor-pointer rounded-xl border border-white px-10 py-3">
               <img src="src/assets/svgs/app-store-icon.svg" alt="App Store" />
             </button>
-            <button className="cursor-pointer rounded-xl border border-white px-10 py-4">
+            <button className="h-auto w-[200px] cursor-pointer rounded-xl border border-white px-10 py-3">
               <img
                 src="src/assets/svgs/googlePlay-icon.svg"
                 alt="Google Play"
@@ -355,7 +354,7 @@ const Home = () => {
         <img
           src="src/assets/images/img-section-5-home.png"
           alt="ilustração de dois celulares"
-          className="flex h-[400px] w-auto max-w-[50%] mt-20 justify-end"
+          className="mt-20 flex h-[400px] w-auto max-w-[50%] justify-end"
         />
       </section>
       <Footer />
