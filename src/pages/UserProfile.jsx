@@ -3,11 +3,18 @@ import { useUser } from "../contexts/UserContext";
 import { countAcceptedProposals } from "../services/proposal-service";
 import { countAvailableItems } from "../services/item-service";
 import { countCreatedCommunities } from "../services/community-service";
+import { getCommunitiesByUser } from "../services/community-service";
+import { getItemsByUser } from "../services/item-service";
+import {
+  getProposalsBySender,
+  getProposalsByRecipient,
+} from "../services/proposal-service";
 import Breadcrumb from "../components/Breadcrumb";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserModal from "../components/UserModal";
-import ProposalLogs from "../components/ProposalLogs";
+import CommunityCard from "../components/CommunityCard";
+import ProposalCard from "../components/ProposalCard";
 import photoBg from "../assets/images/profile-img-bg.png";
 import profilePic from "../assets/icons/profile-pic.svg";
 
@@ -15,6 +22,11 @@ export default function UserDetails() {
   const [tradeCount, setTradeCount] = useState(0);
   const [activeAdCount, setActiveAdCount] = useState(0);
   const [communityCount, setCommunityCount] = useState(0);
+
+  const [communities, setCommunities] = useState([]);
+  const [ads, setAds] = useState([]);
+  const [proposalsBySender, setProposalsBySender] = useState([]);
+  const [proposalsByRecipient, setProposalsByRecipient] = useState([]);
 
   const [activeTab, setActiveTab] = useState("my-communities");
 
@@ -39,9 +51,55 @@ export default function UserDetails() {
       }
     }
     fetchCounts();
+    fetchCommunities();
+    fetchAds();
+    fetchProposalsBySender();
+    fetchProposalsByRecipient();
   }, [user]);
 
-  console.log(user);
+  async function fetchCommunities() {
+    try {
+      const communitiesByUser = await getCommunitiesByUser(user.id);
+      if (communitiesByUser > 0) {
+        setCommunities(communitiesByUser);
+      }
+    } catch (error) {
+      console.log("Error fetching communities", error);
+    }
+  }
+
+  async function fetchAds() {
+    try {
+      const AdsByUser = await getItemsByUser(user.id);
+      if (AdsByUser > 0) {
+        setAds(AdsByUser);
+      }
+    } catch (error) {
+      console.log("Error fetching communities", error);
+    }
+  }
+
+  async function fetchProposalsBySender() {
+    try {
+      const proposalsBySender = await getProposalsBySender(user.id);
+      if (proposalsBySender > 0) {
+        setProposalsBySender(proposalsBySender);
+      }
+    } catch (error) {
+      console.log("Error fetching communities", error);
+    }
+  }
+
+  async function fetchProposalsByRecipient() {
+    try {
+      const proposalsByRecipient = await getProposalsByRecipient(user.id);
+      if (proposalsByRecipient > 0) {
+        setProposalsByRecipient(proposalsByRecipient);
+      }
+    } catch (error) {
+      console.log("Error fetching communities", error);
+    }
+  }
 
   return (
     <div className="font-inter flex w-full flex-col bg-[var(--color-background)]">
@@ -176,7 +234,26 @@ export default function UserDetails() {
             </ul>
           </nav>
           <div>
-            <ProposalLogs />
+            {activeTab === "my-communities" &&
+              communities.map((community) => (
+                <CommunityCard key={community.id} community={community} />
+              ))}
+            {activeTab === "received-proposals" &&
+              proposalsByRecipient.map((proposal) => (
+                <ProposalCard
+                  type="received-proposals"
+                  key={proposal.id}
+                  proposal={proposal}
+                />
+              ))}
+            {activeTab === "sent-proposals" &&
+              proposalsBySender.map((proposal) => (
+                <ProposalCard
+                  type="sent-proposals"
+                  key={proposal.id}
+                  proposal={proposal}
+                />
+              ))}
           </div>
         </section>
       </div>

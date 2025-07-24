@@ -120,9 +120,7 @@ const CreateListingModal = ({ isOpen, onClose }) => {
                     <p className="mb-1 font-medium text-gray-900">
                       Adicionar foto de capa
                     </p>
-                    <p className="text-sm text-gray-500">
-                      Clique ou arraste a imagem aqui
-                    </p>
+                    <p className="text-sm text-gray-500">Clique aqui</p>
                   </div>
                 </div>
               )}

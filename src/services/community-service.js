@@ -2,7 +2,7 @@ import api from "./api";
 
 export async function getCommunities() {
   try {
-    const response = await api.get("/communities");
+    const response = await api.get("/api/communities");
     return response.data;
   } catch (error) {
     console.error("Error getting communities", error);
@@ -21,8 +21,17 @@ export async function searchCommunities(searchTerm = "") {
     const response = await api.get(url);
     return response.data;
   } catch (error) {
-    console.error("Error saerching communities", error);
+    console.error("Error searching communities", error);
     throw error;
+  }
+}
+
+export async function getCommunitiesByUser(userId) {
+  try {
+    const response = await api.get(`/api/communities/by-user/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error getting communities by user", error);
   }
 }
 
