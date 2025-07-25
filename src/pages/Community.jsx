@@ -6,7 +6,12 @@ import CreateAdModal from "../components/ProductDetail";
 import Footer from "../components/Footer";
 import Breadcrumb from "../components/Breadcrumb";
 import memberIcon from "../assets/icons/member-icon.svg";
-import { getCommunityById, getCommunityAds, createCommunityAd, searchCommunityAds } from "../services/community-service";
+import {
+  getCommunityById,
+  getCommunityAds,
+  createCommunityAd,
+  searchCommunityAds,
+} from "../services/community-service";
 
 const Community = () => {
   const { communityId } = useParams(); // Obter ID da comunidade da URL
@@ -63,30 +68,33 @@ const Community = () => {
   }, [communityId]);
 
   // Buscar anúncios com filtro
-  const handleSearchAds = useCallback(async (term) => {
-    try {
-      setAdsLoading(true);
-      
-      if (term.trim()) {
-        const data = await searchCommunityAds(communityId, term);
-        setAds(data);
-      } else {
-        await loadCommunityAds();
+  const handleSearchAds = useCallback(
+    async (term) => {
+      try {
+        setAdsLoading(true);
+
+        if (term.trim()) {
+          const data = await searchCommunityAds(communityId, term);
+          setAds(data);
+        } else {
+          await loadCommunityAds();
+        }
+      } catch (err) {
+        console.error("Erro ao buscar anúncios:", err);
+        setError("Falha ao buscar anúncios. Tente novamente.");
+        setAds([]); // Limpa os anúncios em caso de erro
+      } finally {
+        setAdsLoading(false);
       }
-    } catch (err) {
-      console.error("Erro ao buscar anúncios:", err);
-      setError("Falha ao buscar anúncios. Tente novamente.");
-      setAds([]); // Limpa os anúncios em caso de erro
-    } finally {
-      setAdsLoading(false);
-    }
-  }, [communityId, loadCommunityAds]);
+    },
+    [communityId, loadCommunityAds]
+  );
 
   // Criar novo anúncio
   const handleCreateAd = async (adData) => {
     try {
       const newAd = await createCommunityAd(communityId, adData);
-      setAds(prev => [newAd, ...prev]);
+      setAds((prev) => [newAd, ...prev]);
       setShowAddModal(false);
       console.log("Anúncio criado com sucesso:", newAd);
     } catch (err) {
@@ -115,10 +123,13 @@ const Community = () => {
 
           {/* Error State */}
           {error && (
-            <div className="mb-6 rounded-lg bg-red-50 border border-red-200 p-4">
+            <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
               <p className="text-red-600">{error}</p>
-              <button 
-                onClick={() => { loadCommunityData(); loadCommunityAds(); }}
+              <button
+                onClick={() => {
+                  loadCommunityData();
+                  loadCommunityAds();
+                }}
                 className="mt-2 text-red-700 underline hover:text-red-800"
               >
                 Tentar novamente
@@ -128,9 +139,11 @@ const Community = () => {
 
           {/* Community Info */}
           {loading ? (
-            <div className="flex justify-center items-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-              <span className="ml-3 text-gray-600">Carregando comunidade...</span>
+            <div className="flex items-center justify-center py-12">
+              <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
+              <span className="ml-3 text-gray-600">
+                Carregando comunidade...
+              </span>
             </div>
           ) : community ? (
             <div className="mb-8 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
@@ -144,12 +157,10 @@ const Community = () => {
                   <h1 className="mb-1 text-2xl font-bold text-gray-900">
                     {community.name}
                   </h1>
-                  <p className="mb-2 text-gray-600">
-                    {community.description}
-                  </p>
+                  <p className="mb-2 text-gray-600">{community.description}</p>
                   <div className="flex items-center gap-3">
                     {community.category && (
-                      <span className="bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">
+                      <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
                         {community.category}
                       </span>
                     )}
@@ -177,7 +188,7 @@ const Community = () => {
                 placeholder="Buscar anúncios..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full h-12 rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none transition-colors"
+                className="h-12 w-full rounded-lg border border-gray-300 px-4 py-2 transition-colors focus:border-blue-500 focus:outline-none"
                 disabled={adsLoading}
               />
             </div>
@@ -185,8 +196,8 @@ const Community = () => {
 
           {/* Ads Loading */}
           {adsLoading && (
-            <div className="flex justify-center items-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <div className="flex items-center justify-center py-12">
+              <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
               <span className="ml-3 text-gray-600">Carregando anúncios...</span>
             </div>
           )}
@@ -204,18 +215,20 @@ const Community = () => {
                   user={ad.user}
                 />
               ))}
-              
+
               {ads.length === 0 && !adsLoading && (
-                <div className="col-span-full text-center py-12">
-                  <p className="text-gray-500 text-lg">
-                    {searchTerm ? 'Nenhum anúncio encontrado para esta busca.' : 'Nenhum anúncio disponível nesta comunidade.'}
+                <div className="col-span-full py-12 text-center">
+                  <p className="text-lg text-gray-500">
+                    {searchTerm
+                      ? "Nenhum anúncio encontrado para esta busca."
+                      : "Nenhum anúncio disponível nesta comunidade."}
                   </p>
                 </div>
               )}
             </div>
           )}
         </div>
-        <CreateAdModal 
+        <CreateAdModal
           isOpen={showAddModal}
           onClose={() => setShowAddModal(false)}
           onSubmit={handleCreateAd}

@@ -1,5 +1,14 @@
 import api from "./api";
 
+export async function createMember(memberData) {
+  try {
+    const response = await api.post("/api/members", memberData);
+    return response.data;
+  } catch (error) {
+    return console.error("Error creating a new member", error);
+  }
+}
+
 export async function countMembersByCommunity(communityId) {
   try {
     const response = await api.get(
@@ -7,6 +16,15 @@ export async function countMembersByCommunity(communityId) {
     );
     return response.data;
   } catch (error) {
-    return console.error("Error counting members by community", error);
+    return console.error("Error getting members", error);
+  }
+}
+
+export async function getAllMembersByCommunity(communityId) {
+  try {
+    const response = await api.get(`/api/members/${communityId}`);
+    return response.data;
+  } catch (error) {
+    return console.error("Error getting members", error);
   }
 }

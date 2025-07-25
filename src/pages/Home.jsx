@@ -150,7 +150,7 @@ const Home = () => {
 
   // Preparar dados para exibição
   const displayCommunities =
-    homeData.communities.length > 0
+    homeData.communities?.length > 0
       ? homeData.communities.slice(0, 3)
       : fallbackCommunities;
 
@@ -162,13 +162,13 @@ const Home = () => {
   };
 
   const itemImages =
-    homeData.items.length > 0 ? convertItemsToImages(homeData.items) : [];
+    homeData.items?.length > 0 ? convertItemsToImages(homeData.items) : [];
   const galeryImagesOne =
-    itemImages.slice(0, 3).length >= 3
+    itemImages.slice(0, 3)?.length >= 3
       ? itemImages.slice(0, 3)
       : fallbackImagesOne;
   const galeryImagesTwo =
-    itemImages.slice(3, 6).length >= 3
+    itemImages.slice(3, 6)?.length >= 3
       ? itemImages.slice(3, 6)
       : fallbackImagesTwo;
 
@@ -294,7 +294,7 @@ const Home = () => {
             Veja o que você pode encontrar em nossas comunidades
           </p>
           <div className="flex gap-6">
-            {galeryImagesOne && galeryImagesOne.length >= 3 && (
+            {galeryImagesOne && galeryImagesOne?.length >= 3 && (
               <div className="max-w-lx mx-auto mb-40 grid grid-cols-3 gap-6">
                 <div className="col-span-2 row-span-2">
                   <img
@@ -321,7 +321,7 @@ const Home = () => {
               </div>
             )}
 
-            {galeryImagesTwo && galeryImagesTwo.length >= 3 && (
+            {galeryImagesTwo && galeryImagesTwo?.length >= 3 && (
               <div className="max-w-lx mx-auto mb-40 grid grid-cols-3 gap-6">
                 <div className="col-span-2 row-span-2">
                   <img

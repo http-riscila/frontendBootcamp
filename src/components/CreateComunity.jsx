@@ -8,7 +8,6 @@ const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
     communityName: "",
     category: "",
     description: "",
-    location: "",
   });
 
   if (!isOpen) return null;
@@ -39,20 +38,18 @@ const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
         name: formData.communityName,
         category: formData.category,
         description: formData.description,
-        location: formData.location,
-        image: selectedImage
+        image: selectedImage,
       };
 
       if (onSubmit) {
         await onSubmit(communityData);
       }
-      
+
       // Resetar formulário e fechar modal
       setFormData({
         communityName: "",
         category: "",
         description: "",
-        location: "",
       });
       setSelectedImage(null);
       onClose();
@@ -197,20 +194,6 @@ const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
                 className="pointer-events-none absolute top-1/2 right-4 h-5 w-5 -translate-y-1/2 transform text-[#1B5FFF]"
               />
             </div>
-          </div>
-
-          {/* Location */}
-          <div>
-            <label className="mb-2 block text-sm font-medium text-gray-900">
-              Localização
-            </label>
-            <input
-              type="text"
-              placeholder="Ex: São Paulo, SP"
-              value={formData.location}
-              onChange={(e) => handleInputChange("location", e.target.value)}
-              className="w-full rounded-xl border-2 border-blue-200 px-4 py-3 placeholder-gray-400 transition-colors focus:border-blue-500 focus:outline-none"
-            />
           </div>
 
           {/* Description */}

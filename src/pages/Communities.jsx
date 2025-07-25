@@ -5,7 +5,11 @@ import Footer from "../components/Footer";
 import Breadcrumb from "../components/Breadcrumb";
 import CommunityCard from "../components/CommunityCard";
 import CreateComunity from "../components/CreateComunity";
-import { getCommunities, searchCommunities, createCommunity } from "../services/community-service";
+import {
+  getCommunities,
+  searchCommunities,
+  createCommunity,
+} from "../services/community-service";
 
 const Communities = () => {
   const navigate = useNavigate();
@@ -13,18 +17,15 @@ const Communities = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [communities, setCommunities] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   // Carregar comunidades ao montar o componente
   const loadCommunities = useCallback(async () => {
     try {
       setLoading(true);
-      setError(null);
       const data = await getCommunities();
       setCommunities(data);
     } catch (err) {
       console.error("Erro ao carregar comunidades:", err);
-      setError("Falha ao carregar as comunidades. Tente novamente.");
       setCommunities([]); // Limpa as comunidades em caso de erro
     } finally {
       setLoading(false);
@@ -36,38 +37,38 @@ const Communities = () => {
   }, [loadCommunities]);
 
   // Função para buscar comunidades com filtro
-  const handleSearch = useCallback(async (term) => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      if (term.trim()) {
-        const data = await searchCommunities(term);
-        setCommunities(data);
-      } else {
-        await loadCommunities();
+  const handleSearch = useCallback(
+    async (term) => {
+      try {
+        setLoading(true);
+
+        if (term.trim()) {
+          const data = await searchCommunities(term);
+          setCommunities(data);
+        } else {
+          await loadCommunities();
+        }
+      } catch (err) {
+        console.error("Erro ao buscar comunidades:", err);
+        setCommunities([]); // Limpa as comunidades em caso de erro
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error("Erro ao buscar comunidades:", err);
-      setError("Falha ao buscar as comunidades. Tente novamente.");
-      setCommunities([]); // Limpa as comunidades em caso de erro
-    } finally {
-      setLoading(false);
-    }
-  }, [loadCommunities]);
+    },
+    [loadCommunities]
+  );
 
   // Função para criar nova comunidade
   const handleCreateCommunity = async (communityData) => {
     try {
       const newCommunity = await createCommunity(communityData);
-      setCommunities(prev => [newCommunity, ...prev]);
+      setCommunities((prev) => [newCommunity, ...prev]);
       setShowCreateModal(false);
       console.log("Comunidade criada com sucesso:", newCommunity);
     } catch (err) {
       console.error("Erro ao criar comunidade:", err);
       // Em caso de erro, ainda fecha o modal mas mostra erro
       setShowCreateModal(false);
-      setError("Erro ao criar comunidade");
     }
   };
 
@@ -110,20 +111,7 @@ const Communities = () => {
             </button>
           </div>
         </div>
-        
-        {/* Estado de erro */}
-        {error && (
-          <div className="mb-6 rounded-lg bg-red-50 border border-red-200 p-4">
-            <p className="text-red-600">{error}</p>
-            <button 
-              onClick={loadCommunities}
-              className="mt-2 text-red-700 underline hover:text-red-800"
-            >
-              Tentar novamente
-            </button>
-          </div>
-        )}
-        
+
         {/* Campo de busca */}
         <div className="mb-6">
           <input
@@ -135,34 +123,34 @@ const Communities = () => {
             disabled={loading}
           />
         </div>
-        
+
         {/* Loading state */}
         {loading && (
-          <div className="flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--color-primary)]"></div>
-            <span className="ml-3 text-gray-600">Carregando comunidades...</span>
+          <div className="flex items-center justify-center py-12">
+            <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-[var(--color-primary)]"></div>
+            <span className="ml-3 text-gray-600">
+              Carregando comunidades...
+            </span>
           </div>
         )}
-        
+
         {/* Grid de comunidades */}
         {!loading && (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
             {filteredCommunities.map((community) => (
               <CommunityCard
                 key={community.id}
-                image={community.imageUrl}
-                title={community.name}
-                description={community.description}
-                category={community.category}
-                membersCount={community.membersCount}
+                community={community}
                 onClick={() => handleNavigateToCommunity(community.id)}
               />
             ))}
-            
+
             {filteredCommunities.length === 0 && !loading && (
-              <div className="col-span-full text-center py-12">
-                <p className="text-gray-500 text-lg">
-                  {searchTerm ? 'Nenhuma comunidade encontrada para esta busca.' : 'Nenhuma comunidade disponível.'}
+              <div className="col-span-full py-12 text-center">
+                <p className="text-lg text-gray-500">
+                  {searchTerm
+                    ? "Nenhuma comunidade encontrada para esta busca."
+                    : "Nenhuma comunidade disponível."}
                 </p>
               </div>
             )}
