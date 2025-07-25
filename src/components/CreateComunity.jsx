@@ -1,5 +1,7 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { Button } from "flowbite-react";
+import { toast } from "react-toastify";
+import { validateCreateCommunity } from "../validators/community-validation";
 
 const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -34,15 +36,28 @@ const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
   };
 
   const handleSubmit = async () => {
-    try {
-      // Preparar dados para envio
-      const communityData = {
-        name: formData.communityName,
-        category: formData.category,
-        description: formData.description,
-        imageFile: selectedFile, // Enviar o arquivo em vez da URL blob
-      };
+    // Preparar dados para envio
+    const communityData = {
+      name: formData.communityName,
+      category: formData.category,
+      description: formData.description,
+      image: selectedImage,
+    };
 
+    const errors = validateCreateCommunity(communityData);
+    const hasErrors = Object.keys(errors).length > 0;
+
+    if (hasErrors) {
+      Object.values(errors).forEach((msg) =>
+        toast.warning(msg, {
+          className: "toast-warning",
+          progressClassName: "Toastify__progress-bar",
+        })
+      );
+      setLoading(false);
+      return;
+    }
+    try {
       if (onSubmit) {
         await onSubmit(communityData);
       }
@@ -57,6 +72,10 @@ const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
       setSelectedFile(null);
       onClose();
     } catch (error) {
+      toast.error("Erro ao criar comunidade", {
+        className: "toast-error",
+        progressClassName: "Toastify__progress-bar",
+      });
       console.error("Erro ao criar comunidade:", error);
       // Mantém o modal aberto em caso de erro
     }
@@ -178,6 +197,7 @@ const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
             <textarea
               placeholder="Descreva o objetivo da comunidade, regras de troca e outras informações importantes para os membros"
               value={formData.description}
+              maxLength={100}
               onChange={(e) => handleInputChange("description", e.target.value)}
               rows="5"
               className="w-full resize-none rounded-xl border-2 border-blue-200 px-4 py-3 placeholder-gray-400 transition-colors focus:border-blue-500 focus:outline-none"

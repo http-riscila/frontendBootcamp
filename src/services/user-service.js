@@ -9,6 +9,15 @@ export async function getUserById(userId) {
   }
 }
 
+export async function getUserByEmail(userEmail) {
+  try {
+    const response = await api.get("/api/users", userEmail);
+    return response.data;
+  } catch (error) {
+    return console.error("Error getting the user's information", error);
+  }
+}
+
 export async function editUserInfo(newData, userId) {
   try {
     const response = await api.patch(`/users/${userId}`, newData);
