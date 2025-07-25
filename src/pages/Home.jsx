@@ -219,7 +219,7 @@ const Home = () => {
 
           <div>
             <img
-              src="src/assets/images/image-section-one-home.png"
+              src="src/assets/images/illustration-hero.svg"
               alt="image"
               className="hidden max-h-[446px] max-w-[450px] object-cover lg:block"
             />

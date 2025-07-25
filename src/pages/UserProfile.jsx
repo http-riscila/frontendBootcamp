@@ -12,13 +12,14 @@ import {
 import Breadcrumb from "../components/Breadcrumb";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import UserModal from "../components/UserModal";
+import ProfileModal from "../components/ProfileModal";
 import CommunityCard from "../components/CommunityCard";
 import AdCard from "../components/AdCard";
 import ProposalCard from "../components/ProposalCard";
 import ProductModal from "../components/ProductModal";
 import photoBg from "../assets/images/profile-img-bg.png";
 import profilePic from "../assets/icons/profile-pic.svg";
+import editIcon from "../assets/icons/edit-icon.png";
 
 export default function UserDetails() {
   const [tradeCount, setTradeCount] = useState(0);
@@ -36,6 +37,8 @@ export default function UserDetails() {
   const [showModal, setShowModal] = useState(false);
 
   const { user } = useUser();
+
+  console.log(showModal);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -145,8 +148,11 @@ export default function UserDetails() {
                   <span className="font-bricolage text-4xl leading-none font-medium text-[var(--color-title)]">
                     {user?.name}
                   </span>
-                  <button className="cursor-pointer">
-                    <UserModal />
+                  <button
+                    onClick={() => setShowModal(true)}
+                    className="cursor-pointer"
+                  >
+                    <img src={editIcon} />
                   </button>
                 </div>
                 <span className="text-lg text-[var(--color-text)]">
@@ -398,7 +404,7 @@ export default function UserDetails() {
         onClose={handleCloseModal}
         ad={selectedAd}
       />
-
+      <ProfileModal isOpen={showModal} onClose={() => setShowModal(false)} />
       <Footer />
     </div>
   );

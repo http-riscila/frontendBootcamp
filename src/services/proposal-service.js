@@ -26,3 +26,15 @@ export async function countAcceptedProposals(userId) {
     return console.error("Error counting accepted proposals by user", error);
   }
 }
+
+export async function updateStatus(newStatus, communityId, proposalId) {
+  try {
+    const response = await api.patch(
+      `/api/proposals/${proposalId}?${communityId}`,
+      newStatus
+    );
+    return response.data;
+  } catch (error) {
+    return console.error("Error updating proposal's status", error);
+  }
+}
