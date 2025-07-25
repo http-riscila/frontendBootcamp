@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { login } from "../services/auth-service";
 import maskGroup from "../assets/images/mask-group.png";
 import star from "../assets/images/star3.png";
 import fullLogo from "../assets/images/full-logo.png";
@@ -25,33 +26,24 @@ export default function Login() {
   async function handleLogin(e) {
     e.preventDefault();
     setLoading(true);
-    
-    // Modo de desenvolvimento - bypass do backend
-    if (credentials.email && credentials.password) {
-      // Mock de resposta do backend
-      const mockResponse = {
-        user: {
-          id: 1,
-          name: "Usuário Teste",
-          email: credentials.email,
-          profileImageUrl: null
-        },
-        token: "mock-jwt-token-123"
-      };
-      
-      localStorage.setItem("user", JSON.stringify(mockResponse.user));
-      localStorage.setItem("token", mockResponse.token);
-      console.log("Login simulado com sucesso");
-      navigate("/home");
-    } else {
-      console.error("Por favor, preencha email e senha");
+    try {
+      const response = await login(credentials);
+      console.log("Resposta do login:", response);
+      if (response) {
+        localStorage.setItem("user", JSON.stringify(response.user));
+        localStorage.setItem("token", response.token);
+        navigate("/home");
+      }
+      console.log("User succesfully logged in", response);
+    } catch (error) {
+      console.error("Error authenticating an user", error);
+    } finally {
+      setCredentials({
+        email: "",
+        password: "",
+      });
+      setLoading(false);
     }
-    
-    setCredentials({
-      email: "",
-      password: "",
-    });
-    setLoading(false);
   }
 
   return (
@@ -61,7 +53,6 @@ export default function Login() {
           src={maskGroup}
           alt="Mascara decorativa"
           className="max-h-screen w-full object-cover object-center"
-
         />
         <img
           src={star}

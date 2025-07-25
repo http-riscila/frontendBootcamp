@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   getCommunities,
   searchCommunities,
 } from "../services/community-service";
-import { getItems } from "../services/item-service";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -24,10 +23,7 @@ const Home = () => {
 
   async function getHomeData() {
     try {
-      const [communities, items] = await Promise.all([
-        getCommunities(),
-        getItems(),
-      ]);
+      const [communities, items] = await Promise.all([getCommunities()]);
 
       return {
         communities,

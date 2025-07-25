@@ -3,7 +3,7 @@ import api from "./api";
 // COMUNIDADES - Service de getAll
 export async function getCommunities() {
   try {
-    const response = await api.get("/communities");
+    const response = await api.get("/api/communities");
     return response.data;
   } catch (error) {
     console.error("Error getting communities", error);
@@ -14,7 +14,7 @@ export async function getCommunities() {
 // COMUNIDADES - Service de create
 export async function createCommunity(communityData) {
   try {
-    const response = await api.post("/communities", communityData);
+    const response = await api.post("/api/communities", communityData);
     return response.data;
   } catch (error) {
     console.error("Error creating community", error);
@@ -42,7 +42,7 @@ export async function searchCommunities(searchTerm = "") {
 // Obter uma comunidade específica por ID
 export async function getCommunityById(communityId) {
   try {
-    const response = await api.get(`/communities/${communityId}`);
+    const response = await api.get(`/api/communities/${communityId}`);
     return response.data;
   } catch (error) {
     console.error("Error getting community by ID", error);
@@ -92,9 +92,7 @@ export async function searchCommunityAds(communityId, searchTerm = "") {
 // Contar comunidades criadas por usuário
 export async function countCreatedCommunities(userId) {
   try {
-    const response = await api.get(
-      `/communities/count/created-by/${userId}`
-    );
+    const response = await api.get(`/communities/count/created-by/${userId}`);
     return response.data;
   } catch (error) {
     console.error("Error counting communities by user", error);
