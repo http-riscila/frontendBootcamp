@@ -87,20 +87,20 @@ export default function UserDetails() {
                 <p className="text-base text-[var(--color-text)]">{user.bio}</p>
               )}
               <ul className="font-bricolage flex flex-row justify-between text-lg font-medium text-[var(--color-title)]">
-                <li className="flex flex-row items-center gap-1">
-                  <span className="text-base text-[var(--color-primary)]">
+                <li className="flex flex-row items-center gap-2">
+                  <span className="text-xl text-[var(--color-primary)]">
                     {tradeCount ?? 0}
                   </span>{" "}
                   Trocas realizadas
                 </li>
-                <li className="flex flex-row items-center gap-1">
-                  <span className="text-base text-[var(--color-primary)]">
+                <li className="flex flex-row items-center gap-2">
+                  <span className="text-xl text-[var(--color-primary)]">
                     {activeAdCount ?? 0}
                   </span>{" "}
                   Anúncios ativos
                 </li>
-                <li className="flex flex-row items-center gap-1">
-                  <span className="text-base text-[var(--color-primary)]">
+                <li className="flex flex-row items-center gap-2">
+                  <span className="text-xl text-[var(--color-primary)]">
                     {communityCount ?? 0}
                   </span>{" "}
                   Comunidades criadas

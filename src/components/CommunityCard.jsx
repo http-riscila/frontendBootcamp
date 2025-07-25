@@ -2,20 +2,21 @@ import { useState, useEffect } from "react";
 import { countMembersByCommunity } from "../services/member-service";
 import memberIcon from "../assets/icons/member-icon.svg";
 
-export default function CommunityCard({ community }) {
+export default function CommunityCard({ community, onClick }) {
   const [membersCount, setMembersCount] = useState(0);
 
   useEffect(() => {
-    async function getMembersCount() {
+    async function fetchMembersCount() {
       try {
-        const members = await countMembersByCommunity(community?.id);
-        setMembersCount(members);
+        const memberCountData = await countMembersByCommunity(community?.id);
+        setMembersCount(memberCountData);
+        console.log("Members succesfully counted: ", memberCountData);
       } catch (error) {
         console.log("Error fetching count data", error);
       }
     }
-    getMembersCount();
-  }, []);
+    fetchMembersCount();
+  });
 
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-[#1B5FFF] bg-white shadow-sm">
@@ -24,7 +25,7 @@ export default function CommunityCard({ community }) {
         {community?.imageUrl ? (
           <img
             src={community?.imageUrl}
-            alt="Imagem da comunidade"
+            alt={community?.name}
             className="h-full w-full object-cover"
           />
         ) : (
@@ -33,9 +34,11 @@ export default function CommunityCard({ community }) {
       </div>
       {/* Conteúdo do card */}
       <div className="flex flex-1 flex-col gap-4 p-6">
-        <div className="flex flex-row justify-end gap-2 text-xs text-[var(--color-text)]">
-          <img src={memberIcon || 0} />
-          <span className="flex flex-row gap-1">{membersCount}</span>
+        <div className="flex flex-row items-center justify-end gap-2 text-xs text-[var(--color-text)]">
+          <img src={memberIcon} />
+          <span className="flex flex-row gap-1">
+            {membersCount ?? 0} {membersCount === 1 ? "membro" : "membros"}
+          </span>
         </div>
         <div>
           <h5 className="text-xl font-bold text-gray-900">{community?.name}</h5>
@@ -45,6 +48,7 @@ export default function CommunityCard({ community }) {
           </p>
         </div>
         <button
+          onClick={onClick}
           className={`w-full cursor-pointer rounded-2xl border-0 bg-[var(--color-primary)] py-3 text-xl font-medium text-white transition-colors duration-700 hover:bg-[var(--color-tertiary)]`}
         >
           Acessar

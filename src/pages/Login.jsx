@@ -53,7 +53,6 @@ export default function Login() {
           src={maskGroup}
           alt="Mascara decorativa"
           className="max-h-screen w-full object-cover object-center"
-
         />
         <img
           src={star}
