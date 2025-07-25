@@ -1,14 +1,13 @@
 import React, { useState, useRef } from "react";
 import { Button } from "flowbite-react";
 
-const CreateListingModal = ({ isOpen, onClose }) => {
+const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
     communityName: "",
     category: "",
     description: "",
-    location: "",
   });
 
   if (!isOpen) return null;
@@ -32,10 +31,32 @@ const CreateListingModal = ({ isOpen, onClose }) => {
     }
   };
 
-  const handleSubmit = () => {
-    console.log("Form submitted:", formData);
-    // Handle form submission here
-    onClose(); // Fechar modal após submissão
+  const handleSubmit = async () => {
+    try {
+      // Preparar dados para envio
+      const communityData = {
+        name: formData.communityName,
+        category: formData.category,
+        description: formData.description,
+        image: selectedImage,
+      };
+
+      if (onSubmit) {
+        await onSubmit(communityData);
+      }
+
+      // Resetar formulário e fechar modal
+      setFormData({
+        communityName: "",
+        category: "",
+        description: "",
+      });
+      setSelectedImage(null);
+      onClose();
+    } catch (error) {
+      console.error("Erro ao criar comunidade:", error);
+      // Mantém o modal aberto em caso de erro
+    }
   };
 
   return (
@@ -120,9 +141,7 @@ const CreateListingModal = ({ isOpen, onClose }) => {
                     <p className="mb-1 font-medium text-gray-900">
                       Adicionar foto de capa
                     </p>
-                    <p className="text-sm text-gray-500">
-                      Clique ou arraste a imagem aqui
-                    </p>
+                    <p className="text-sm text-gray-500">Clique aqui</p>
                   </div>
                 </div>
               )}
@@ -144,47 +163,6 @@ const CreateListingModal = ({ isOpen, onClose }) => {
               onChange={(e) =>
                 handleInputChange("communityName", e.target.value)
               }
-              className="w-full rounded-xl border-2 border-blue-200 px-4 py-3 placeholder-gray-400 transition-colors focus:border-blue-500 focus:outline-none"
-            />
-          </div>
-
-          {/* Category */}
-          <div>
-            <label className="mb-2 block text-sm font-medium text-gray-900">
-              Tipo de comunidade
-            </label>
-            <div className="relative">
-              <select
-                value={formData.category}
-                onChange={(e) => handleInputChange("category", e.target.value)}
-                className="w-full cursor-pointer appearance-none rounded-xl border-2 border-blue-200 bg-white px-4 py-3 text-sm text-[#111827] transition-colors focus:border-blue-500 focus:outline-none"
-              >
-                <option value="">Selecione o tipo</option>
-                <option value="roupas">Roupas e Acessórios</option>
-                <option value="calçados">Calçados</option>
-                <option value="livros">Livros e Materiais</option>
-                <option value="eletronicos">Eletrônicos</option>
-                <option value="casa">Casa e Decoração</option>
-                <option value="esportes">Esportes e Lazer</option>
-                <option value="geral">Geral</option>
-              </select>
-              <img
-                src="src/assets/icons/chevron-down.svg"
-                className="pointer-events-none absolute top-1/2 right-4 h-5 w-5 -translate-y-1/2 transform text-[#1B5FFF]"
-              />
-            </div>
-          </div>
-
-          {/* Location */}
-          <div>
-            <label className="mb-2 block text-sm font-medium text-gray-900">
-              Localização
-            </label>
-            <input
-              type="text"
-              placeholder="Ex: São Paulo, SP"
-              value={formData.location}
-              onChange={(e) => handleInputChange("location", e.target.value)}
               className="w-full rounded-xl border-2 border-blue-200 px-4 py-3 placeholder-gray-400 transition-colors focus:border-blue-500 focus:outline-none"
             />
           </div>

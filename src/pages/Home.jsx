@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   getCommunities,
   searchCommunities,
 } from "../services/community-service";
-import { getItems } from "../services/item-service";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -27,10 +26,7 @@ const Home = () => {
 
   async function getHomeData() {
     try {
-      const [communities, items] = await Promise.all([
-        getCommunities(),
-        getItems(),
-      ]);
+      const [communities, items] = await Promise.all([getCommunities()]);
 
       return {
         communities,
@@ -162,9 +158,9 @@ const Home = () => {
 
     try {
       setIsSearching(true);
-   
+
       const results = await searchCommunities(searchTerm.trim());
-   
+
       let filteredResults = results;
       if (results.length === 0 && homeData.communities.length > 0) {
         filteredResults = homeData.communities.filter(
@@ -228,13 +224,13 @@ const Home = () => {
   };
 
   const itemImages =
-    homeData.items.length > 0 ? convertItemsToImages(homeData.items) : [];
+    homeData.items?.length > 0 ? convertItemsToImages(homeData.items) : [];
   const galeryImagesOne =
-    itemImages.slice(0, 3).length >= 3
+    itemImages.slice(0, 3)?.length >= 3
       ? itemImages.slice(0, 3)
       : fallbackImagesOne;
   const galeryImagesTwo =
-    itemImages.slice(3, 6).length >= 3
+    itemImages.slice(3, 6)?.length >= 3
       ? itemImages.slice(3, 6)
       : fallbackImagesTwo;
 
@@ -288,7 +284,7 @@ const Home = () => {
 
           <div>
             <img
-              src="src/assets/images/image-section-one-home.png"
+              src="src/assets/images/illustration-hero.svg"
               alt="image"
               className="hidden max-h-[446px] max-w-[450px] object-cover lg:block"
             />
@@ -414,7 +410,7 @@ const Home = () => {
             Veja o que você pode encontrar em nossas comunidades
           </p>
           <div className="flex gap-6">
-            {galeryImagesOne && galeryImagesOne.length >= 3 && (
+            {galeryImagesOne && galeryImagesOne?.length >= 3 && (
               <div className="max-w-lx mx-auto mb-40 grid grid-cols-3 gap-6">
                 <div className="col-span-2 row-span-2">
                   <img
@@ -441,7 +437,7 @@ const Home = () => {
               </div>
             )}
 
-            {galeryImagesTwo && galeryImagesTwo.length >= 3 && (
+            {galeryImagesTwo && galeryImagesTwo?.length >= 3 && (
               <div className="max-w-lx mx-auto mb-40 grid grid-cols-3 gap-6">
                 <div className="col-span-2 row-span-2">
                   <img

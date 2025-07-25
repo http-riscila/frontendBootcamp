@@ -3,22 +3,42 @@ import { useUser } from "../contexts/UserContext";
 import { countAcceptedProposals } from "../services/proposal-service";
 import { countAvailableItems } from "../services/item-service";
 import { countCreatedCommunities } from "../services/community-service";
+import { getCommunitiesByUser } from "../services/community-service";
+import { getItemsByUser } from "../services/item-service";
+import {
+  getProposalsBySender,
+  getProposalsByRecipient,
+} from "../services/proposal-service";
 import Breadcrumb from "../components/Breadcrumb";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import UserModal from "../components/UserModal";
-import ProposalLogs from "../components/ProposalLogs";
+import ProfileModal from "../components/ProfileModal";
+import CommunityCard from "../components/CommunityCard";
+import AdCard from "../components/AdCard";
+import ProposalCard from "../components/ProposalCard";
+import ProductModal from "../components/ProductModal";
 import photoBg from "../assets/images/profile-img-bg.png";
 import profilePic from "../assets/icons/profile-pic.svg";
+import editIcon from "../assets/icons/edit-icon.png";
 
 export default function UserDetails() {
   const [tradeCount, setTradeCount] = useState(0);
   const [activeAdCount, setActiveAdCount] = useState(0);
   const [communityCount, setCommunityCount] = useState(0);
 
+  const [communities, setCommunities] = useState([]);
+  const [ads, setAds] = useState([]);
+  const [proposalsBySender, setProposalsBySender] = useState([]);
+  const [proposalsByRecipient, setProposalsByRecipient] = useState([]);
+
   const [activeTab, setActiveTab] = useState("my-communities");
 
+  const [selectedAd, setSelectedAd] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
   const { user } = useUser();
+
+  console.log(showModal);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -39,14 +59,74 @@ export default function UserDetails() {
       }
     }
     fetchCounts();
+    fetchCommunities();
+    fetchAds();
+    fetchProposalsBySender();
+    fetchProposalsByRecipient();
   }, [user]);
 
-  console.log(user);
+  async function fetchCommunities() {
+    try {
+      const communitiesByUser = await getCommunitiesByUser(user.id);
+      if (communitiesByUser.length > 0) {
+        setCommunities(communitiesByUser);
+        console.log("Comunidades carregadas com sucesso! ", communities);
+      }
+    } catch (error) {
+      console.log("Error fetching communities", error);
+    }
+  }
+
+  async function fetchAds() {
+    try {
+      const AdsByUser = await getItemsByUser(user.id);
+      console.log("Ads carregados:", AdsByUser);
+      if (AdsByUser.length > 0) {
+        setAds(AdsByUser);
+      } else {
+        console.log("Nenhum ad encontrado, mantendo dados de teste");
+      }
+    } catch (error) {
+      console.log("Error fetching ads", error);
+    }
+  }
+
+  async function fetchProposalsBySender() {
+    try {
+      const proposalsBySender = await getProposalsBySender(user.id);
+      if (proposalsBySender.length > 0) {
+        setProposalsBySender(proposalsBySender);
+      }
+    } catch (error) {
+      console.log("Error fetching communities", error);
+    }
+  }
+
+  async function fetchProposalsByRecipient() {
+    try {
+      const proposalsByRecipient = await getProposalsByRecipient(user.id);
+      if (proposalsByRecipient.length > 0) {
+        setProposalsByRecipient(proposalsByRecipient);
+      }
+    } catch (error) {
+      console.log("Error fetching communities", error);
+    }
+  }
+
+  const handleOpenModal = (ad) => {
+    setSelectedAd(ad);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedAd(null);
+  };
 
   return (
     <div className="font-inter flex w-full flex-col bg-[var(--color-background)]">
       <Header />
-      <div className="mx-auto flex w-full max-w-[1240px] flex-col gap-8 px-12 py-8">
+      <div className="mx-auto flex w-full max-w-[1240px] flex-col gap-8 px-15 py-8">
         <section className="flex flex-col gap-4">
           <Breadcrumb />
           <div className="flex flex-row gap-8">
@@ -68,8 +148,11 @@ export default function UserDetails() {
                   <span className="font-bricolage text-4xl leading-none font-medium text-[var(--color-title)]">
                     {user?.name}
                   </span>
-                  <button className="cursor-pointer">
-                    <UserModal />
+                  <button
+                    onClick={() => setShowModal(true)}
+                    className="cursor-pointer"
+                  >
+                    <img src={editIcon} />
                   </button>
                 </div>
                 <span className="text-lg text-[var(--color-text)]">
@@ -87,20 +170,20 @@ export default function UserDetails() {
                 <p className="text-base text-[var(--color-text)]">{user.bio}</p>
               )}
               <ul className="font-bricolage flex flex-row justify-between text-lg font-medium text-[var(--color-title)]">
-                <li className="flex flex-row items-center gap-1">
-                  <span className="text-base text-[var(--color-primary)]">
+                <li className="flex flex-row items-center gap-2">
+                  <span className="text-xl text-[var(--color-primary)]">
                     {tradeCount ?? 0}
                   </span>{" "}
                   Trocas realizadas
                 </li>
-                <li className="flex flex-row items-center gap-1">
-                  <span className="text-base text-[var(--color-primary)]">
+                <li className="flex flex-row items-center gap-2">
+                  <span className="text-xl text-[var(--color-primary)]">
                     {activeAdCount ?? 0}
                   </span>{" "}
                   Anúncios ativos
                 </li>
-                <li className="flex flex-row items-center gap-1">
-                  <span className="text-base text-[var(--color-primary)]">
+                <li className="flex flex-row items-center gap-2">
+                  <span className="text-xl text-[var(--color-primary)]">
                     {communityCount ?? 0}
                   </span>{" "}
                   Comunidades criadas
@@ -112,7 +195,7 @@ export default function UserDetails() {
 
         <section className="flex flex-col gap-6">
           <nav>
-            <ul className="font-bricolage flex flex-row justify-between text-2xl font-medium text-[var(--color-title)]">
+            <ul className="flex flex-row justify-between gap-6 text-xl font-medium text-[var(--color-title)]">
               <li
                 className={`rounded-xl px-4 py-1 transition-all duration-500 ease-in-out ${
                   activeTab === "my-communities"
@@ -176,10 +259,152 @@ export default function UserDetails() {
             </ul>
           </nav>
           <div>
-            <ProposalLogs />
+            {activeTab === "my-communities" &&
+              communities.map((community) => (
+                <CommunityCard key={community.id} community={community} />
+              ))}
+            {activeTab === "my-communities" && communities.length === 0 && (
+              <div className="py-12 text-center">
+                <div className="mb-4 text-gray-500">
+                  <svg
+                    className="mx-auto mb-4 h-16 w-16 text-gray-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 20h5v-2a3 3 0 00-5.196-2.121M9 20H4v-2a3 3 0 015.196-2.121M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                  <p className="text-lg">
+                    Você ainda não criou nenhuma comunidade
+                  </p>
+                  <p className="text-sm">
+                    Que tal criar sua primeira comunidade?
+                  </p>
+                </div>
+              </div>
+            )}
+            {activeTab === "my-ads" && ads.length > 0 && (
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {ads.map((ad) => (
+                  <AdCard
+                    key={ad.id}
+                    ad={ad}
+                    onViewDetails={() => handleOpenModal(ad)}
+                  />
+                ))}
+              </div>
+            )}
+            {activeTab === "my-ads" && ads.length === 0 && (
+              <div className="py-12 text-center">
+                <div className="mb-4 text-gray-500">
+                  <svg
+                    className="mx-auto mb-4 h-16 w-16 text-gray-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                  <p className="text-lg">Você não criou nenhum anúncio ainda</p>
+                  <p className="text-sm">
+                    Cadastre seus itens para que outros usuários façam suas
+                    propostas de troca
+                  </p>
+                </div>
+              </div>
+            )}
+            {activeTab === "received-proposals" &&
+              proposalsByRecipient.length > 0 &&
+              communities.map((proposal) => (
+                <ProposalCard
+                  key={proposal.id}
+                  type="received-proposals"
+                  proposal={proposal}
+                />
+              ))}
+            {activeTab === "received-proposals" &&
+              proposalsByRecipient.length === 0 && (
+                <div className="py-12 text-center">
+                  <div className="mb-4 text-gray-500">
+                    <svg
+                      className="mx-auto mb-4 h-16 w-16 text-gray-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    <p className="text-lg">
+                      Você não recebeu nenhuma proposta ainda
+                    </p>
+                    <p className="text-sm">
+                      Quando alguém interessar-se em seus itens, as propostas
+                      aparecerão aqui
+                    </p>
+                  </div>
+                </div>
+              )}
+            {activeTab === "sent-proposals" &&
+              proposalsBySender.length > 0 &&
+              communities.map((proposal) => (
+                <ProposalCard
+                  key={proposal.id}
+                  type="sent-proposals"
+                  proposal={proposal}
+                />
+              ))}
+            {activeTab === "sent-proposals" &&
+              proposalsBySender.length === 0 && (
+                <div className="py-12 text-center">
+                  <div className="mb-4 text-gray-500">
+                    <svg
+                      className="mx-auto mb-4 h-16 w-16 text-gray-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    <p className="text-lg">
+                      Você não enviou nenhuma proposta ainda
+                    </p>
+                    <p className="text-sm">
+                      Explore itens de outros usuários e faça suas propostas de
+                      troca
+                    </p>
+                  </div>
+                </div>
+              )}
           </div>
         </section>
       </div>
+
+      <ProductModal
+        isOpen={showModal}
+        onClose={handleCloseModal}
+        ad={selectedAd}
+      />
+      <ProfileModal isOpen={showModal} onClose={() => setShowModal(false)} />
       <Footer />
     </div>
   );

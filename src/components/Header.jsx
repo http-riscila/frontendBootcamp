@@ -15,7 +15,7 @@ export default function Header() {
 
   return (
     <div className="w-full border-b border-[#E5E7EB] bg-white">
-      <header className="mx-auto grid min-h-[100px] max-w-[1240px] grid-cols-12 items-center">
+      <header className="mx-auto grid min-h-[100px] max-w-[1240px] grid-cols-12 items-center font-medium">
         <div className="col-span-3 flex items-center">
           <Link to="/home">
             <img
@@ -45,7 +45,7 @@ export default function Header() {
                 <path
                   d="M13.3333 18.3333V15C13.3333 13.1591 11.8409 11.6667 10 11.6667C8.15905 11.6667 6.66667 13.1591 6.66667 15V18.3333M17.5 8.45861V14.9724C17.5 16.8286 16.0076 18.3333 14.1667 18.3333H5.83333C3.99238 18.3333 2.5 16.8286 2.5 14.9724V8.45861C2.5 7.44948 2.9497 6.49375 3.72488 5.85544L7.89155 2.42446C9.11859 1.41407 10.8814 1.41407 12.1084 2.42446L16.2751 5.85544C17.0503 6.49375 17.5 7.44948 17.5 8.45861Z"
                   stroke="currentColor"
-                  stroke-width="1.5"
+                  strokeWidth="1.5"
                 />
               </svg>
               Home

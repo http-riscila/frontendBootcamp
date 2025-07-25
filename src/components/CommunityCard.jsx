@@ -1,35 +1,55 @@
+import { useState, useEffect } from "react";
+import { countMembersByCommunity } from "../services/member-service";
 import memberIcon from "../assets/icons/member-icon.svg";
-export default function CommunityCard({
-  image,
-  title,
-  description,
-  membersCount,
-}) {
+
+export default function CommunityCard({ community, onClick }) {
+  const [membersCount, setMembersCount] = useState(0);
+
+  useEffect(() => {
+    async function fetchMembersCount() {
+      try {
+        const memberCountData = await countMembersByCommunity(community?.id);
+        setMembersCount(memberCountData);
+        console.log("Members succesfully counted: ", memberCountData);
+      } catch (error) {
+        console.log("Error fetching count data", error);
+      }
+    }
+    fetchMembersCount();
+  });
+
   return (
-    <div className="] flex flex-col overflow-hidden rounded-2xl border border-[var(--color-primary)] bg-white shadow-sm">
+    <div className="flex max-h-[507px] max-w-[399px] flex-col overflow-hidden">
       {/* Imagem da comunidade */}
-      <div className="flex h-40 w-full items-center justify-center overflow-hidden bg-gray-200">
-        {image ? (
-          <img src={image} alt={title} className="h-full w-full object-cover" />
+      <div className="flex h-40 w-full items-center justify-center overflow-hidden rounded-t-xl bg-gray-200">
+        {community?.imageUrl ? (
+          <img
+            src={community?.imageUrl}
+            alt="Imagem da comunidade"
+            className="h-full w-full object-cover"
+          />
         ) : (
           <span className="text-sm text-gray-400">&nbsp;</span>
         )}
       </div>
       {/* Conteúdo do card */}
-      <div className="flex flex-1 flex-col gap-4 p-6">
-        <div className="flex flex-row justify-end gap-2 text-xs text-[var(--color-text)]">
-          <img src={memberIcon || 0} />
+      <div className="flex flex-1 flex-col gap-4 rounded-b-xl border border-t-0 border-x-[var(--color-primary)] border-b-[var(--color-primary)] p-6">
+        <div className="flex flex-row items-center justify-end gap-2 text-xs text-[var(--color-text)]">
+          <img src={memberIcon} />
           <span className="flex flex-row gap-1">
-            {membersCount} <p>membros</p>
+            {membersCount ?? 0} {membersCount === 1 ? "membro" : "membros"}
           </span>
         </div>
-        <div className="min-h-24">
-          <h5 className="text-xl font-bold text-gray-900">{title}</h5>
+        <div>
+          <h5 className="text-xl font-bold text-gray-900">{community?.name}</h5>
 
-          <p className="flex-1 text-base text-gray-600">{description}</p>
+          <p className="flex-1 text-base text-gray-600">
+            {community?.description}
+          </p>
         </div>
         <button
-          className={`w-full cursor-pointer rounded-2xl border bg-[var(--color-primary)] py-3 text-xl font-medium text-white transition-colors duration-300 hover:bg-white hover:text-[var(--color-primary)]`}
+          onClick={onClick}
+          className={`w-full cursor-pointer rounded-2xl border-0 bg-[var(--color-primary)] py-3 text-xl font-medium text-white transition-colors duration-700 hover:bg-[var(--color-tertiary)]`}
         >
           Acessar
         </button>
