@@ -1,5 +1,23 @@
+import { useState, useEffect } from "react";
+import { countMembersByCommunity } from "../services/member-service";
 import memberIcon from "../assets/icons/member-icon.svg";
-export default function CommunityCard({ community }) {
+
+export default function CommunityCard({ community, onClick }) {
+  const [membersCount, setMembersCount] = useState(0);
+
+  useEffect(() => {
+    async function fetchMembersCount() {
+      try {
+        const memberCountData = await countMembersByCommunity(community?.id);
+        setMembersCount(memberCountData);
+        console.log("Members succesfully counted: ", memberCountData);
+      } catch (error) {
+        console.log("Error fetching count data", error);
+      }
+    }
+    fetchMembersCount();
+  });
+
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-[#1B5FFF] bg-white shadow-sm">
       {/* Imagem da comunidade */}
@@ -16,10 +34,10 @@ export default function CommunityCard({ community }) {
       </div>
       {/* Conteúdo do card */}
       <div className="flex flex-1 flex-col gap-4 p-6">
-        <div className="flex flex-row justify-end gap-2 text-xs text-[var(--color-text)]">
-          <img src={memberIcon || 0} />
+        <div className="flex flex-row items-center justify-end gap-2 text-xs text-[var(--color-text)]">
+          <img src={memberIcon} />
           <span className="flex flex-row gap-1">
-            membersCount <p>membros</p>
+            {membersCount ?? 0} {membersCount === 1 ? "membro" : "membros"}
           </span>
         </div>
         <div>
@@ -30,6 +48,7 @@ export default function CommunityCard({ community }) {
           </p>
         </div>
         <button
+          onClick={onClick}
           className={`w-full cursor-pointer rounded-2xl border-0 bg-[var(--color-primary)] py-3 text-xl font-medium text-white transition-colors duration-700 hover:bg-[var(--color-tertiary)]`}
         >
           Acessar

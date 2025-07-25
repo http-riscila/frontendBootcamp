@@ -31,7 +31,7 @@ function App() {
             }
           />
           <Route
-            path="/comunidade"
+            path="/community/:communityId"
             element={
               <PrivateRoutes>
                 <Community />
