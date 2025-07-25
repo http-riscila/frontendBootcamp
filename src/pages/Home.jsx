@@ -20,6 +20,9 @@ const Home = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCommunityId, setSelectedCommunityId] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showSearchResults, setShowSearchResults] = useState(false);
 
   async function getHomeData() {
     try {
@@ -92,26 +95,42 @@ const Home = () => {
     },
   ];
 
+  // Busca em tempo real (opcional)
+  useEffect(() => {
+    if (searchTerm.trim() && homeData.communities.length > 0) {
+      const filteredCommunities = homeData.communities.filter(
+        (community) =>
+          community.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          community.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+      // Atualiza resultados locais em tempo real
+      if (showSearchResults) {
+        setSearchResults(filteredCommunities);
+      }
+    }
+  }, [searchTerm, homeData.communities, showSearchResults]);
+
   // Carregar dados do backend
   useEffect(() => {
+    async function loadHomeData() {
+      try {
+        setLoading(true);
+        const data = await getHomeData();
+        setHomeData(data);
+      } catch (error) {
+        console.error("Erro ao carregar dados da home:", error);
+        setHomeData({
+          communities: [],
+          items: [],
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+
     loadHomeData();
   }, []);
-
-  async function loadHomeData() {
-    try {
-      setLoading(true);
-      const data = await getHomeData();
-      setHomeData(data);
-    } catch (error) {
-      console.error("Erro ao carregar dados da home:", error);
-      setHomeData({
-        communities: [],
-        items: [],
-      });
-    } finally {
-      setLoading(false);
-    }
-  }
 
   // Handlers
   const handleQueroTrocar = () => {
@@ -121,36 +140,79 @@ const Home = () => {
     if (!token || !user) {
       navigate("/");
     } else {
-      navigate("/comunidades"); //Todo: verificar a rota correta depois
+      navigate("/comunidades");
     }
+  };
+
+  const handleComoFunciona = () => {
+    navigate("/como-funciona");
   };
 
   const handleSearch = async (e) => {
     e.preventDefault();
 
     if (!searchTerm.trim()) {
-      console.log("Digite um nome para buscar");
+      alert("Digite um nome da comunidade para buscar");
       return;
     }
 
     try {
-      const results = await searchCommunities(searchTerm);
-      console.log("Resultados da busca:", results);
-      // TODO: Implementar navegação para página de resultados
+      setIsSearching(true);
+
+      const results = await searchCommunities(searchTerm.trim());
+
+      let filteredResults = results;
+      if (results.length === 0 && homeData.communities.length > 0) {
+        filteredResults = homeData.communities.filter(
+          (community) =>
+            community.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            community.description
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
+        );
+      }
+
+      setSearchResults(filteredResults);
+      setShowSearchResults(true);
     } catch (error) {
       console.error("Erro na busca:", error);
+
+      const localResults = homeData.communities.filter(
+        (community) =>
+          community.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          community.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+      setSearchResults(localResults);
+      setShowSearchResults(true);
+
+      if (localResults.length === 0) {
+        alert("Erro ao buscar comunidades. Tente novamente.");
+      }
+    } finally {
+      setIsSearching(false);
     }
   };
 
-  const handleCommunityClick = (communityId) => {
-    setSelectedCommunityId(communityId);
-    console.log("Community clicked:", communityId);
-    // TODO: Implementar navegação para página da comunidade
+  const clearSearch = () => {
+    setSearchTerm("");
+    setSearchResults([]);
+    setShowSearchResults(false);
+  };
+
+  const handleCommunityClick = (community) => {
+    setSelectedCommunityId(community.id);
+
+    navigate(`/comunidades/${community.id}`);
+    setSearchTerm("");
+    setSearchResults([]);
+    setShowSearchResults(false);
   };
 
   // Preparar dados para exibição
-  const displayCommunities =
-    homeData.communities?.length > 0
+  const displayCommunities = showSearchResults
+    ? searchResults
+    : homeData.communities.length > 0
       ? homeData.communities.slice(0, 3)
       : fallbackCommunities;
 
@@ -172,8 +234,8 @@ const Home = () => {
       ? itemImages.slice(3, 6)
       : fallbackImagesTwo;
 
-  {
-    loading && (
+  if (loading) {
+    return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-blue-500"></div>
       </div>
@@ -195,7 +257,7 @@ const Home = () => {
                   <img
                     src="src/assets/svgs/underline.svg"
                     alt="underline"
-                    className="absolute top-16 max-w-[505px]"
+                    className="absolute top-16 w-[380px] lg:max-w-[505px]"
                   />
                 </span>
               </h1>
@@ -211,7 +273,10 @@ const Home = () => {
               >
                 Quero trocar
               </button>
-              <button className="ease h-16 w-56 cursor-pointer rounded-2xl border text-xl text-[var(--color-secondary)] transition-all duration-700 hover:bg-[var(--color-secondary)] hover:text-white">
+              <button
+                className="ease h-16 w-56 cursor-pointer rounded-2xl border text-xl text-[var(--color-secondary)] transition-all duration-700 hover:bg-[var(--color-secondary)] hover:text-white"
+                onClick={handleComoFunciona}
+              >
                 Como funciona
               </button>
             </div>
@@ -239,53 +304,104 @@ const Home = () => {
               onSubmit={handleSearch}
               className="flex w-full items-center gap-5"
             >
-              <input
-                type="text"
-                placeholder="Digite o nome da comunidade"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="h-[68px] w-full rounded-2xl border border-[#1b5fff] bg-[#F7F2FA] px-10 py-5 text-lg text-[#938F96] outline-none"
-              />
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  placeholder="Digite o nome da comunidade"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="h-[68px] w-full rounded-2xl border border-[#1b5fff] bg-[#F7F2FA] px-10 py-5 text-lg text-[#938F96] outline-none"
+                />
+                {searchTerm && (
+                  <button
+                    type="button"
+                    onClick={clearSearch}
+                    className="absolute top-1/2 right-4 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
               <button
                 type="submit"
-                className="flex h-[68px] w-[68px] cursor-pointer items-center justify-center rounded-2xl bg-blue-600 text-white transition-colors duration-700 hover:bg-[var(--color-tertiary)]"
+                disabled={isSearching}
+                className="flex h-[68px] w-[68px] cursor-pointer items-center justify-center rounded-2xl bg-blue-600 text-white transition-colors duration-700 hover:bg-[var(--color-tertiary)] disabled:cursor-not-allowed disabled:opacity-50"
               >
-                <img src="src/assets/svgs/lupa-icon.svg" alt="lupa" />
+                {isSearching ? (
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                ) : (
+                  <img src="src/assets/svgs/lupa-icon.svg" alt="lupa" />
+                )}
               </button>
             </form>
           </div>
         </section>
         <section className="">
           <h2 className="text-5xl font-medium text-[#111827]">
-            Comunidades mais acessadas
+            {showSearchResults
+              ? `Resultados da busca${searchTerm ? ` para "${searchTerm}"` : ""}`
+              : "Comunidades mais acessadas"}
           </h2>
           <div className="flex items-center justify-between">
             <p className="mb-2 text-2xl text-[#79767d]">
-              Navegue pelas comunidades com mais membros
+              {showSearchResults
+                ? `${searchResults.length} comunidade${searchResults.length !== 1 ? "s" : ""} encontrada${searchResults.length !== 1 ? "s" : ""}`
+                : "Navegue pelas comunidades com mais membros"}
             </p>
-            <button
-              onClick={() => (window.location.href = "/comunidades")}
-              className="flex cursor-pointer items-center rounded-full px-4 py-2 text-2xl text-[var(--color-secondary)] hover:underline hover:underline-offset-4"
-            >
-              Ver todas <img src="src/assets/svgs/arrow-left-icon.svg" alt="" />
-            </button>
+            {!showSearchResults && (
+              <button
+                onClick={() => (window.location.href = "/comunidades")}
+                className="flex cursor-pointer items-center rounded-full px-4 py-2 text-2xl text-[var(--color-secondary)] hover:underline hover:underline-offset-4"
+              >
+                Ver todas{" "}
+                <img src="src/assets/svgs/arrow-left-icon.svg" alt="" />
+              </button>
+            )}
+            {showSearchResults && (
+              <button
+                onClick={clearSearch}
+                className="flex cursor-pointer items-center rounded-full px-4 py-2 text-2xl text-[var(--color-secondary)] hover:underline hover:underline-offset-4"
+              >
+                Limpar busca
+              </button>
+            )}
           </div>
           <div className="mt-8 grid w-full max-w-[1200px] grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {displayCommunities.map((community) => {
-              const isSelected = selectedCommunityId === community.id;
-              return (
-                <CommunityCard
-                  key={community.id}
-                  imageUrl={community.imageUrl}
-                  categoryLabel="comunidade"
-                  title={community.name || community.title}
-                  description={community.description}
-                  membersCount={community.membersCount || 0}
-                  isSelected={isSelected}
-                  onClick={() => handleCommunityClick(community.id)}
-                />
-              );
-            })}
+            {displayCommunities.length === 0 && showSearchResults ? (
+              <div className="col-span-full flex flex-col items-center justify-center py-12">
+                <div className="mb-4 text-6xl">🔍</div>
+                <h3 className="mb-2 text-2xl font-medium text-gray-700">
+                  {searchTerm.trim()
+                    ? "Nenhuma comunidade encontrada para essa busca"
+                    : "Nenhuma comunidade disponível no momento"}
+                </h3>
+                <p className="mb-6 text-lg text-gray-500">
+                  Tente buscar com outros termos ou{" "}
+                  <button
+                    onClick={clearSearch}
+                    className="text-blue-600 hover:underline"
+                  >
+                    veja todas as comunidades
+                  </button>
+                </p>
+              </div>
+            ) : (
+              displayCommunities.map((community) => {
+                const isSelected = selectedCommunityId === community.id;
+                return (
+                  <CommunityCard
+                    key={community.id}
+                    imageUrl={community.imageUrl}
+                    categoryLabel="comunidade"
+                    title={community.name || community.title}
+                    description={community.description}
+                    membersCount={community.membersCount || 0}
+                    isSelected={isSelected}
+                    onClick={() => handleCommunityClick(community.id)}
+                  />
+                );
+              })
+            )}
           </div>
         </section>
         <section className="container mx-auto">

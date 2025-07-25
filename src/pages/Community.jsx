@@ -14,7 +14,7 @@ import {
 } from "../services/community-service";
 
 const Community = () => {
-  const { communityId } = useParams(); // Obter ID da comunidade da URL
+  const { communityId } = useParams();
   const [showAddModal, setShowAddModal] = useState(false);
   const [community, setCommunity] = useState(null);
   const [ads, setAds] = useState([]);
@@ -22,19 +22,6 @@ const Community = () => {
   const [adsLoading, setAdsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-
-  // Carregar dados da comunidade e anúncios ao montar
-  useEffect(() => {
-    if (communityId) {
-      loadCommunityData();
-      loadCommunityAds();
-    } else {
-      // Se não houver ID, exibe um erro ou redireciona
-      setError("Nenhuma comunidade selecionada.");
-      setLoading(false);
-      setAdsLoading(false);
-    }
-  }, [communityId, loadCommunityData, loadCommunityAds]);
 
   // Carregar dados da comunidade
   const loadCommunityData = useCallback(async () => {
@@ -46,7 +33,7 @@ const Community = () => {
     } catch (err) {
       console.error("Erro ao carregar dados da comunidade:", err);
       setError("Falha ao carregar os dados da comunidade. Tente novamente.");
-      setCommunity(null); // Garante que não há dados antigos
+      setCommunity(null);
     } finally {
       setLoading(false);
     }
@@ -61,18 +48,28 @@ const Community = () => {
     } catch (err) {
       console.error("Erro ao carregar anúncios da comunidade:", err);
       setError("Falha ao carregar os anúncios. Tente novamente.");
-      setAds([]); // Limpa os anúncios em caso de erro
+      setAds([]);
     } finally {
       setAdsLoading(false);
     }
   }, [communityId]);
 
-  // Buscar anúncios com filtro
+  // useEffect após definição dos métodos
+  useEffect(() => {
+    if (communityId) {
+      loadCommunityData();
+      loadCommunityAds();
+    } else {
+      setError("Nenhuma comunidade selecionada.");
+      setLoading(false);
+      setAdsLoading(false);
+    }
+  }, [communityId, loadCommunityData, loadCommunityAds]);
+
   const handleSearchAds = useCallback(
     async (term) => {
       try {
         setAdsLoading(true);
-
         if (term.trim()) {
           const data = await searchCommunityAds(communityId, term);
           setAds(data);
@@ -82,7 +79,7 @@ const Community = () => {
       } catch (err) {
         console.error("Erro ao buscar anúncios:", err);
         setError("Falha ao buscar anúncios. Tente novamente.");
-        setAds([]); // Limpa os anúncios em caso de erro
+        setAds([]);
       } finally {
         setAdsLoading(false);
       }
@@ -90,7 +87,6 @@ const Community = () => {
     [communityId, loadCommunityAds]
   );
 
-  // Criar novo anúncio
   const handleCreateAd = async (adData) => {
     try {
       const newAd = await createCommunityAd(communityId, adData);
@@ -103,14 +99,12 @@ const Community = () => {
     }
   };
 
-  // Debounced search
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (communityId) {
         handleSearchAds(searchTerm);
       }
     }, 500);
-
     return () => clearTimeout(timeoutId);
   }, [searchTerm, communityId, handleSearchAds]);
 
