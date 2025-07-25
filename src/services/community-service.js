@@ -3,7 +3,7 @@ import api from "./api";
 // COMUNIDADES - Service de getAll
 export async function getCommunities() {
   try {
-    const response = await api.get("/api/communities");
+    const response = await api.get("/communities");
     return response.data;
   } catch (error) {
     console.error("Error getting communities", error);
@@ -14,8 +14,32 @@ export async function getCommunities() {
 // COMUNIDADES - Service de create
 export async function createCommunity(communityData) {
   try {
-    const response = await api.post("/api/communities", communityData);
-    return response.data;
+    // Limpar e validar os dados
+    const cleanDescription = communityData.description?.trim() || '';
+    
+    // Se há um arquivo de imagem, usar FormData
+    if (communityData.imageFile) {
+      const formData = new FormData();
+      formData.append('name', communityData.name);
+      formData.append('category', communityData.category || '');
+      formData.append('description', cleanDescription);
+      formData.append('communityImage', communityData.imageFile);
+      
+      const response = await api.post("/communities", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } else {
+      // Se não há imagem, enviar como JSON normal
+      const response = await api.post("/communities", {
+        name: communityData.name,
+        category: communityData.category || '',
+        description: cleanDescription,
+      });
+      return response.data;
+    }
   } catch (error) {
     console.error("Error creating community", error);
     throw error;
@@ -42,7 +66,7 @@ export async function searchCommunities(searchTerm = "") {
 // Obter uma comunidade específica por ID
 export async function getCommunityById(communityId) {
   try {
-    const response = await api.get(`/api/communities/${communityId}`);
+    const response = await api.get(`/communities/${communityId}`);
     return response.data;
   } catch (error) {
     console.error("Error getting community by ID", error);
@@ -53,7 +77,7 @@ export async function getCommunityById(communityId) {
 export async function getCommunitiesByUser(userId) {
   console.log(userId);
   try {
-    const response = await api.get(`/api/communities/by-user/${userId}`);
+    const response = await api.get(`/communities/by-user/${userId}`);
     return response.data;
   } catch (error) {
     console.error("Error getting community by user", error);
@@ -61,10 +85,10 @@ export async function getCommunitiesByUser(userId) {
   }
 }
 
-// COMUNIDADE ESPECÍFICA - Service de getAll para anúncios
+// COMUNIDADE ESPECÍFICA - Service de getAll para anúncios (items)
 export async function getCommunityAds(communityId) {
   try {
-    const response = await api.get(`/api/communities/${communityId}/ads`);
+    const response = await api.get(`/items/by-community/${communityId}`);
     return response.data;
   } catch (error) {
     console.error("Error getting community ads", error);
@@ -72,13 +96,15 @@ export async function getCommunityAds(communityId) {
   }
 }
 
-// COMUNIDADE ESPECÍFICA - Service de create para anúncios
+// COMUNIDADE ESPECÍFICA - Service de create para anúncios (items)
 export async function createCommunityAd(communityId, adData) {
   try {
-    const response = await api.post(
-      `/api/communities/${communityId}/ads`,
-      adData
-    );
+    // Adicionar o communityId aos dados do anúncio
+    const itemData = {
+      ...adData,
+      communityId: communityId
+    };
+    const response = await api.post("/items", itemData);
     return response.data;
   } catch (error) {
     console.error("Error creating community ad", error);
@@ -89,7 +115,7 @@ export async function createCommunityAd(communityId, adData) {
 // Buscar anúncios de uma comunidade com filtros
 export async function searchCommunityAds(communityId, searchTerm = "") {
   try {
-    let url = `/communities/${communityId}/ads`;
+    let url = `/items/by-community/${communityId}`;
 
     if (searchTerm.trim()) {
       url += `?search=${encodeURIComponent(searchTerm)}`;
@@ -107,7 +133,7 @@ export async function searchCommunityAds(communityId, searchTerm = "") {
 export async function countCreatedCommunities(userId) {
   try {
     const response = await api.get(
-      `/api/communities/count/created-by/${userId}`
+      `/communities/count/created-by/${userId}`
     );
     return response.data;
   } catch (error) {

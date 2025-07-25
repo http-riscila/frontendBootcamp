@@ -14,6 +14,7 @@ export async function login(credentials) {
     const response = await api.post("/auth/login", credentials);
     return response.data;
   } catch (error) {
-    return console.error("Error authenticating an user", error);
+    console.error("Error authenticating an user", error);
+    throw error;
   }
 }

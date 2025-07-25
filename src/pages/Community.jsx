@@ -143,9 +143,12 @@ const Community = () => {
             <div className="mb-8 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
               <div className="flex items-center gap-6">
                 <img
-                  src={community.image}
+                  src={community.imageUrl || '/placeholder-community.png'}
                   alt={community.name}
                   className="h-20 w-20 rounded-full border-2 border-blue-200 object-cover"
+                  onError={(e) => {
+                    e.target.src = 'https://via.placeholder.com/80x80/e5e7eb/9ca3af?text=C';
+                  }}
                 />
                 <div>
                   <h1 className="mb-1 text-2xl font-bold text-gray-900">
@@ -202,7 +205,7 @@ const Community = () => {
               {ads.map((ad) => (
                 <CommunityCard
                   key={ad.id}
-                  image={ad.image}
+                  image={ad.imageUrl}
                   title={ad.title}
                   status={ad.status}
                   description={ad.description}
@@ -227,8 +230,8 @@ const Community = () => {
           onClose={() => setShowAddModal(false)}
           onSubmit={handleCreateAd}
         />
-        <Footer />
       </div>
+      <Footer />
     </div>
   );
 };

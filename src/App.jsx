@@ -12,59 +12,55 @@ import HowItWorks from "./pages/HowItWorks";
 
 function App() {
   return (
-    <>
+    <UserProvider>
       <Routes>
         {/* Rotas públicas */}
         <Route path="/" element={<Login />} />
         <Route path="/cadastro" element={<Register />} />
-      </Routes>
 
-      <UserProvider>
-        <Routes>
-          {/* Rotas privadas */}
-          <Route
-            path="/home"
-            element={
-              <PrivateRoutes>
-                <Home />
-              </PrivateRoutes>
-            }
-          />
-          <Route
-            path="/community/:communityId"
-            element={
-              <PrivateRoutes>
-                <Community />
-              </PrivateRoutes>
-            }
-          />
-          <Route
-            path="/comunidades"
-            element={
-              <PrivateRoutes>
-                <Communities />
-              </PrivateRoutes>
-            }
-          />
-          <Route
-            path="/como-funciona"
-            element={
-              <PrivateRoutes>
-                <HowItWorks />
-              </PrivateRoutes>
-            }
-          />
-          <Route
-            path="/perfil"
-            element={
-              <PrivateRoutes>
-                <UserProfile />
-              </PrivateRoutes>
-            }
-          />
-        </Routes>
-      </UserProvider>
-    </>
+        {/* Rotas privadas */}
+        <Route
+          path="/home"
+          element={
+            <PrivateRoutes>
+              <Home />
+            </PrivateRoutes>
+          }
+        />
+        <Route
+          path="/community/:communityId"
+          element={
+            <PrivateRoutes>
+              <Community />
+            </PrivateRoutes>
+          }
+        />
+        <Route
+          path="/comunidades"
+          element={
+            <PrivateRoutes>
+              <Communities />
+            </PrivateRoutes>
+          }
+        />
+        <Route
+          path="/como-funciona"
+          element={
+            <PrivateRoutes>
+              <HowItWorks />
+            </PrivateRoutes>
+          }
+        />
+        <Route
+          path="/perfil"
+          element={
+            <PrivateRoutes>
+              <UserProfile />
+            </PrivateRoutes>
+          }
+        />
+      </Routes>
+    </UserProvider>
   );
 }
 

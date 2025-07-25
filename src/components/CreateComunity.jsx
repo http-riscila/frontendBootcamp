@@ -3,6 +3,7 @@ import { Button } from "flowbite-react";
 
 const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
     communityName: "",
@@ -28,6 +29,7 @@ const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setSelectedImage(imageUrl);
+      setSelectedFile(file);
     }
   };
 
@@ -38,7 +40,7 @@ const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
         name: formData.communityName,
         category: formData.category,
         description: formData.description,
-        image: selectedImage,
+        imageFile: selectedFile, // Enviar o arquivo em vez da URL blob
       };
 
       if (onSubmit) {
@@ -52,6 +54,7 @@ const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
         description: "",
       });
       setSelectedImage(null);
+      setSelectedFile(null);
       onClose();
     } catch (error) {
       console.error("Erro ao criar comunidade:", error);

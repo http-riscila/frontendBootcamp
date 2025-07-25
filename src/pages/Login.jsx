@@ -11,11 +11,13 @@ export default function Login() {
     password: "",
   });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
   function handleChange(e) {
     const { name, value } = e.target;
+    setError(""); // Limpa o erro ao digitar
 
     setCredentials((prevData) => ({
       ...prevData,
@@ -36,6 +38,7 @@ export default function Login() {
       }
       console.log("User succesfully logged in", response);
     } catch (error) {
+      setError("Email ou senha inválidos. Tente novamente.");
       console.error("Error authenticating an user", error);
     } finally {
       setCredentials({
@@ -92,6 +95,8 @@ export default function Login() {
               value={credentials.password}
               onChange={handleChange}
             />
+
+            {error && <p className="text-red-500 text-sm">{error}</p>}
 
             <button
               type="submit"
