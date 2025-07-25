@@ -25,7 +25,7 @@ export default function CommunityCard({ community, onClick }) {
         {community?.imageUrl ? (
           <img
             src={community?.imageUrl}
-            alt={community?.name}
+            alt="Imagem da comunidade"
             className="h-full w-full object-cover"
           />
         ) : (

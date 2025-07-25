@@ -15,8 +15,8 @@ function App() {
     <>
       <Routes>
         {/* Rotas públicas */}
-        <Route path="/cadastro" element={<Register />} />
         <Route path="/" element={<Login />} />
+        <Route path="/cadastro" element={<Register />} />
       </Routes>
 
       <UserProvider>
