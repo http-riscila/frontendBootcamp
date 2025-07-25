@@ -38,8 +38,6 @@ export default function UserDetails() {
 
   const { user } = useUser();
 
-  console.log(showModal);
-
   useEffect(() => {
     if (!user?.id) return;
 
@@ -258,83 +256,87 @@ export default function UserDetails() {
               </li>
             </ul>
           </nav>
-          <div>
+          <div className="grid grid-cols-3 justify-center gap-6">
             {activeTab === "my-communities" &&
-              communities.map((community) => (
-                <CommunityCard key={community.id} community={community} />
-              ))}
-            {activeTab === "my-communities" && communities.length === 0 && (
-              <div className="py-12 text-center">
-                <div className="mb-4 text-gray-500">
-                  <svg
-                    className="mx-auto mb-4 h-16 w-16 text-gray-300"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 20h5v-2a3 3 0 00-5.196-2.121M9 20H4v-2a3 3 0 015.196-2.121M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                    />
-                  </svg>
-                  <p className="text-lg">
-                    Você ainda não criou nenhuma comunidade
-                  </p>
-                  <p className="text-sm">
-                    Que tal criar sua primeira comunidade?
-                  </p>
+              (communities.length > 0 ? (
+                communities.map((community) => (
+                  <CommunityCard key={community.id} community={community} />
+                ))
+              ) : (
+                <div className="col-span-3 py-12 text-center">
+                  <div className="mb-4 text-gray-500">
+                    <svg
+                      className="mx-auto mb-4 h-16 w-16 text-gray-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 20h5v-2a3 3 0 00-5.196-2.121M9 20H4v-2a3 3 0 015.196-2.121M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                    <p className="text-lg">
+                      Você ainda não criou nenhuma comunidade
+                    </p>
+                    <p className="text-sm">
+                      Que tal criar sua primeira comunidade?
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )}
-            {activeTab === "my-ads" && ads.length > 0 && (
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {ads.map((ad) => (
-                  <AdCard
-                    key={ad.id}
-                    ad={ad}
-                    onViewDetails={() => handleOpenModal(ad)}
+              ))}
+
+            {activeTab === "my-ads" &&
+              (ads.length > 0 ? (
+                <div className="col-span-3 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {ads.map((ad) => (
+                    <AdCard
+                      key={ad.id}
+                      ad={ad}
+                      onViewDetails={() => handleOpenModal(ad)}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="col-span-3 py-12 text-center">
+                  <div className="mb-4 text-gray-500">
+                    <svg
+                      className="mx-auto mb-4 h-16 w-16 text-gray-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    <p className="text-lg">
+                      Você não criou nenhum anúncio ainda
+                    </p>
+                    <p className="text-sm">
+                      Cadastre seus itens para que outros usuários façam suas
+                      propostas de troca
+                    </p>
+                  </div>
+                </div>
+              ))}
+
+            {activeTab === "received-proposals" &&
+              (proposalsByRecipient.length > 0 ? (
+                proposalsByRecipient.map((proposal) => (
+                  <ProposalCard
+                    key={proposal.id}
+                    type="received-proposals"
+                    proposal={proposal}
                   />
-                ))}
-              </div>
-            )}
-            {activeTab === "my-ads" && ads.length === 0 && (
-              <div className="py-12 text-center">
-                <div className="mb-4 text-gray-500">
-                  <svg
-                    className="mx-auto mb-4 h-16 w-16 text-gray-300"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
-                  <p className="text-lg">Você não criou nenhum anúncio ainda</p>
-                  <p className="text-sm">
-                    Cadastre seus itens para que outros usuários façam suas
-                    propostas de troca
-                  </p>
-                </div>
-              </div>
-            )}
-            {activeTab === "received-proposals" &&
-              proposalsByRecipient.length > 0 &&
-              communities.map((proposal) => (
-                <ProposalCard
-                  key={proposal.id}
-                  type="received-proposals"
-                  proposal={proposal}
-                />
-              ))}
-            {activeTab === "received-proposals" &&
-              proposalsByRecipient.length === 0 && (
-                <div className="py-12 text-center">
+                ))
+              ) : (
+                <div className="col-span-3 py-12 text-center">
                   <div className="mb-4 text-gray-500">
                     <svg
                       className="mx-auto mb-4 h-16 w-16 text-gray-300"
@@ -358,19 +360,19 @@ export default function UserDetails() {
                     </p>
                   </div>
                 </div>
-              )}
-            {activeTab === "sent-proposals" &&
-              proposalsBySender.length > 0 &&
-              communities.map((proposal) => (
-                <ProposalCard
-                  key={proposal.id}
-                  type="sent-proposals"
-                  proposal={proposal}
-                />
               ))}
+
             {activeTab === "sent-proposals" &&
-              proposalsBySender.length === 0 && (
-                <div className="py-12 text-center">
+              (proposalsBySender.length > 0 ? (
+                proposalsBySender.map((proposal) => (
+                  <ProposalCard
+                    key={proposal.id}
+                    type="sent-proposals"
+                    proposal={proposal}
+                  />
+                ))
+              ) : (
+                <div className="col-span-3 py-12 text-center">
                   <div className="mb-4 text-gray-500">
                     <svg
                       className="mx-auto mb-4 h-16 w-16 text-gray-300"
@@ -394,7 +396,7 @@ export default function UserDetails() {
                     </p>
                   </div>
                 </div>
-              )}
+              ))}
           </div>
         </section>
       </div>
