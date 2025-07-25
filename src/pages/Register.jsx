@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { registerUser } from "../services/auth-service";
+import { validateRegistration } from "../validators/register-validation";
 import maskGroup from "../assets/images/mask-group.png";
 import star from "../assets/images/star3.png";
 import fullLogo from "../assets/images/full-logo.png";
@@ -13,6 +15,7 @@ export default function Register() {
     confirmPassword: "",
     acceptedTerms: false,
   });
+
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -35,18 +38,46 @@ export default function Register() {
 
   async function handleNewUser(e) {
     e.preventDefault();
+
+    const errors = validateRegistration(userData);
+    const hasErrors = Object.keys(errors).length > 0;
+
+    if (hasErrors) {
+      Object.values(errors).forEach((msg) =>
+        toast.warning(msg, {
+          className: "toast-warning",
+          progressClassName: "Toastify__progress-bar",
+        })
+      );
+      setLoading(false);
+      return;
+    }
+
+    if (!userData.acceptedTerms) {
+      toast.warning("Os termos precisam ser aceitos para concluir o cadastro!");
+      return;
+    }
+
+    if (userData.confirmPassword !== userData.password) {
+      toast.warning("As senhas devem ser iguais!");
+      return;
+    }
+
     setLoading(true);
     console.log("New user data: ", userData);
     try {
-      if (!userData.acceptedTerms) {
-        return console.error("terms must be accepted for registration");
-      } else if (userData.confirmPassword !== userData.password) {
-        return console.error("Password must match");
-      }
       const newUser = await registerUser(userData);
+      toast.success("Usuário criado com sucesso!", {
+        className: "toast-success",
+        progressClassName: "Toastify__progress-bar",
+      });
       console.log("User succesfully registered", newUser);
       navigate("/");
     } catch (error) {
+      toast.error("Erro ao registrar usuário", {
+        className: "toast-error",
+        progressClassName: "Toastify__progress-bar",
+      });
       console.error("Error registering a new user: ", error);
     } finally {
       setUserdata({
