@@ -2,7 +2,8 @@ import api from "./api";
 
 export async function getItems() {
   try {
-    const response = await api.get("/items");
+    // Adiciona parâmetros para ordenar por data de criação (descendente)
+    const response = await api.get("/items?_sort=createdAt&_order=desc");
     return response.data;
   } catch (error) {
     console.error("Error getting items", error);

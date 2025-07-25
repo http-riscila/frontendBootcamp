@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Button } from "flowbite-react";
 
-const CreateListingModal = ({ isOpen, onClose }) => {
+const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
@@ -32,10 +32,34 @@ const CreateListingModal = ({ isOpen, onClose }) => {
     }
   };
 
-  const handleSubmit = () => {
-    console.log("Form submitted:", formData);
-    // Handle form submission here
-    onClose(); // Fechar modal após submissão
+  const handleSubmit = async () => {
+    try {
+      // Preparar dados para envio
+      const communityData = {
+        name: formData.communityName,
+        category: formData.category,
+        description: formData.description,
+        location: formData.location,
+        image: selectedImage
+      };
+
+      if (onSubmit) {
+        await onSubmit(communityData);
+      }
+      
+      // Resetar formulário e fechar modal
+      setFormData({
+        communityName: "",
+        category: "",
+        description: "",
+        location: "",
+      });
+      setSelectedImage(null);
+      onClose();
+    } catch (error) {
+      console.error("Erro ao criar comunidade:", error);
+      // Mantém o modal aberto em caso de erro
+    }
   };
 
   return (

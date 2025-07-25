@@ -4,6 +4,7 @@ export default function CommunityCard({
   title,
   description,
   membersCount,
+  onClick,
 }) {
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-[#1B5FFF] bg-white shadow-sm">
@@ -29,6 +30,7 @@ export default function CommunityCard({
           <p className="flex-1 text-base text-gray-600">{description}</p>
         </div>
         <button
+          onClick={onClick}
           className={`w-full cursor-pointer rounded-2xl border-0 bg-[var(--color-primary)] py-3 text-xl font-medium text-white transition-colors duration-700 hover:bg-[var(--color-tertiary)]`}
         >
           Acessar

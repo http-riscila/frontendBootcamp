@@ -1,100 +1,90 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Breadcrumb from "../components/Breadcrumb";
 import CommunityCard from "../components/CommunityCard";
 import CreateComunity from "../components/CreateComunity";
-
-const mockCommunities = [
-  {
-    id: 1,
-    imageUrl: "",
-    name: "Bazar de roupas BR",
-    description:
-      "Comunidade para troca de roupas, sapatos e acessórios em todo Brasil",
-    membersCount: 2340,
-    category: "Roupas",
-  },
-  {
-    id: 2,
-    imageUrl: "src/assets/images/livro.png",
-    name: "Livros e cultura",
-    description:
-      "Troque livros, CDs, DVDs e outros itens culturais novos ou usados",
-    membersCount: 876,
-    category: "Livros e cultura",
-  },
-  {
-    id: 3,
-    imageUrl: "src/assets/images/casaEdecoração.png",
-    name: "Casa e decoração",
-    description: "Comunidade para troca de itens de casa e decoração",
-    membersCount: 2100,
-    category: "Casa e decoração",
-  },
-  // Repita para preencher o grid
-  {
-    id: 4,
-    imageUrl: "",
-    name: "Eletrônicos e Games",
-    description:
-      "Troque dispositivos eletrônicos, videogames, consoles e acessórios",
-    membersCount: 1580,
-    category: "Eletrônicos",
-  },
-  {
-    id: 5,
-    imageUrl: "",
-    name: "Esportes e Fitness",
-    description:
-      "Equipamentos esportivos, roupas de treino e acessórios fitness",
-    membersCount: 950,
-    category: "Esportes",
-  },
-  {
-    id: 6,
-    imageUrl: "",
-    name: "Infantil",
-    description:
-      "Roupas, brinquedos e acessórios para crianças de todas as idades",
-    membersCount: 1750,
-    category: "Infantil",
-  },
-  {
-    id: 7,
-    imageUrl: "",
-    name: "Beleza e Cuidados",
-    description: "Cosméticos, produtos de beleza e cuidados pessoais",
-    membersCount: 1320,
-    category: "Beleza",
-  },
-  {
-    id: 8,
-    imageUrl: "",
-    name: "Artesanato e Hobbies",
-    description: "Materiais para crafts, hobbies e atividades criativas",
-    membersCount: 680,
-    category: "Artesanato",
-  },
-  {
-    id: 9,
-    imageUrl: "",
-    name: "Vintage e Colecionáveis",
-    description: "Itens antigos, retrô e colecionáveis únicos",
-    membersCount: 890,
-    category: "Vintage",
-  },
-];
+import { getCommunities, searchCommunities, createCommunity } from "../services/community-service";
 
 const Communities = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [communities, setCommunities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const filteredCommunities = mockCommunities.filter(
-    (community) =>
-      community.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      community.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Carregar comunidades ao montar o componente
+  const loadCommunities = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getCommunities();
+      setCommunities(data);
+    } catch (err) {
+      console.error("Erro ao carregar comunidades:", err);
+      setError("Falha ao carregar as comunidades. Tente novamente.");
+      setCommunities([]); // Limpa as comunidades em caso de erro
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadCommunities();
+  }, [loadCommunities]);
+
+  // Função para buscar comunidades com filtro
+  const handleSearch = useCallback(async (term) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      if (term.trim()) {
+        const data = await searchCommunities(term);
+        setCommunities(data);
+      } else {
+        await loadCommunities();
+      }
+    } catch (err) {
+      console.error("Erro ao buscar comunidades:", err);
+      setError("Falha ao buscar as comunidades. Tente novamente.");
+      setCommunities([]); // Limpa as comunidades em caso de erro
+    } finally {
+      setLoading(false);
+    }
+  }, [loadCommunities]);
+
+  // Função para criar nova comunidade
+  const handleCreateCommunity = async (communityData) => {
+    try {
+      const newCommunity = await createCommunity(communityData);
+      setCommunities(prev => [newCommunity, ...prev]);
+      setShowCreateModal(false);
+      console.log("Comunidade criada com sucesso:", newCommunity);
+    } catch (err) {
+      console.error("Erro ao criar comunidade:", err);
+      // Em caso de erro, ainda fecha o modal mas mostra erro
+      setShowCreateModal(false);
+      setError("Erro ao criar comunidade");
+    }
+  };
+
+  // Atualizar busca quando searchTerm muda
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      handleSearch(searchTerm);
+    }, 500); // Debounce de 500ms
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm, handleSearch]);
+
+  const handleNavigateToCommunity = (communityId) => {
+    navigate(`/community/${communityId}`);
+  };
+
+  const filteredCommunities = communities;
 
   return (
     <div className="min-h-screen w-full bg-gray-50">
@@ -120,6 +110,20 @@ const Communities = () => {
             </button>
           </div>
         </div>
+        
+        {/* Estado de erro */}
+        {error && (
+          <div className="mb-6 rounded-lg bg-red-50 border border-red-200 p-4">
+            <p className="text-red-600">{error}</p>
+            <button 
+              onClick={loadCommunities}
+              className="mt-2 text-red-700 underline hover:text-red-800"
+            >
+              Tentar novamente
+            </button>
+          </div>
+        )}
+        
         {/* Campo de busca */}
         <div className="mb-6">
           <input
@@ -128,26 +132,47 @@ const Communities = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="h-14 w-full rounded-2xl border border-[#1b5fff] bg-[#F7F2FA] px-6 py-4 text-lg text-[#938F96] transition-all outline-none focus:ring-2 focus:ring-blue-300"
+            disabled={loading}
           />
         </div>
+        
+        {/* Loading state */}
+        {loading && (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--color-primary)]"></div>
+            <span className="ml-3 text-gray-600">Carregando comunidades...</span>
+          </div>
+        )}
+        
         {/* Grid de comunidades */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-          {filteredCommunities.map((community) => (
-            <CommunityCard
-              key={community.id}
-              image={community.imageUrl}
-              title={community.name}
-              description={community.description}
-              category={community.category}
-              membersCount={community.membersCount}
-              onClick={() => {}}
-            />
-          ))}
-        </div>
+        {!loading && (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+            {filteredCommunities.map((community) => (
+              <CommunityCard
+                key={community.id}
+                image={community.imageUrl}
+                title={community.name}
+                description={community.description}
+                category={community.category}
+                membersCount={community.membersCount}
+                onClick={() => handleNavigateToCommunity(community.id)}
+              />
+            ))}
+            
+            {filteredCommunities.length === 0 && !loading && (
+              <div className="col-span-full text-center py-12">
+                <p className="text-gray-500 text-lg">
+                  {searchTerm ? 'Nenhuma comunidade encontrada para esta busca.' : 'Nenhuma comunidade disponível.'}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
       <CreateComunity
         isOpen={showCreateModal}
         onClose={() => setShowCreateModal(false)}
+        onSubmit={handleCreateCommunity}
       />
       <Footer />
     </div>
