@@ -25,19 +25,7 @@ export default function UserDetails() {
   const [activeAdCount, setActiveAdCount] = useState(0);
   const [communityCount, setCommunityCount] = useState(0);
 
-  const [communities, setCommunities] = useState([
-    {
-      id: 1,
-      name: "Troca de Roupas SP",
-      description: "Comunidade para troca de roupas, sapatos e acessórios em São Paulo",
-      memberCount: 150,
-      imageUrl: "src/assets/images/casaEdecoração.png",
-      createdBy: {
-        name: "Maria Silva",
-        imageUrl: null
-      }
-    }
-  ]);
+  const [communities, setCommunities] = useState([]);
   const [ads, setAds] = useState([
     {
       id: 1,
@@ -57,44 +45,8 @@ export default function UserDetails() {
       }
     }
   ]);
-  const [proposalsBySender, setProposalsBySender] = useState([
-    {
-      id: 1,
-      status: "pending",
-      itemOffered: {
-        name: "Camisa Social Azul",
-        imageUrl: "src/assets/images/6-post-semanal-maltashoes-2022-05-20-branco-12 1.png"
-      },
-      itemRequested: {
-        name: "Vestido floral longo",
-        imageUrl: "src/assets/images/104002MRE-calca-jeans-reta-araca-marrom-escuro-minimadeia-nov24-04 1.png"
-      },
-      recipient: {
-        name: "Ana Costa",
-        imageUrl: null
-      },
-      createdAt: new Date()
-    }
-  ]);
-  const [proposalsByRecipient, setProposalsByRecipient] = useState([
-    {
-      id: 1,
-      status: "pending",
-      itemOffered: {
-        name: "Sapato Social Preto",
-        imageUrl: "src/assets/images/6-post-semanal-maltashoes-2022-05-20-branco-12 1.png"
-      },
-      itemRequested: {
-        name: "Vestido floral longo",
-        imageUrl: "src/assets/images/104002MRE-calca-jeans-reta-araca-marrom-escuro-minimadeia-nov24-04 1.png"
-      },
-      sender: {
-        name: "João Silva",
-        imageUrl: null
-      },
-      createdAt: new Date()
-    }
-  ]);
+  const [proposalsBySender, setProposalsBySender] = useState([]);
+  const [proposalsByRecipient, setProposalsByRecipient] = useState([]);
 
   const [activeTab, setActiveTab] = useState("my-communities");
 
@@ -188,11 +140,11 @@ export default function UserDetails() {
   return (
     <div className="font-inter flex w-full flex-col bg-[var(--color-background)]">
       <Header />
-      <div className="mx-auto flex w-full max-w-[1240px] flex-col gap-8 py-8">
+      <div className="mx-auto flex w-full max-w-[1240px] flex-col gap-8 py-8 px-15">
         <section className="flex flex-col gap-4">
           <Breadcrumb />
           <div className="flex flex-row gap-8">
-            <div className="flex flex-row items-center gap-4 mt-6">
+            <div className="flex flex-row items-center gap-4">
               <span className="relative h-32 w-32 rounded-full">
                 {user?.profileImageUrl && (
                   <img
@@ -252,9 +204,9 @@ export default function UserDetails() {
           </div>
         </section>
 
-        <section className="flex flex-col gap-6 mt-6">
+        <section className="flex flex-col gap-6">
           <nav>
-            <ul className="flex flex-row gap-6 text-md font-medium text-[var(--color-title)]">
+            <ul className="flex flex-row gap-6 text-xl font-medium text-[var(--color-title)]">
               <li
                 className={`rounded-xl px-4 py-1 transition-all duration-500 ease-in-out ${
                   activeTab === "my-communities"
@@ -330,32 +282,36 @@ export default function UserDetails() {
               </div>
             )}
             {activeTab === "my-communities" && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {communities.map((community) => (
-                  <CommunityCard key={community.id} community={community} />
-                ))}
+              <div className="text-center py-12">
+                <div className="text-gray-500 mb-4">
+                  <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.196-2.121M9 20H4v-2a3 3 0 015.196-2.121M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                  <p className="text-lg">Você ainda não criou nenhuma comunidade</p>
+                  <p className="text-sm">Que tal criar sua primeira comunidade?</p>
+                </div>
               </div>
             )}
             {activeTab === "received-proposals" && (
-              <div className="grid grid-cols-1 gap-4">
-                {proposalsByRecipient.map((proposal) => (
-                  <ProposalCard
-                    type="received-proposals"
-                    key={proposal.id}
-                    proposal={proposal}
-                  />
-                ))}
+              <div className="text-center py-12">
+                <div className="text-gray-500 mb-4">
+                  <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <p className="text-lg">Você não recebeu nenhuma proposta ainda</p>
+                  <p className="text-sm">Quando alguém interessar-se em seus itens, as propostas aparecerão aqui</p>
+                </div>
               </div>
             )}
             {activeTab === "sent-proposals" && (
-              <div className="grid grid-cols-1 gap-4">
-                {proposalsBySender.map((proposal) => (
-                  <ProposalCard
-                    type="sent-proposals"
-                    key={proposal.id}
-                    proposal={proposal}
-                  />
-                ))}
+              <div className="text-center py-12">
+                <div className="text-gray-500 mb-4">
+                  <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <p className="text-lg">Você não enviou nenhuma proposta ainda</p>
+                  <p className="text-sm">Explore itens de outros usuários e faça suas propostas de troca</p>
+                </div>
               </div>
             )}
           </div>
