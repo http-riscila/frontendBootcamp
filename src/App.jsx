@@ -1,8 +1,10 @@
 import { Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import UserProfile from "./pages/UserProfile";
 import "./styles/App.css";
+import "./styles/toastStyles.css";
 import { UserProvider } from "./contexts/UserContext";
 import PrivateRoutes from "./components/PrivateRoutes";
 import Home from "./pages/Home";
@@ -13,6 +15,14 @@ import HowItWorks from "./pages/HowItWorks";
 function App() {
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        pauseOnHover
+        theme={undefined}
+      />
+
       <Routes>
         {/* Rotas públicas */}
         <Route path="/" element={<Login />} />
