@@ -26,25 +26,7 @@ export default function UserDetails() {
   const [communityCount, setCommunityCount] = useState(0);
 
   const [communities, setCommunities] = useState([]);
-  const [ads, setAds] = useState([
-    {
-      id: 1,
-      name: "Vestido floral longo",
-      category: "Roupas",
-      description: "Lindo vestido floral em perfeito estado para troca",
-      imageUrl: "src/assets/images/104002MRE-calca-jeans-reta-araca-marrom-escuro-minimadeia-nov24-04 1.png",
-      images: [
-        "src/assets/images/104002MRE-calca-jeans-reta-araca-marrom-escuro-minimadeia-nov24-04 1.png",
-        "src/assets/images/6-post-semanal-maltashoes-2022-05-20-branco-12 1.png",
-        "src/assets/images/casaEdecoração.png",
-        "src/assets/images/image-01-section-4-home.jpg"
-      ],
-      createdBy: {
-        name: "Maria Silva",
-        imageUrl: null
-      }
-    }
-  ]);
+  const [ads, setAds] = useState([]);
   const [proposalsBySender, setProposalsBySender] = useState([]);
   const [proposalsByRecipient, setProposalsByRecipient] = useState([]);
 
@@ -140,7 +122,7 @@ export default function UserDetails() {
   return (
     <div className="font-inter flex w-full flex-col bg-[var(--color-background)]">
       <Header />
-      <div className="mx-auto flex w-full max-w-[1240px] flex-col gap-8 py-8 px-15">
+      <div className="mx-auto flex w-full max-w-[1240px] flex-col gap-8 px-15 py-8">
         <section className="flex flex-col gap-4">
           <Breadcrumb />
           <div className="flex flex-row gap-8">
@@ -206,7 +188,7 @@ export default function UserDetails() {
 
         <section className="flex flex-col gap-6">
           <nav>
-            <ul className="flex flex-row gap-6 text-xl font-medium text-[var(--color-title)]">
+            <ul className="flex flex-row justify-between gap-6 text-xl font-medium text-[var(--color-title)]">
               <li
                 className={`rounded-xl px-4 py-1 transition-all duration-500 ease-in-out ${
                   activeTab === "my-communities"
@@ -270,55 +252,145 @@ export default function UserDetails() {
             </ul>
           </nav>
           <div>
+            {activeTab === "my-communities" &&
+              communities.map((community) => (
+                <CommunityCard key={community.id} community={community} />
+              ))}
+            {activeTab === "my-communities" && communities.length === 0 && (
+              <div className="py-12 text-center">
+                <div className="mb-4 text-gray-500">
+                  <svg
+                    className="mx-auto mb-4 h-16 w-16 text-gray-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 20h5v-2a3 3 0 00-5.196-2.121M9 20H4v-2a3 3 0 015.196-2.121M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                  <p className="text-lg">
+                    Você ainda não criou nenhuma comunidade
+                  </p>
+                  <p className="text-sm">
+                    Que tal criar sua primeira comunidade?
+                  </p>
+                </div>
+              </div>
+            )}
             {activeTab === "my-ads" && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {ads.map((ad) => (
-                  <AdCard 
-                    key={ad.id} 
+                  <AdCard
+                    key={ad.id}
                     ad={ad}
                     onViewDetails={() => handleOpenModal(ad)}
                   />
                 ))}
               </div>
             )}
-            {activeTab === "my-communities" && (
-              <div className="text-center py-12">
-                <div className="text-gray-500 mb-4">
-                  <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.196-2.121M9 20H4v-2a3 3 0 015.196-2.121M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            {activeTab === "my-ads" && ads.length === 0 && (
+              <div className="py-12 text-center">
+                <div className="mb-4 text-gray-500">
+                  <svg
+                    className="mx-auto mb-4 h-16 w-16 text-gray-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
                   </svg>
-                  <p className="text-lg">Você ainda não criou nenhuma comunidade</p>
-                  <p className="text-sm">Que tal criar sua primeira comunidade?</p>
+                  <p className="text-lg">Você não criou nenhum anúncio ainda</p>
+                  <p className="text-sm">
+                    Cadastre seus itens para que outros usuários façam suas
+                    propostas de troca
+                  </p>
                 </div>
               </div>
             )}
-            {activeTab === "received-proposals" && (
-              <div className="text-center py-12">
-                <div className="text-gray-500 mb-4">
-                  <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  <p className="text-lg">Você não recebeu nenhuma proposta ainda</p>
-                  <p className="text-sm">Quando alguém interessar-se em seus itens, as propostas aparecerão aqui</p>
+            {activeTab === "received-proposals" &&
+              communities.map((proposal) => (
+                <ProposalCard
+                  key={proposal.id}
+                  type="received-proposals"
+                  proposal={proposal}
+                />
+              ))}
+            {activeTab === "received-proposals" &&
+              proposalsByRecipient.length === 0 && (
+                <div className="py-12 text-center">
+                  <div className="mb-4 text-gray-500">
+                    <svg
+                      className="mx-auto mb-4 h-16 w-16 text-gray-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    <p className="text-lg">
+                      Você não recebeu nenhuma proposta ainda
+                    </p>
+                    <p className="text-sm">
+                      Quando alguém interessar-se em seus itens, as propostas
+                      aparecerão aqui
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )}
-            {activeTab === "sent-proposals" && (
-              <div className="text-center py-12">
-                <div className="text-gray-500 mb-4">
-                  <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  <p className="text-lg">Você não enviou nenhuma proposta ainda</p>
-                  <p className="text-sm">Explore itens de outros usuários e faça suas propostas de troca</p>
+              )}
+            {activeTab === "sent-proposals" &&
+              communities.map((proposal) => (
+                <ProposalCard
+                  key={proposal.id}
+                  type="sent-proposals"
+                  proposal={proposal}
+                />
+              ))}
+            {activeTab === "sent-proposals" &&
+              proposalsBySender.length === 0 && (
+                <div className="py-12 text-center">
+                  <div className="mb-4 text-gray-500">
+                    <svg
+                      className="mx-auto mb-4 h-16 w-16 text-gray-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    <p className="text-lg">
+                      Você não enviou nenhuma proposta ainda
+                    </p>
+                    <p className="text-sm">
+                      Explore itens de outros usuários e faça suas propostas de
+                      troca
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
           </div>
         </section>
       </div>
 
-      <ProductModal 
+      <ProductModal
         isOpen={showModal}
         onClose={handleCloseModal}
         ad={selectedAd}

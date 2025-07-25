@@ -1,7 +1,4 @@
-import { useState } from 'react';
-
 export default function ProductModal({ isOpen, onClose, ad }) {
-  
   if (!isOpen || !ad) return null;
   return (
     <div
@@ -11,7 +8,7 @@ export default function ProductModal({ isOpen, onClose, ad }) {
       style={{ backgroundColor: "rgba(0, 0, 0, 0.4)" }}
       onClick={onClose}
     >
-      <div 
+      <div
         className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl bg-white"
         onClick={(e) => e.stopPropagation()}
       >
@@ -22,7 +19,7 @@ export default function ProductModal({ isOpen, onClose, ad }) {
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-400 transition-colors hover:text-gray-600 hover:bg-gray-100 rounded-md p-1 cursor-pointer"
+            className="cursor-pointer rounded-md p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
           >
             <svg
               className="h-6 w-6"
@@ -52,9 +49,7 @@ export default function ProductModal({ isOpen, onClose, ad }) {
           </div>
 
           {/* Product Title */}
-          <h3 className="mb-3 text-lg font-bold text-gray-900">
-            {ad.name}
-          </h3>
+          <h3 className="mb-3 text-lg font-bold text-gray-900">{ad.name}</h3>
 
           {/* Tags */}
           <div className="mb-4 flex items-center gap-4">
@@ -128,7 +123,10 @@ export default function ProductModal({ isOpen, onClose, ad }) {
             </h4>
             <div className="flex items-center gap-3">
               <img
-                src={ad.createdBy.profileImageUrl || "src/assets/icons/profile-pic.svg"}
+                src={
+                  ad.createdBy.profileImageUrl ||
+                  "src/assets/icons/profile-pic.svg"
+                }
                 alt={ad.createdBy.name}
                 className="h-10 w-10 rounded-full object-cover"
               />
