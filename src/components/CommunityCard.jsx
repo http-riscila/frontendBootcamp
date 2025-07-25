@@ -6,7 +6,7 @@ export default function CommunityCard({
   membersCount,
 }) {
   return (
-    <div className="flex flex-col overflow-hidden rounded-2xl border border-[#1B5FFF] bg-white shadow-sm">
+    <div className="] flex flex-col overflow-hidden rounded-2xl border border-[var(--color-primary)] bg-white shadow-sm">
       {/* Imagem da comunidade */}
       <div className="flex h-40 w-full items-center justify-center overflow-hidden bg-gray-200">
         {image ? (
@@ -23,13 +23,13 @@ export default function CommunityCard({
             {membersCount} <p>membros</p>
           </span>
         </div>
-        <div>
+        <div className="min-h-24">
           <h5 className="text-xl font-bold text-gray-900">{title}</h5>
 
           <p className="flex-1 text-base text-gray-600">{description}</p>
         </div>
         <button
-          className={`w-full cursor-pointer rounded-2xl border-0 bg-[var(--color-primary)] py-3 text-xl font-medium text-white transition-colors duration-700 hover:bg-[var(--color-tertiary)]`}
+          className={`w-full cursor-pointer rounded-2xl border bg-[var(--color-primary)] py-3 text-xl font-medium text-white transition-colors duration-300 hover:bg-white hover:text-[var(--color-primary)]`}
         >
           Acessar
         </button>
