@@ -65,8 +65,9 @@ export default function UserDetails() {
   async function fetchCommunities() {
     try {
       const communitiesByUser = await getCommunitiesByUser(user.id);
-      if (communitiesByUser > 0) {
+      if (communitiesByUser.length > 0) {
         setCommunities(communitiesByUser);
+        console.log("Comunidades carregadas com sucesso! ", communities);
       }
     } catch (error) {
       console.log("Error fetching communities", error);
@@ -77,7 +78,7 @@ export default function UserDetails() {
     try {
       const AdsByUser = await getItemsByUser(user.id);
       console.log("Ads carregados:", AdsByUser);
-      if (AdsByUser && AdsByUser.length > 0) {
+      if (AdsByUser.length > 0) {
         setAds(AdsByUser);
       } else {
         console.log("Nenhum ad encontrado, mantendo dados de teste");
@@ -90,7 +91,7 @@ export default function UserDetails() {
   async function fetchProposalsBySender() {
     try {
       const proposalsBySender = await getProposalsBySender(user.id);
-      if (proposalsBySender > 0) {
+      if (proposalsBySender.length > 0) {
         setProposalsBySender(proposalsBySender);
       }
     } catch (error) {
@@ -101,7 +102,7 @@ export default function UserDetails() {
   async function fetchProposalsByRecipient() {
     try {
       const proposalsByRecipient = await getProposalsByRecipient(user.id);
-      if (proposalsByRecipient > 0) {
+      if (proposalsByRecipient.length > 0) {
         setProposalsByRecipient(proposalsByRecipient);
       }
     } catch (error) {
@@ -281,7 +282,7 @@ export default function UserDetails() {
                 </div>
               </div>
             )}
-            {activeTab === "my-ads" && (
+            {activeTab === "my-ads" && ads.length > 0 && (
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {ads.map((ad) => (
                   <AdCard
@@ -317,6 +318,7 @@ export default function UserDetails() {
               </div>
             )}
             {activeTab === "received-proposals" &&
+              proposalsByRecipient.length > 0 &&
               communities.map((proposal) => (
                 <ProposalCard
                   key={proposal.id}
@@ -352,6 +354,7 @@ export default function UserDetails() {
                 </div>
               )}
             {activeTab === "sent-proposals" &&
+              proposalsBySender.length > 0 &&
               communities.map((proposal) => (
                 <ProposalCard
                   key={proposal.id}

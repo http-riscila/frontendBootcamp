@@ -19,9 +19,9 @@ export default function CommunityCard({ community, onClick }) {
   });
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-2xl border border-[#1B5FFF] bg-white shadow-sm">
+    <div className="flex max-h-[507px] max-w-[399px] flex-col overflow-hidden">
       {/* Imagem da comunidade */}
-      <div className="flex h-40 w-full items-center justify-center overflow-hidden bg-gray-200">
+      <div className="flex h-40 w-full items-center justify-center overflow-hidden rounded-t-xl bg-gray-200">
         {community?.imageUrl ? (
           <img
             src={community?.imageUrl}
@@ -33,7 +33,7 @@ export default function CommunityCard({ community, onClick }) {
         )}
       </div>
       {/* Conteúdo do card */}
-      <div className="flex flex-1 flex-col gap-4 p-6">
+      <div className="flex flex-1 flex-col gap-4 rounded-b-xl border border-t-0 border-x-[var(--color-primary)] border-b-[var(--color-primary)] p-6">
         <div className="flex flex-row items-center justify-end gap-2 text-xs text-[var(--color-text)]">
           <img src={memberIcon} />
           <span className="flex flex-row gap-1">

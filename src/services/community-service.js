@@ -50,6 +50,17 @@ export async function getCommunityById(communityId) {
   }
 }
 
+export async function getCommunitiesByUser(userId) {
+  console.log(userId);
+  try {
+    const response = await api.get(`/api/communities/by-user/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error getting community by user", error);
+    throw error;
+  }
+}
+
 // COMUNIDADE ESPECÍFICA - Service de getAll para anúncios
 export async function getCommunityAds(communityId) {
   try {

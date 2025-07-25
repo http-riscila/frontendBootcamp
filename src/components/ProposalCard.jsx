@@ -13,18 +13,18 @@ export default function ProposalCard({ proposal, type }) {
         </div>
         <div className="flex flex-col justify-center gap-2">
           <h1 className="font-bricolage text-lg font-medium">
-            {proposal?.desiredItem.name}
+            {proposal?.desiredItem?.name}
           </h1>
           <p className="font-inter max-w-[50ch] text-base break-words text-[var(--color-text)]">
-            {proposal?.desiredItem.description}
+            {proposal?.desiredItem?.description}
           </p>
           <span className="flex flex-row items-center gap-2">
             <img
-              src={proposal?.desiredItemId.imageUrl || profilePic}
+              src={proposal?.desiredItemId?.imageUrl || profilePic}
               className="h-9 w-9"
             />
             <p className="font-inter text-sm font-medium">
-              {proposal?.sender.name}
+              {proposal?.sender?.name}
             </p>
           </span>
         </div>
