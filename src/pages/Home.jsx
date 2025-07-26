@@ -4,6 +4,7 @@ import {
   getCommunities,
   searchCommunities,
 } from "../services/community-service";
+import { getItemsByCommunity } from "../services/item-service";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -26,74 +27,37 @@ const Home = () => {
 
   async function getHomeData() {
     try {
-      const [communities, items] = await Promise.all([getCommunities()]);
+      // Buscar comunidades que o usuário é membro
+      const communities = await getCommunities();
+
+      // Se o usuário tem comunidades, buscar itens de cada uma
+      let allItems = [];
+      if (communities && communities.length > 0) {
+        // Buscar itens de todas as comunidades do usuário
+        const itemsPromises = communities.map((community) =>
+          getItemsByCommunity(community.id)
+        );
+
+        const itemsArrays = await Promise.all(itemsPromises);
+
+        // Combinar todos os arrays de itens em um único array
+        allItems = itemsArrays.flat();
+
+        // Ordenar por data de criação (mais recentes primeiro) e pegar apenas 6
+        allItems = allItems
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .slice(0, 6);
+      }
 
       return {
         communities,
-        items,
+        items: allItems,
       };
     } catch (error) {
       console.error("Error fetching home data", error);
       throw error;
     }
   }
-
-  // Dados de fallback
-  const fallbackCommunities = [
-    {
-      id: 1,
-      imageUrl: "",
-      name: "Bazar de roupas BR",
-      description:
-        "Comunidade para troca de roupas, sapatos e acessórios em todo Brasil",
-      membersCount: 2340,
-    },
-    {
-      id: 2,
-      imageUrl: "",
-      name: "Livros e Cultura",
-      description:
-        "Troque livros, CDs, DVDs e outros itens culturais novos ou usados",
-      membersCount: 876,
-    },
-    {
-      id: 3,
-      imageUrl: "",
-      name: "Casa e decoração",
-      description: "Comunidade para troca de itens de casa e decoração",
-      membersCount: 2100,
-    },
-  ];
-
-  const fallbackImagesOne = [
-    {
-      src: "src/assets/images/image-01-section-4-home.jpg",
-      alt: "Tabuleiro de xadrez",
-    },
-    {
-      src: "src/assets/images/image-02-section-4-home.png",
-      alt: "Bicicleta infantil azul",
-    },
-    {
-      src: "src/assets/images/image-03-section-4-home.png",
-      alt: "Conjunto de panelas inox",
-    },
-  ];
-
-  const fallbackImagesTwo = [
-    {
-      src: "src/assets/images/image-04-section-4-home.png",
-      alt: "Vestido adulto estampado",
-    },
-    {
-      src: "src/assets/images/image-05-section-4-home.jpg",
-      alt: "Furadeira e parafusadeira",
-    },
-    {
-      src: "src/assets/images/image-06-section-4-home.png",
-      alt: "Livro de receitas",
-    },
-  ];
 
   // Busca em tempo real (opcional)
   useEffect(() => {
@@ -214,7 +178,7 @@ const Home = () => {
     ? searchResults
     : homeData.communities.length > 0
       ? homeData.communities.slice(0, 3)
-      : fallbackCommunities;
+      : [];
 
   const convertItemsToImages = (itemsArray) => {
     return itemsArray.map((item) => ({
@@ -226,13 +190,9 @@ const Home = () => {
   const itemImages =
     homeData.items?.length > 0 ? convertItemsToImages(homeData.items) : [];
   const galeryImagesOne =
-    itemImages.slice(0, 3)?.length >= 3
-      ? itemImages.slice(0, 3)
-      : fallbackImagesOne;
+    itemImages.slice(0, 3)?.length >= 3 ? itemImages.slice(0, 3) : [];
   const galeryImagesTwo =
-    itemImages.slice(3, 6)?.length >= 3
-      ? itemImages.slice(3, 6)
-      : fallbackImagesTwo;
+    itemImages.slice(3, 6)?.length >= 3 ? itemImages.slice(3, 6) : [];
 
   if (loading) {
     return (
@@ -409,61 +369,74 @@ const Home = () => {
           <p className="mb-6 text-2xl text-[#6B7280]">
             Veja o que você pode encontrar em nossas comunidades
           </p>
-          <div className="flex gap-6">
-            {galeryImagesOne && galeryImagesOne?.length >= 3 && (
-              <div className="max-w-lx mx-auto mb-40 grid grid-cols-3 gap-6">
-                <div className="col-span-2 row-span-2">
-                  <img
-                    src={galeryImagesOne[0].src}
-                    alt={galeryImagesOne[0].alt}
-                    className="aspect-square h-full max-h-[420px] w-full max-w-[410px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
-                  />
-                </div>
 
-                <div>
-                  <img
-                    src={galeryImagesOne[1].src}
-                    alt={galeryImagesOne[1].alt}
-                    className="aspect-square h-full max-h-[220px] w-full max-w-[210px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
-                  />
-                </div>
-                <div>
-                  <img
-                    src={galeryImagesOne[2].src}
-                    alt={galeryImagesOne[2].alt}
-                    className="aspect-square h-full max-h-[220px] w-full max-w-[210px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
-                  />
-                </div>
-              </div>
-            )}
+          {itemImages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20">
+              <div className="mb-4 text-6xl">📦</div>
+              <h3 className="mb-2 text-2xl font-medium text-gray-700">
+                Nenhum item encontrado
+              </h3>
+              <p className="text-lg text-gray-500">
+                Seja o primeiro a adicionar itens nas comunidades!
+              </p>
+            </div>
+          ) : (
+            <div className="flex gap-6">
+              {galeryImagesOne && galeryImagesOne?.length >= 3 && (
+                <div className="max-w-lx mx-auto mb-40 grid grid-cols-3 gap-6">
+                  <div className="col-span-2 row-span-2">
+                    <img
+                      src={galeryImagesOne[0].src}
+                      alt={galeryImagesOne[0].alt}
+                      className="aspect-square h-full max-h-[420px] w-full max-w-[410px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
+                    />
+                  </div>
 
-            {galeryImagesTwo && galeryImagesTwo?.length >= 3 && (
-              <div className="max-w-lx mx-auto mb-40 grid grid-cols-3 gap-6">
-                <div className="col-span-2 row-span-2">
-                  <img
-                    src={galeryImagesTwo[0].src}
-                    alt={galeryImagesTwo[0].alt}
-                    className="aspect-square h-full max-h-[420px] w-full max-w-[410px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
-                  />
+                  <div>
+                    <img
+                      src={galeryImagesOne[1].src}
+                      alt={galeryImagesOne[1].alt}
+                      className="aspect-square h-full max-h-[220px] w-full max-w-[210px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
+                    />
+                  </div>
+                  <div>
+                    <img
+                      src={galeryImagesOne[2].src}
+                      alt={galeryImagesOne[2].alt}
+                      className="aspect-square h-full max-h-[220px] w-full max-w-[210px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
+                    />
+                  </div>
                 </div>
+              )}
 
-                <div>
-                  <img
-                    src={galeryImagesTwo[1].src}
-                    alt={galeryImagesTwo[1].alt}
-                    className="aspect-square h-full max-h-[220px] w-full max-w-[210px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
-                  />
+              {galeryImagesTwo && galeryImagesTwo?.length >= 3 && (
+                <div className="max-w-lx mx-auto mb-40 grid grid-cols-3 gap-6">
+                  <div className="col-span-2 row-span-2">
+                    <img
+                      src={galeryImagesTwo[0].src}
+                      alt={galeryImagesTwo[0].alt}
+                      className="aspect-square h-full max-h-[420px] w-full max-w-[410px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
+                    />
+                  </div>
+
+                  <div>
+                    <img
+                      src={galeryImagesTwo[1].src}
+                      alt={galeryImagesTwo[1].alt}
+                      className="aspect-square h-full max-h-[220px] w-full max-w-[210px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
+                    />
+                  </div>
+                  <div>
+                    <img
+                      src={galeryImagesTwo[2].src}
+                      alt={galeryImagesTwo[2].alt}
+                      className="aspect-square h-full max-h-[220px] w-full max-w-[210px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <img
-                    src={galeryImagesTwo[2].src}
-                    alt={galeryImagesTwo[2].alt}
-                    className="aspect-square h-full max-h-[220px] w-full max-w-[210px] rounded-lg border border-[rgba(121,118,125,0.5)] object-cover"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </section>
       </div>
       <section className="flex h-[460px] w-full items-center justify-center gap-10 bg-[#1b5fff]">
