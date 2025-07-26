@@ -13,7 +13,8 @@ export async function getAllItems() {
 
 export async function getItemsByCommunity(communityId) {
   try {
-    const response = await api.get(`/api/items/community/${communityId}`);
+    // Adiciona parâmetros para ordenar por data de criação (descendente)
+    const response = await api.get(`/api/items/by-community/${communityId}`);
     return response.data;
   } catch (error) {
     console.error(`Error getting items from community ${communityId}:`, error);
@@ -21,8 +22,16 @@ export async function getItemsByCommunity(communityId) {
   }
 }
 
-// NOTA: Esta função precisa de implementação no backend
-// Rota /api/items/by-user/${userId} não existe ainda
+export async function createItem(itemData) {
+  try {
+    const response = await api.post("/api/items", itemData);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating item", error);
+    throw error;
+  }
+}
+
 export async function getItemsByUser(userId) {
   try {
     const response = await api.get(`/api/items/by-user/${userId}`);

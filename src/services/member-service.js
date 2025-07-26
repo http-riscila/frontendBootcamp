@@ -28,3 +28,15 @@ export async function getAllMembersByCommunity(communityId) {
     return console.error("Error getting members", error);
   }
 }
+
+export async function getMembersByCommunityAndUser(communityId, userId) {
+  try {
+    const response = await api.get("/api/members/by-community-and-user", {
+      params: { communityId, userId },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error getting members by user", error);
+    return null;
+  }
+}

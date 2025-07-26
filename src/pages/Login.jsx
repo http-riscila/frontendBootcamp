@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { login } from "../services/auth-service";
+import { validateLogin } from "../validators/login-validation";
 import maskGroup from "../assets/images/mask-group.png";
 import star from "../assets/images/star3.png";
 import fullLogo from "../assets/images/full-logo.png";
@@ -25,6 +27,19 @@ export default function Login() {
 
   async function handleLogin(e) {
     e.preventDefault();
+    const errors = validateLogin(credentials);
+    const hasErrors = Object.keys(errors).length > 0;
+
+    if (hasErrors) {
+      Object.values(errors).forEach((msg) =>
+        toast.warning(msg, {
+          className: "toast-warning",
+          progressClassName: "Toastify__progress-bar",
+        })
+      );
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     try {
       const response = await login(credentials);
@@ -36,6 +51,10 @@ export default function Login() {
       }
       console.log("User succesfully logged in", response);
     } catch (error) {
+      toast.error("Erro ao efetuar o login", {
+        className: "toast-error",
+        progressClassName: "Toastify__progress-bar",
+      });
       console.error("Error authenticating an user", error);
     } finally {
       setCredentials({

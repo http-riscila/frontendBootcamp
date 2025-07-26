@@ -61,31 +61,6 @@ export async function getCommunitiesByUser(userId) {
   }
 }
 
-// COMUNIDADE ESPECÍFICA - Service de getAll para anúncios
-export async function getCommunityAds(communityId) {
-  try {
-    const response = await api.get(`/api/communities/${communityId}/ads`);
-    return response.data;
-  } catch (error) {
-    console.error("Error getting community ads", error);
-    throw error;
-  }
-}
-
-// COMUNIDADE ESPECÍFICA - Service de create para anúncios
-export async function createCommunityAd(communityId, adData) {
-  try {
-    const response = await api.post(
-      `/api/communities/${communityId}/ads`,
-      adData
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error creating community ad", error);
-    throw error;
-  }
-}
-
 // Buscar anúncios de uma comunidade com filtros
 export async function searchCommunityAds(communityId, searchTerm = "") {
   try {
@@ -113,5 +88,17 @@ export async function countCreatedCommunities(userId) {
   } catch (error) {
     console.error("Error counting communities by user", error);
     throw error;
+  }
+}
+
+export async function addCommunityImage(imageUrl, communityId) {
+  try {
+    const response = await api.post(
+      `/api/communities/${communityId}/image`,
+      imageUrl
+    );
+    return response.data;
+  } catch (error) {
+    return console.error("Error adding community image for user", error);
   }
 }
