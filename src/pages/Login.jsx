@@ -13,13 +13,11 @@ export default function Login() {
     password: "",
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
   function handleChange(e) {
     const { name, value } = e.target;
-    setError(""); // Limpa o erro ao digitar
 
     setCredentials((prevData) => ({
       ...prevData,

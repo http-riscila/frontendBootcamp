@@ -2,7 +2,7 @@ import api from "./api";
 
 export async function getUserById(userId) {
   try {
-    const response = await api.get(`/users/${userId}`);
+    const response = await api.get(`/api/users/${userId}`);
     return response.data;
   } catch (error) {
     return console.error("Error getting the user's information", error);
@@ -20,7 +20,7 @@ export async function getUserByEmail(userEmail) {
 
 export async function editUserInfo(newData, userId) {
   try {
-    const response = await api.patch(`/users/${userId}`, newData);
+    const response = await api.patch(`/api/users/${userId}`, newData);
     return response.data;
   } catch (error) {
     return console.error("Error editing the user's information", error);
@@ -30,7 +30,7 @@ export async function editUserInfo(newData, userId) {
 export async function editProfileImage(profileImage, userId) {
   try {
     const response = await api.post(
-      `/users/${userId}/profile-image`,
+      `api/users/${userId}/profile-image`,
       profileImage
     );
     return response.data;

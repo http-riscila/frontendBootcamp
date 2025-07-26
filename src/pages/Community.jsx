@@ -8,10 +8,9 @@ import Breadcrumb from "../components/Breadcrumb";
 import memberIcon from "../assets/icons/member-icon.svg";
 import {
   getCommunityById,
-  getCommunityAds,
-  createCommunityAd,
   searchCommunityAds,
 } from "../services/community-service";
+import { getItemsByCommunity, createItem } from "../services/item-service";
 
 const Community = () => {
   const { communityId } = useParams();
@@ -20,19 +19,17 @@ const Community = () => {
   const [ads, setAds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [adsLoading, setAdsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
   // Carregar dados da comunidade
   const loadCommunityData = useCallback(async () => {
     try {
       setLoading(true);
-      setError(null);
+      console.log("Carregando dados da comunidade:", communityId);
       const data = await getCommunityById(communityId);
       setCommunity(data);
     } catch (err) {
       console.error("Erro ao carregar dados da comunidade:", err);
-      setError("Falha ao carregar os dados da comunidade. Tente novamente.");
       setCommunity(null);
     } finally {
       setLoading(false);
@@ -43,11 +40,10 @@ const Community = () => {
   const loadCommunityAds = useCallback(async () => {
     try {
       setAdsLoading(true);
-      const data = await getCommunityAds(communityId);
+      const data = await getItemsByCommunity(communityId);
       setAds(data);
     } catch (err) {
       console.error("Erro ao carregar anúncios da comunidade:", err);
-      setError("Falha ao carregar os anúncios. Tente novamente.");
       setAds([]);
     } finally {
       setAdsLoading(false);
@@ -60,7 +56,6 @@ const Community = () => {
       loadCommunityData();
       loadCommunityAds();
     } else {
-      setError("Nenhuma comunidade selecionada.");
       setLoading(false);
       setAdsLoading(false);
     }
@@ -78,7 +73,6 @@ const Community = () => {
         }
       } catch (err) {
         console.error("Erro ao buscar anúncios:", err);
-        setError("Falha ao buscar anúncios. Tente novamente.");
         setAds([]);
       } finally {
         setAdsLoading(false);
@@ -114,23 +108,6 @@ const Community = () => {
       <div className="mx-auto max-w-6xl px-4 py-8">
         <div className="flex flex-col gap-4">
           <Breadcrumb />
-
-          {/* Error State */}
-          {error && (
-            <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
-              <p className="text-red-600">{error}</p>
-              <button
-                onClick={() => {
-                  loadCommunityData();
-                  loadCommunityAds();
-                }}
-                className="mt-2 text-red-700 underline hover:text-red-800"
-              >
-                Tentar novamente
-              </button>
-            </div>
-          )}
-
           {/* Community Info */}
           {loading ? (
             <div className="flex items-center justify-center py-12">
@@ -143,11 +120,12 @@ const Community = () => {
             <div className="mb-8 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
               <div className="flex items-center gap-6">
                 <img
-                  src={community.imageUrl || '/placeholder-community.png'}
+                  src={community.imageUrl || "/placeholder-community.png"}
                   alt={community.name}
                   className="h-20 w-20 rounded-full border-2 border-blue-200 object-cover"
                   onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/80x80/e5e7eb/9ca3af?text=C';
+                    e.target.src =
+                      "https://via.placeholder.com/80x80/e5e7eb/9ca3af?text=C";
                   }}
                 />
                 <div>

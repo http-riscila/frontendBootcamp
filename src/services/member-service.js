@@ -2,7 +2,7 @@ import api from "./api";
 
 export async function createMember(memberData) {
   try {
-    const response = await api.post("/members", memberData);
+    const response = await api.post("/api/members", memberData);
     return response.data;
   } catch (error) {
     return console.error("Error creating a new member", error);
@@ -12,7 +12,7 @@ export async function createMember(memberData) {
 export async function countMembersByCommunity(communityId) {
   try {
     const response = await api.get(
-      `/members/count/by-community/${communityId}`
+      `/api/members/count/by-community/${communityId}`
     );
     return response.data;
   } catch (error) {
@@ -22,9 +22,21 @@ export async function countMembersByCommunity(communityId) {
 
 export async function getAllMembersByCommunity(communityId) {
   try {
-    const response = await api.get(`/members/${communityId}`);
+    const response = await api.get(`/api/members/${communityId}`);
     return response.data;
   } catch (error) {
     return console.error("Error getting members", error);
+  }
+}
+
+export async function getMembersByCommunityAndUser(communityId, userId) {
+  try {
+    const response = await api.get("/api/members/by-community-and-user", {
+      params: { communityId, userId },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error getting members by user", error);
+    return null;
   }
 }
