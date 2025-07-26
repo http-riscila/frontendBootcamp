@@ -83,7 +83,7 @@ const Community = () => {
 
   const handleCreateAd = async (adData) => {
     try {
-      const newAd = await createCommunityAd(communityId, adData);
+      const newAd = await createItem(communityId, adData);
       setAds((prev) => [newAd, ...prev]);
       setShowAddModal(false);
       console.log("Anúncio criado com sucesso:", newAd);

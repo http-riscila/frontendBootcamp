@@ -1,5 +1,16 @@
 import api from "./api";
 
+// Buscar todos os itens (requer autenticação)
+export async function getAllItems() {
+  try {
+    const response = await api.get("/api/items");
+    return response.data;
+  } catch (error) {
+    console.error("Error getting all items", error);
+    return [];
+  }
+}
+
 export async function getItemsByCommunity(communityId) {
   try {
     // Adiciona parâmetros para ordenar por data de criação (descendente)
