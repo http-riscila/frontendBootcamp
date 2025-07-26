@@ -1,48 +1,53 @@
 import { useState, useRef } from "react";
 import { Button } from "flowbite-react";
 import { toast } from "react-toastify";
+import {
+  createCommunity,
+  addCommunityImage,
+} from "../services/community-service";
 import { validateCreateCommunity } from "../validators/community-validation";
 
-const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const fileInputRef = useRef(null);
-  const [formData, setFormData] = useState({
-    communityName: "",
-    category: "",
+const CreateListingModal = ({ isOpen, onClose, onCommunityCreated }) => {
+  const [communityData, setCommunityData] = useState({
+    name: "",
     description: "",
+    imageUrl: "",
   });
+  const fileInputRef = useRef(null);
+  const [previewImage, setPreviewImage] = useState(null);
 
   if (!isOpen) return null;
 
-  const handleInputChange = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
+  function handleChange(e) {
+    const { name, value } = e.target;
+
+    setCommunityData((prevData) => ({
+      ...prevData,
+      [name]: value,
     }));
-  };
+  }
 
-  const handleImageClick = () => {
-    fileInputRef.current?.click();
-  };
+  function handleImageClick() {
+    fileInputRef.current.click();
+  }
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
+  function handleFileChange(e) {
+    const file = e.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setSelectedImage(imageUrl);
+      setPreviewImage(URL.createObjectURL(file));
+      setCommunityData((prevData) => ({
+        ...prevData,
+        imageUrl: file,
+      }));
     }
-  };
+  }
 
-  const handleSubmit = async () => {
-    // Preparar dados para envio
-    const communityData = {
-      name: formData.communityName,
-      category: formData.category,
-      description: formData.description,
-      image: selectedImage,
-    };
+  async function handleCreateCommunity(e) {
+    e.preventDefault();
 
-    const errors = validateCreateCommunity(communityData);
+    const { imageUrl, ...communityInfo } = communityData;
+
+    const errors = validateCreateCommunity(communityInfo);
     const hasErrors = Object.keys(errors).length > 0;
 
     if (hasErrors) {
@@ -52,31 +57,42 @@ const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
           progressClassName: "Toastify__progress-bar",
         })
       );
-      setLoading(false);
       return;
     }
+
     try {
-      if (onSubmit) {
-        await onSubmit(communityData);
+      const newCommunity = await createCommunity(communityInfo, imageUrl);
+      console.log("Comunidade criada com sucesso:", newCommunity);
+
+      if (imageUrl) {
+        const formData = new FormData();
+        formData.append("communityImage", imageUrl);
+        const addedImage = await addCommunityImage(formData, newCommunity.id);
+        console.log("Community image added", addedImage);
+        newCommunity.imageUrl = addedImage.imageUrl;
+        onCommunityCreated?.(newCommunity);
       }
 
-      // Resetar formulário e fechar modal
-      setFormData({
-        communityName: "",
-        category: "",
-        description: "",
+      toast.success("Comunidade criada com sucesso!", {
+        className: "toast-success",
+        progressClassName: "Toastify__progress-bar",
       });
-      setSelectedImage(null);
-      onClose();
     } catch (error) {
       toast.error("Erro ao criar comunidade", {
         className: "toast-error",
         progressClassName: "Toastify__progress-bar",
       });
       console.error("Erro ao criar comunidade:", error);
-      // Mantém o modal aberto em caso de erro
+    } finally {
+      onClose();
+      setCommunityData({
+        name: "",
+        description: "",
+        imageUrl: "",
+      });
+      setPreviewImage(null);
     }
-  };
+  }
 
   return (
     <div
@@ -120,8 +136,9 @@ const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
           </Button>
         </div>
 
-        {/* Image Upload - First */}
-        <div className="p-6 pb-0">
+        {/* Form Content */}
+        <form onSubmit={handleCreateCommunity} className="space-y-6 p-6 pt-4">
+          {/* Image Upload - First */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-900">
               Foto da comunidade
@@ -130,17 +147,17 @@ const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
               ref={fileInputRef}
               type="file"
               accept="image/*"
-              onChange={handleImageChange}
+              onChange={handleFileChange}
               className="hidden"
             />
             <div
               onClick={handleImageClick}
               className="cursor-pointer rounded-xl border-2 border-dashed border-blue-300 p-8 text-center transition-colors hover:border-blue-400"
             >
-              {selectedImage ? (
+              {previewImage ? (
                 <div className="relative">
                   <img
-                    src={selectedImage}
+                    src={previewImage}
                     alt="Preview"
                     className="mb-3 h-32 w-full rounded-lg object-cover"
                   />
@@ -166,22 +183,19 @@ const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
               )}
             </div>
           </div>
-        </div>
 
-        {/* Form Content */}
-        <div className="space-y-6 p-6 pt-4">
           {/* Community Name */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-900">
               Nome da comunidade
             </label>
             <input
+              id="name"
+              name="name"
               type="text"
               placeholder="Ex: Trocas de Roupas São Paulo"
-              value={formData.communityName}
-              onChange={(e) =>
-                handleInputChange("communityName", e.target.value)
-              }
+              value={communityData.name}
+              onChange={handleChange}
               className="w-full rounded-xl border-2 border-blue-200 px-4 py-3 placeholder-gray-400 transition-colors focus:border-blue-500 focus:outline-none"
             />
           </div>
@@ -192,33 +206,35 @@ const CreateListingModal = ({ isOpen, onClose, onSubmit }) => {
               Descrição da comunidade
             </label>
             <textarea
+              id="description"
+              name="description"
               placeholder="Descreva o objetivo da comunidade, regras de troca e outras informações importantes para os membros"
-              value={formData.description}
+              value={communityData.description}
               maxLength={100}
-              onChange={(e) => handleInputChange("description", e.target.value)}
+              onChange={handleChange}
               rows="5"
               className="w-full resize-none rounded-xl border-2 border-blue-200 px-4 py-3 placeholder-gray-400 transition-colors focus:border-blue-500 focus:outline-none"
             />
           </div>
-        </div>
 
-        {/* Action Buttons */}
-        <div className="border-t border-gray-100 p-6">
-          <div className="flex gap-3">
-            <button
-              onClick={onClose}
-              className="flex-1 cursor-pointer rounded-xl border border-[var(--color-secondary)] px-6 py-3 font-medium text-[var(--color-secondary)] transition-colors duration-700 hover:bg-[var(--color-secondary)] hover:text-white"
-            >
-              Cancelar
-            </button>
-            <button
-              onClick={handleSubmit}
-              className="flex-1 cursor-pointer rounded-xl bg-[var(--color-primary)] px-6 py-3 font-medium text-white transition-colors duration-700 hover:bg-[var(--color-tertiary)]"
-            >
-              Criar Comunidade
-            </button>
+          {/* Action Buttons */}
+          <div className="border-t border-gray-100 p-6">
+            <div className="flex gap-3">
+              <button
+                onClick={onClose}
+                className="flex-1 cursor-pointer rounded-xl border border-[var(--color-secondary)] px-6 py-3 font-medium text-[var(--color-secondary)] transition-colors duration-700 hover:bg-[var(--color-secondary)] hover:text-white"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                className="flex-1 cursor-pointer rounded-xl bg-[var(--color-primary)] px-6 py-3 font-medium text-white transition-colors duration-700 hover:bg-[var(--color-tertiary)]"
+              >
+                Criar Comunidade
+              </button>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

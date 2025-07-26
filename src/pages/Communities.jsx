@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../contexts/UserContext";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Breadcrumb from "../components/Breadcrumb";
@@ -8,8 +9,11 @@ import CreateComunity from "../components/CreateComunity";
 import {
   getCommunities,
   searchCommunities,
-  createCommunity,
 } from "../services/community-service";
+import {
+  createMember,
+  getMembersByCommunityAndUser,
+} from "../services/member-service";
 
 const Communities = () => {
   const navigate = useNavigate();
@@ -17,6 +21,8 @@ const Communities = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [communities, setCommunities] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const { user } = useUser();
 
   // Carregar comunidades ao montar o componente
   const loadCommunities = useCallback(async () => {
@@ -58,20 +64,6 @@ const Communities = () => {
     [loadCommunities]
   );
 
-  // Função para criar nova comunidade
-  const handleCreateCommunity = async (communityData) => {
-    try {
-      const newCommunity = await createCommunity(communityData);
-      setCommunities((prev) => [newCommunity, ...prev]);
-      setShowCreateModal(false);
-      console.log("Comunidade criada com sucesso:", newCommunity);
-    } catch (err) {
-      console.error("Erro ao criar comunidade:", err);
-      // Em caso de erro, ainda fecha o modal mas mostra erro
-      setShowCreateModal(false);
-    }
-  };
-
   // Atualizar busca quando searchTerm muda
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -81,8 +73,28 @@ const Communities = () => {
     return () => clearTimeout(timeoutId);
   }, [searchTerm, handleSearch]);
 
-  const handleNavigateToCommunity = (communityId) => {
-    navigate(`/community/${communityId}`);
+  const handleNavigateToCommunity = async (communityId) => {
+    try {
+      const memberData = { userId: user.id, communityId };
+      console.log("Criando membro para a comunidade:", memberData);
+
+      const existingMember = await getMembersByCommunityAndUser(memberData);
+      if (existingMember?.length > 0) {
+        console.log("Usuário já é membro desta comunidade");
+        navigate(`/community/${communityId}`);
+        return;
+      } else {
+        const newMember = await createMember(memberData);
+        console.log("Membro criado com sucesso", newMember);
+        navigate(`/community/${communityId}`);
+      }
+    } catch (error) {
+      console.error("Erro ao navegar para a comunidade:", error);
+    }
+  };
+
+  const handleCommunityCreated = (newCommunity) => {
+    setCommunities((prev) => [newCommunity, ...prev]);
   };
 
   const filteredCommunities = communities;
@@ -160,7 +172,7 @@ const Communities = () => {
       <CreateComunity
         isOpen={showCreateModal}
         onClose={() => setShowCreateModal(false)}
-        onSubmit={handleCreateCommunity}
+        onCommunityCreated={handleCommunityCreated}
       />
       <Footer />
     </div>

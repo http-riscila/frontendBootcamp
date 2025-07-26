@@ -258,7 +258,7 @@ export default function UserDetails() {
           </nav>
           <div className="grid grid-cols-3 justify-center gap-6">
             {activeTab === "my-communities" &&
-              (communities.length > 0 ? (
+              (communities?.length > 0 ? (
                 communities.map((community) => (
                   <CommunityCard key={community.id} community={community} />
                 ))
@@ -289,7 +289,7 @@ export default function UserDetails() {
               ))}
 
             {activeTab === "my-ads" &&
-              (ads.length > 0 ? (
+              (ads?.length > 0 ? (
                 <div className="col-span-3 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {ads.map((ad) => (
                     <AdCard
@@ -327,7 +327,7 @@ export default function UserDetails() {
               ))}
 
             {activeTab === "received-proposals" &&
-              (proposalsByRecipient.length > 0 ? (
+              (proposalsByRecipient?.length > 0 ? (
                 proposalsByRecipient.map((proposal) => (
                   <ProposalCard
                     key={proposal.id}
@@ -363,7 +363,7 @@ export default function UserDetails() {
               ))}
 
             {activeTab === "sent-proposals" &&
-              (proposalsBySender.length > 0 ? (
+              (proposalsBySender?.length > 0 ? (
                 proposalsBySender.map((proposal) => (
                   <ProposalCard
                     key={proposal.id}

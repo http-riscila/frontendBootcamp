@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
 import UserPopover from "./Popover";
+import logoPrincipal from "../assets/icons/logo-principal.svg";
 export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ export default function Header() {
         <div className="col-span-3 flex items-center">
           <Link to="/home">
             <img
-              src="src/assets/icons/logo-principal.svg"
+              src={logoPrincipal}
               alt="Logo"
               className="h-[46px] w-[221px]"
             />

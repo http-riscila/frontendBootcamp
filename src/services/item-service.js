@@ -3,12 +3,20 @@ import api from "./api";
 export async function getItemsByCommunity(communityId) {
   try {
     // Adiciona parâmetros para ordenar por data de criação (descendente)
-    const response = await api.get(
-      `/api/items/${communityId}?_sort=createdAt&_order=desc`
-    );
+    const response = await api.get(`/api/items/by-community/${communityId}`);
     return response.data;
   } catch (error) {
     console.error("Error getting items", error);
+    throw error;
+  }
+}
+
+export async function createItem(itemData) {
+  try {
+    const response = await api.post("/api/items", itemData);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating item", error);
     throw error;
   }
 }
