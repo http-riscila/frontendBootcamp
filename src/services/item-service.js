@@ -21,16 +21,6 @@ export async function getItemsByCommunity(communityId) {
   }
 }
 
-export async function createItem(itemData) {
-  try {
-    const response = await api.post("/api/items", itemData);
-    return response.data;
-  } catch (error) {
-    console.error("Error creating item", error);
-    throw error;
-  }
-}
-
 export async function getItemsByUser(userId) {
   try {
     const response = await api.get(`/api/items/by-user/${userId}`);

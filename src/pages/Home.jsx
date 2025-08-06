@@ -9,7 +9,12 @@ import { getItemsByCommunity } from "../services/item-service";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import CommunityCard from "../components/CommunityCard";
+import { useUser } from "../contexts/UserContext";
+import { getMembersByCommunityAndUser } from "../services/member-service";
+import Community from './Community';
+import ConfirmModal from "../components/ConfirmModal";
 
+ 
 const Home = () => {
   const navigate = useNavigate();
 
@@ -24,6 +29,10 @@ const Home = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [showSearchResults, setShowSearchResults] = useState(false);
+  const [showJoinModal, setShowJoinModal] = useState(false);
+  const [selectedCommunityForJoin, setSelectedCommunityForJoin] = useState(null);
+  const user = useUser();
+  
 
   async function getHomeData() {
     try {
@@ -34,14 +43,16 @@ const Home = () => {
       let allItems = [];
       if (communities && communities.length > 0) {
         // Buscar itens de todas as comunidades do usuário
-        const itemsPromises = communities.map((community) =>
+        const itemsPromises = await communities.map((community) =>
           getItemsByCommunity(community.id)
         );
 
         const itemsArrays = await Promise.all(itemsPromises);
 
+
+
         // Combinar todos os arrays de itens em um único array
-        allItems = itemsArrays.flat();
+        allItems = itemsArrays.flat() || [];
 
         // Ordenar por data de criação (mais recentes primeiro) e pegar apenas 6
         allItems = allItems
@@ -58,6 +69,23 @@ const Home = () => {
       throw error;
     }
   }
+
+  const handleCloseModal = () => {
+    setShowJoinModal(false);
+    setSelectedCommunityForJoin(null);
+  };
+
+  const handleJoinCommunity = () => {
+    try {
+      setShowJoinModal(false);
+      navigate(`/community/${selectedCommunityForJoin.id}`);
+    } catch (error) {
+      console.error("Erro ao entrar na comunidade:", error);
+      setShowJoinModal(false);
+    }
+  };
+
+
 
   // Busca em tempo real (opcional)
   useEffect(() => {
@@ -164,10 +192,22 @@ const Home = () => {
     setShowSearchResults(false);
   };
 
-  const handleCommunityClick = (community) => {
-    setSelectedCommunityId(community.id);
+  const handleCommunityClick = async (communityId) => {
+    setSelectedCommunityId(communityId);
+    const userId = user.user.id
+    const membership = await getMembersByCommunityAndUser(communityId, userId);
+    console.log("Membership data:", membership);
+    const isMember = membership !== null;
 
-    navigate(`/comunidades/${community.id}`);
+    if (isMember) {
+		navigate(`/community/${communityId}`);
+    } else {
+      // Mostrar modal para perguntar se o usuário quer entrar na comunidade
+      const community = homeData.communities.find((c) => c.id === communityId);
+      setSelectedCommunityForJoin(community);
+      setShowJoinModal(true);
+    }
+
     setSearchTerm("");
     setSearchResults([]);
     setShowSearchResults(false);
@@ -346,10 +386,12 @@ const Home = () => {
                 </p>
               </div>
             ) : (
-              displayCommunities.map((community) => {
+              console.log("Exibindo comunidades:", displayCommunities),
+              homeData.communities.map((community) => {
                 const isSelected = selectedCommunityId === community.id;
                 return (
                   <CommunityCard
+                    community={community}
                     key={community.id}
                     imageUrl={community.imageUrl}
                     categoryLabel="comunidade"
@@ -466,6 +508,13 @@ const Home = () => {
         />
       </section>
       <Footer />
+      <ConfirmModal
+        isOpen={showJoinModal}
+        message={`Você deseja entrar na comunidade "${selectedCommunityForJoin?.name}"?`}
+        onClose={handleCloseModal}
+        onConfirm={handleJoinCommunity}
+      />
+
     </div>
   );
 };
