@@ -52,17 +52,6 @@ export async function countAvailableItems(userId) {
   }
 }
 
-// Criar novo item
-export async function createItem(itemData) {
-  try {
-    const response = await api.post("/api/items", itemData);
-    return response.data;
-  } catch (error) {
-    console.error("Error creating item", error);
-    throw error;
-  }
-}
-
 // Buscar item por ID
 export async function getItemById(itemId) {
   try {

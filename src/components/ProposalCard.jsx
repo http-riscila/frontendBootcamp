@@ -1,6 +1,20 @@
+import { updateStatus } from "../services/proposal-service";
 import profilePic from "../assets/icons/profile-pic.svg";
 
 export default function ProposalCard({ proposal, type }) {
+  async function handleStatusChange(newStatus) {
+    try {
+      const updatedProposal = await updateStatus(
+        newStatus,
+        proposal?.communityId,
+        proposal?.id
+      );
+      console.log("Proposal status updated:", updatedProposal);
+    } catch (error) {
+      console.error("Error updating proposal status", error);
+    }
+  }
+
   return (
     <div className="mb-5 flex max-h-[226px] max-w-[1216px] flex-row justify-between rounded-xl border border-[var(--color-primary)] px-8 py-6">
       <div className="flex flex-row gap-4">
@@ -32,10 +46,18 @@ export default function ProposalCard({ proposal, type }) {
       <div className="flex flex-col justify-center gap-6">
         {type === "received-proposals" && (
           <>
-            <button className="font-bricolage h-16 w-64 cursor-pointer rounded-lg border bg-[var(--color-primary)] text-lg font-medium text-white transition-all duration-700 hover:bg-[var(--color-tertiary)]">
+            <button
+              onClick={(e) => handleStatusChange(e.target.id)}
+              id="ACCEPTED"
+              className="font-bricolage h-16 w-64 cursor-pointer rounded-lg border bg-[var(--color-primary)] text-lg font-medium text-white transition-all duration-700 hover:bg-[var(--color-tertiary)]"
+            >
               Aceitar
             </button>
-            <button className="font-bricolage h-16 w-64 cursor-pointer rounded-lg border border-[var(--color-secondary)] bg-white text-lg font-medium text-[var(--color-secondary)] transition-all duration-700 hover:bg-[var(--color-secondary)] hover:text-white">
+            <button
+              onClick={(e) => handleStatusChange(e.target.id)}
+              id="REJECTED"
+              className="font-bricolage h-16 w-64 cursor-pointer rounded-lg border border-[var(--color-secondary)] bg-white text-lg font-medium text-[var(--color-secondary)] transition-all duration-700 hover:bg-[var(--color-secondary)] hover:text-white"
+            >
               Recusar
             </button>
           </>
