@@ -104,7 +104,7 @@ const Communities = () => {
       <Header />
       <div className="container mx-auto w-full max-w-[1240px] px-12 py-8">
         <div className="flex flex-col gap-4">
-          <Breadcrumb />
+          <Breadcrumb  />
           {/* Título e botão */}
           <div className="mb-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-col gap-2">
