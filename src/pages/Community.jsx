@@ -123,10 +123,10 @@ const Community = () => {
                   src={community.imageUrl || "/placeholder-community.png"}
                   alt={community.name}
                   className="h-20 w-20 rounded-full border-2 border-blue-200 object-cover"
-                  onError={(e) => {
-                    e.target.src =
-                      "https://via.placeholder.com/80x80/e5e7eb/9ca3af?text=C";
-                  }}
+                  onError={ (e) => {
+                    /*e.target.src =
+                      "https://via.placeholder.com/80x80/e5e7eb/9ca3af?text=C"; */
+                  } } 
                 />
                 <div>
                   <h1 className="mb-1 text-2xl font-bold text-gray-900">

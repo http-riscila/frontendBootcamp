@@ -10,12 +10,12 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import CommunityCard from "../components/CommunityCard";
 import { useUser } from "../contexts/UserContext";
-import { getMembersByCommunityAndUser } from "../services/member-service";
-import Community from './Community';
+import { createMember, getMemberById, getMembersByCommunityAndUser } from "../services/member-service";
 import ConfirmModal from "../components/ConfirmModal";
 
  
 const Home = () => {
+  const user = useUser();
   const navigate = useNavigate();
 
   const [homeData, setHomeData] = useState({
@@ -31,7 +31,7 @@ const Home = () => {
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [showJoinModal, setShowJoinModal] = useState(false);
   const [selectedCommunityForJoin, setSelectedCommunityForJoin] = useState(null);
-  const user = useUser();
+  
   
 
   async function getHomeData() {
@@ -69,23 +69,6 @@ const Home = () => {
       throw error;
     }
   }
-
-  const handleCloseModal = () => {
-    setShowJoinModal(false);
-    setSelectedCommunityForJoin(null);
-  };
-
-  const handleJoinCommunity = () => {
-    try {
-      setShowJoinModal(false);
-      navigate(`/community/${selectedCommunityForJoin.id}`);
-    } catch (error) {
-      console.error("Erro ao entrar na comunidade:", error);
-      setShowJoinModal(false);
-    }
-  };
-
-
 
   // Busca em tempo real (opcional)
   useEffect(() => {
@@ -194,9 +177,9 @@ const Home = () => {
 
   const handleCommunityClick = async (communityId) => {
     setSelectedCommunityId(communityId);
-    const userId = user.user.id
+    const userId = user.user.id;
     const membership = await getMembersByCommunityAndUser(communityId, userId);
-    console.log("Membership data:", membership);
+    console.log("Membership:", membership);
     const isMember = membership !== null;
 
     if (isMember) {
@@ -211,6 +194,26 @@ const Home = () => {
     setSearchTerm("");
     setSearchResults([]);
     setShowSearchResults(false);
+  };
+
+  const handleCloseModal = () => {
+    setShowJoinModal(false);
+    setSelectedCommunityForJoin(null);
+  };
+
+  const handleJoinCommunity = async () => {
+    try {
+      await createMember({
+        userId: user.user.id,
+        communityId: selectedCommunityForJoin.id,
+        isAdmin: false,
+      });
+      setShowJoinModal(false);
+      navigate(`/community/${selectedCommunityForJoin.id}`);
+    } catch (error) {
+      console.error("Erro ao entrar na comunidade:", error);
+      setShowJoinModal(false);
+    }
   };
 
   // Preparar dados para exibição
@@ -386,7 +389,6 @@ const Home = () => {
                 </p>
               </div>
             ) : (
-              console.log("Exibindo comunidades:", displayCommunities),
               homeData.communities.map((community) => {
                 const isSelected = selectedCommunityId === community.id;
                 return (

@@ -16,7 +16,7 @@ export async function getItemsByCommunity(communityId) {
     const response = await api.get(`/api/items/by-community/${communityId}`);
     return response.data;
   } catch (error) {
-    console.error(`Error getting items from community ${communityId}:`, error);
+    console.error(`Error getting items from community ${communityId}:`, error.response.data);
     return [];
   }
 }

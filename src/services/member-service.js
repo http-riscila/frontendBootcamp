@@ -31,12 +31,22 @@ export async function getAllMembersByCommunity(communityId) {
 
 export async function getMembersByCommunityAndUser(communityId, userId) {
   try {
-    const response = await api.get("/api/members/by-community-and-user", {
-      params: { communityId, userId },
+    const response = await api.get(`/api/members/${userId}/by-community-and-user`,  {
+      params: { communityId },
     });
     return response.data;
   } catch (error) {
     console.error("Error getting members by user", error);
+    return null;
+  }
+}
+
+export async function getMemberById(memberId) {
+  try {
+    const response = await api.get(`/api/members/${memberId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error getting member by ID", error);
     return null;
   }
 }
