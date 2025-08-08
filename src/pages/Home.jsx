@@ -10,10 +10,12 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import CommunityCard from "../components/CommunityCard";
 import { useUser } from "../contexts/UserContext";
-import { createMember, getMemberById, getMembersByCommunityAndUser } from "../services/member-service";
+import {
+  createMember,
+  getMembersByCommunityAndUser,
+} from "../services/member-service";
 import ConfirmModal from "../components/ConfirmModal";
 
- 
 const Home = () => {
   const user = useUser();
   const navigate = useNavigate();
@@ -30,9 +32,8 @@ const Home = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [showJoinModal, setShowJoinModal] = useState(false);
-  const [selectedCommunityForJoin, setSelectedCommunityForJoin] = useState(null);
-  
-  
+  const [selectedCommunityForJoin, setSelectedCommunityForJoin] =
+    useState(null);
 
   async function getHomeData() {
     try {
@@ -48,8 +49,6 @@ const Home = () => {
         );
 
         const itemsArrays = await Promise.all(itemsPromises);
-
-
 
         // Combinar todos os arrays de itens em um único array
         allItems = itemsArrays.flat() || [];
@@ -183,7 +182,7 @@ const Home = () => {
     const isMember = membership !== null;
 
     if (isMember) {
-		navigate(`/community/${communityId}`);
+      navigate(`/community/${communityId}`);
     } else {
       // Mostrar modal para perguntar se o usuário quer entrar na comunidade
       const community = homeData.communities.find((c) => c.id === communityId);
@@ -516,7 +515,6 @@ const Home = () => {
         onClose={handleCloseModal}
         onConfirm={handleJoinCommunity}
       />
-
     </div>
   );
 };
