@@ -100,11 +100,13 @@ export async function getCommunityAds(communityId) {
 export async function createCommunityAd(communityId, adData) {
   try {
     // Adicionar o communityId aos dados do anúncio
-    const itemData = {
-      ...adData,
-      communityId: communityId
-    };
-    const response = await api.post("/items", itemData);
+    adData.append("communityId", communityId);
+
+    const response = await api.post("/items", adData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error creating community ad", error);

@@ -1,22 +1,7 @@
-import { useState, useEffect } from "react";
-import { countMembersByCommunity } from "../services/member-service";
 import memberIcon from "../assets/icons/member-icon.svg";
 
 export default function CommunityCard({ community, onClick }) {
-  const [membersCount, setMembersCount] = useState(0);
-
-  useEffect(() => {
-    async function fetchMembersCount() {
-      try {
-        const memberCountData = await countMembersByCommunity(community?.id);
-        setMembersCount(memberCountData);
-        console.log("Members succesfully counted: ", memberCountData);
-      } catch (error) {
-        console.log("Error fetching count data", error);
-      }
-    }
-    fetchMembersCount();
-  });
+  console.log("🐛 CommunityCard renderizado para:", community?.name || "sem nome");
 
   return (
     <div className="flex max-h-[507px] max-w-[399px] flex-col overflow-hidden">
@@ -37,11 +22,11 @@ export default function CommunityCard({ community, onClick }) {
         <div className="flex flex-row items-center justify-end gap-2 text-xs text-[var(--color-text)]">
           <img src={memberIcon} />
           <span className="flex flex-row gap-1">
-            {membersCount ?? 0} {membersCount === 1 ? "membro" : "membros"}
+            0 membros
           </span>
         </div>
         <div>
-          <h5 className="text-xl font-bold text-gray-900">{community?.name}</h5>
+          <h5 className="text-xl font-bold text-gray-900">{community?.name || community?.title}</h5>
 
           <p className="flex-1 text-base text-gray-600">
             {community?.description}
