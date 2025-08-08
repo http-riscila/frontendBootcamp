@@ -8,6 +8,7 @@ export default function CommunityCard({ community, onClick }) {
   useEffect(() => {
     async function fetchMembersCount() {
       try {
+        
         const memberCountData = await countMembersByCommunity(community?.id);
         setMembersCount(memberCountData);
         console.log("Members succesfully counted: ", memberCountData);

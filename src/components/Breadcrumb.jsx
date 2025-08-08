@@ -1,10 +1,17 @@
 import { useLocation, Link } from "react-router-dom";
-import arrowIcon from "../assets/icons/arrow-icon.svg";
+//import arrowIcon from "../assets/icons/arrow-icon.svg";
 
-export default function Breadcrumb() {
+export default function Breadcrumb({ community }) {
   const location = useLocation();
 
-  const paths = location.pathname.split("/").filter((p) => p !== "");
+  //const paths = location.pathname.split("/").filter((p) => p !== "");
+  const pathnames = location.pathname.split('/').filter(Boolean);
+
+  if (pathnames.length === 0) {
+    return null;
+  }
+
+  const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
   return (
     <nav
@@ -21,32 +28,27 @@ export default function Breadcrumb() {
       >
         Home
       </Link>
-      {paths.map((path, index) => {
-        const pathTo = "/" + paths.slice(0, index + 1).join("/");
-        const isActive = location.pathname === pathTo;
-        return (
-          <span
-            key={index}
-            className="flex flex-row gap-1 items-center text-base"
-          >
-            {" "}
-            <img
-              src={arrowIcon}
-              alt="Arrow"
-              className="w-[18px] h-[18px]"
-            />{" "}
-            <Link
-              to={pathTo}
-              className={`capitalize text-[12px] ${
-                isActive
-                  ? "font-semibold text-[var(--color-primary)]"
-                  : "font-normal text-[var(--color-text)]"
-              }`}
-            >
-              {decodeURIComponent(path)}
-            </Link>
-          </span>
-        );
+      {pathnames.map((value, index) => {
+        //const pathTo = "/" + paths.slice(0, index + 1).join("/");
+        //const isActive = location.pathname === pathTo;
+        const isLast = index === pathnames.length - 1;
+        if (index === 0) {
+          return (
+            <span key={value}>
+              {' > '}
+              {isLast ? (
+                capitalize(value)
+              ) : (
+                <Link to={`/${value}`}>{capitalize(value)}</Link>
+              )}
+            </span>
+          );
+          }
+          if (index === 1) {
+          return <span key={value}>{' > '}{community?.name}</span>;
+        }
+        return null;
+        
       })}
     </nav>
   );

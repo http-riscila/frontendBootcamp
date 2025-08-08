@@ -107,7 +107,7 @@ const Community = () => {
       <Header />
       <div className="mx-auto max-w-6xl px-4 py-8">
         <div className="flex flex-col gap-4">
-          <Breadcrumb />
+          <Breadcrumb community={community} />
           {/* Community Info */}
           {loading ? (
             <div className="flex items-center justify-center py-12">
@@ -123,10 +123,10 @@ const Community = () => {
                   src={community.imageUrl || "/placeholder-community.png"}
                   alt={community.name}
                   className="h-20 w-20 rounded-full border-2 border-blue-200 object-cover"
-                  onError={(e) => {
-                    e.target.src =
-                      "https://via.placeholder.com/80x80/e5e7eb/9ca3af?text=C";
-                  }}
+                  onError={ (e) => {
+                    e.target.src = community.imageUrl ||
+                      "../../public/images/bazar.jpg";
+                  } }
                 />
                 <div>
                   <h1 className="mb-1 text-2xl font-bold text-gray-900">
