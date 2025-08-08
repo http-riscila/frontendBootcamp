@@ -2,44 +2,61 @@ import profilePic from "../assets/icons/profile-pic.svg";
 
 export default function AdCard({ ad, onViewDetails }) {
   return (
-    <div className="h-[598px] max-w-[295px]">
-      <div className="flex flex-col items-center">
-        <div className="h-64 max-h-[598px] w-74 rounded-t-xl bg-gray-200">
-          <img className="rounded-t-xl object-cover" src={ad?.imageUrl} />
-        </div>
-        <div className="flex flex-col items-center gap-4 rounded-b-xl border border-t-0 border-x-[var(--color-primary)] border-b-[var(--color-primary)]">
-          <div className="mt-5 flex flex-col gap-4 p-4">
-            <div className="flex flex-col gap-1">
-              <span className="text-lg font-medium text-[var(--color-title)]">
-                {ad?.name || "Vestido floral longo"}
-              </span>
-              <span className="flex h-6 w-14 items-center justify-center rounded-lg bg-[var(--color-tertiary)] text-xs text-[var(--color-primary)]">
-                {ad?.category || "Roupas"}
-              </span>
-              <p className="text-base text-[var(--color-text)]">
-                {ad?.description || "Comunidade para troca de roupas, sapatos e acessórios em todo Brasil Comunidade para."}
-              </p>
-            </div>
-            <div className="flex flex-row items-center gap-1">
-              <img
-                src={ad?.createdBy?.imageUrl || profilePic}
-                className="h-9 w-9"
-              />
-              <span className="text-sm font-medium text-[var(--color-title)]">
-                {ad?.createdBy?.name || "Usuario"}
-              </span>
-            </div>
+    <div className="w-full max-w-sm bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      {/* Imagem do produto */}
+      <div className="h-48 w-full bg-gray-100">
+        {ad?.imageUrl ? (
+          <img 
+            src={ad.imageUrl} 
+            alt={ad.name}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="h-full w-full bg-gray-200 flex items-center justify-center">
+            <span className="text-gray-400 text-sm">Sem imagem</span>
           </div>
+        )}
+      </div>
 
-          <div>
-            <button
-              onClick={() => onViewDetails && onViewDetails(ad)}
-              className="mb-5 h-14 w-56 cursor-pointer rounded-xl bg-[var(--color-primary)] text-lg font-medium text-white transition-all duration-700 hover:bg-[var(--color-tertiary)]"
-            >
-              Ver Detalhes
-            </button>
-          </div>
+      {/* Conteúdo do card */}
+      <div className="p-4">
+        {/* Título */}
+        <h3 className="text-lg font-semibold text-gray-900 mb-1 line-clamp-1">
+          {ad?.name || "Item sem nome"}
+        </h3>
+
+        {/* Status "Usado" */}
+        <span className="inline-block px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded mb-2">
+          Usado
+        </span>
+
+        {/* Descrição */}
+        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+          {ad?.description || "Sem descrição disponível"}
+        </p>
+
+        {/* Informações do usuário */}
+        <div className="flex items-center mb-4">
+          <img
+            src={ad?.creator?.profileImageUrl || profilePic}
+            alt={ad?.creator?.name || "Usuario"}
+            className="h-6 w-6 rounded-full mr-2"
+          />
+          <span className="text-sm text-gray-700">
+            {ad?.creator?.name || "Usuario"}
+          </span>
+          <span className="text-xs text-gray-500 ml-1">
+            • {ad?.createdAt ? new Date(ad.createdAt).toLocaleDateString('pt-BR') : 'Data não disponível'}
+          </span>
         </div>
+
+        {/* Botão Ver detalhes */}
+        <button
+          onClick={() => onViewDetails && onViewDetails(ad)}
+          className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+        >
+          Ver detalhes
+        </button>
       </div>
     </div>
   );

@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../components/Header";
-import CommunityCard from "../components/CommunityCard";
+import AdCard from "../components/AdCard";
 import CreateAdModal from "../components/ProductDetail";
+import ProductModal from "../components/ProductModal";
 import Footer from "../components/Footer";
 import Breadcrumb from "../components/Breadcrumb";
 import memberIcon from "../assets/icons/member-icon.svg";
@@ -15,6 +16,8 @@ import { getItemsByCommunity, createItem } from "../services/item-service";
 const Community = () => {
   const { communityId } = useParams();
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [selectedAd, setSelectedAd] = useState(null);
   const [community, setCommunity] = useState(null);
   const [ads, setAds] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -91,6 +94,11 @@ const Community = () => {
       console.error("Erro ao criar anúncio:", err);
       setShowAddModal(false);
     }
+  };
+
+  const handleViewDetails = (ad) => {
+    setSelectedAd(ad);
+    setShowDetailsModal(true);
   };
 
   useEffect(() => {
@@ -181,14 +189,7 @@ const Community = () => {
           {!adsLoading && (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {ads.map((ad) => (
-                <CommunityCard
-                  key={ad.id}
-                  image={ad.imageUrl}
-                  title={ad.title}
-                  status={ad.status}
-                  description={ad.description}
-                  user={ad.user}
-                />
+                <AdCard key={ad.id} ad={ad} onViewDetails={handleViewDetails} />
               ))}
 
               {ads.length === 0 && !adsLoading && (
@@ -207,6 +208,11 @@ const Community = () => {
           isOpen={showAddModal}
           onClose={() => setShowAddModal(false)}
           onSubmit={handleCreateAd}
+        />
+        <ProductModal
+          isOpen={showDetailsModal}
+          onClose={() => setShowDetailsModal(false)}
+          ad={selectedAd}
         />
       </div>
       <Footer />
