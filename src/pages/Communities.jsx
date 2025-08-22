@@ -1,28 +1,18 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useUser } from "../contexts/UserContext";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Breadcrumb from "../components/Breadcrumb";
 import CommunityCard from "../components/CommunityCard";
-import CreateComunity from "../components/CreateComunity";
-import {
-  getCommunities,
-  searchCommunities,
-} from "../services/community-service";
-import {
-  createMember,
-  getMembersByCommunityAndUser,
-} from "../services/member-service";
 import { useCommunities } from "../queries/use-communities.js";
 import { useDebounce } from "../hooks/use-debounce.js";
 import {toast} from "react-toastify";
+import CreateCommunityModal from "../components/CreateCommunityModal.jsx";
+
 
 const Communities = () => {
   const navigate = useNavigate();
   const [showCreateModal, setShowCreateModal] = useState(false);
-  // const [communities, setCommunities] = useState([]);
-  // const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
   const debouncedSearch = useDebounce(searchTerm, 500);
@@ -36,8 +26,10 @@ const Communities = () => {
     search: searchParams.get("search") || "",
   };
 
+  // Usa o hook que faz o fetch usando react-query e retorna data(Comunidades) e isLoading
   const { data, isLoading} = useCommunities(filters);
 
+  // Seta as comunidades pegando as comunidades em data, ou retornando um array vazio
   const communities = data?.communities || [];
   // const totalPages = data?.totalPages || 0;
 
@@ -60,6 +52,7 @@ const Communities = () => {
     });
   }, [debouncedSearch, searchParams]);
 
+  // Mantém o foco no campo de busca
   useEffect(() => {
     if (searchRef.current) {
       searchRef.current.focus();
@@ -67,6 +60,14 @@ const Communities = () => {
   }, [searchRef]);
 
 
+  /**
+   * Função para lidar com as mudanças nos filtros como ordenação e paginação.
+   * Atualiza os parâmetros de busca na URL e navega para a URL atualizada.
+   *
+   * @param {string} filterKey - A chave do filtro (se é page, limit, orderBy, etc).
+   * @param {string} value - O valor do filtro.
+   * @param {string} [direction] - A direção da ordenação (optional).
+   */
   const handleFilterChange = (filterKey, value, direction) => {
     if (debouncedSearch) {
       const search = debouncedSearch.toString().trimStart().trimEnd();
@@ -90,65 +91,7 @@ const Communities = () => {
     });
   };
 
-  const { user } = useUser();
-
-  // Carregar comunidades ao montar o componente
-  // const loadCommunities = useCallback(async () => {
-  //   try {
-  //     setLoading(true);
-  //     const data = await getCommunities();
-  //     setCommunities(data);
-  //   } catch (err) {
-  //     console.error("Erro ao carregar comunidades:", err);
-  //     setCommunities([]); // Limpa as comunidades em caso de erro
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }, []);
-  //
-  // useEffect(() => {
-  //   loadCommunities();
-  // }, [loadCommunities]);
-
-  // // Função para buscar comunidades com filtro
-  // const handleSearch = useCallback(
-  //   async (term) => {
-  //     try {
-  //       setLoading(true);
-  //
-  //       if (term.trim()) {
-  //         const data = await searchCommunities(term);
-  //         setCommunities(data);
-  //       } else {
-  //         await loadCommunities();
-  //       }
-  //     } catch (err) {
-  //       console.error("Erro ao buscar comunidades:", err);
-  //       setCommunities([]); // Limpa as comunidades em caso de erro
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   },
-  //   [loadCommunities]
-  // );
-
-  // // Atualizar busca quando searchTerm muda
-  // useEffect(() => {
-  //   const timeoutId = setTimeout(() => {
-  //     handleSearch(searchTerm);
-  //   }, 500); // Debounce de 500ms
-  //
-  //   return () => clearTimeout(timeoutId);
-  // }, [searchTerm, handleSearch]);
-
-
-  // const handleCommunityCreated = (newCommunity) => {
-  //   setCommunities((prev) => [newCommunity, ...prev]);
-  // };
-
-  // const filteredCommunities = communities;
-  console.log("Communities:", communities);
-
+  // Opções de ordenação para as comunidades
   const orderByOptions = [
     { label: "Mais Recentes", value: "createdAt", orderDirection: "desc" },
     { label: "Mais Antigas", value: "createdAt", orderDirection: "asc" },
@@ -158,7 +101,6 @@ const Communities = () => {
     { label: "Membros Crescente", value: "memberCount", orderDirection: "asc" },
   ];
 
-  console.log("Filters applied:", filters);
 
   return (
     <div className="min-h-screen w-full bg-gray-50">
@@ -252,7 +194,7 @@ const Communities = () => {
           </div>
         )}
       </div>
-      <CreateComunity
+      <CreateCommunityModal
         isOpen={showCreateModal}
         onClose={() => setShowCreateModal(false)}
         onCommunityCreated={() => {
