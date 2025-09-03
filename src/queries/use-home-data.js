@@ -2,12 +2,12 @@ import { getAllItems } from "../services/item-service.js";
 import { useQuery } from "@tanstack/react-query";
 import { getCommunities } from "../services/community-service.js";
 
-export const useHomeCommunities = () => {
+export const useHomeCommunities = (search) => {
   return useQuery(
     {
-      queryKey: ['HomeCommunities'],
+      queryKey: ['HomeCommunities', search],
       queryFn: () =>
-        getCommunities({orderBy: 'memberCount', orderDirection: 'desc', limit: 6}),
+        getCommunities({orderBy: 'memberCount', orderDirection: 'desc', limit: 6, search: search}),
     }
   )
 }
